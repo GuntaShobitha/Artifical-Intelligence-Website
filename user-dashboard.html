@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Stackly AI</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Notification panel ── */
+    .notif-panel{
+  position:fixed;
+  top:80px;
+  right:24px;
+  width:420px;
+  max-width:calc(100vw - 32px);
+  max-height:70vh;
+  overflow-y:auto;
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-lg);
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  z-index:99999;
+  display:none;
+}
+    .notif-panel.open{display:block;animation:dropIn .2s ease;}
+    @keyframes dropIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+    .notif-header{padding:16px 20px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;}
+    .notif-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:14px 20px;
+  border-bottom:1px solid var(--border-subtle);
+  cursor:pointer;
+  transition:var(--transition);
+}
+    .notif-item:hover{background:rgba(255,255,255,0.03);}
+    .notif-item:last-child{border-bottom:none;}
+    .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-blue);margin-top:6px;flex-shrink:0;}
+    .notif-dot.read{background:var(--text-muted);}
+    .notif-text{
+  font-size:0.82rem;
+  color:var(--text-secondary);
+  line-height:1.5;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+    .notif-time{font-size:0.72rem;color:var(--text-muted);font-family:var(--font-mono);margin-top:3px;}
+    .notif-item > div:last-child{
+  flex:1;
+  min-width:0;
+}
+
+
+.notif-panel .notif-item{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:flex-start !important;
+}
+
+.notif-panel .notif-item > div:nth-child(2){
+    flex:1 !important;
+    width:auto !important;
+    min-width:250px !important;
+}
+
+.notif-panel .notif-text,
+.notif-panel .notif-time{
+    display:block !important;
+    width:100% !important;
+}
+    /* ── Section tabs ── */
+    .dash-section{display:none;}
+    .dash-section.active{display:block;}
+
+    /* ── API key rows ── */
+    .api-key-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-subtle);}
+    .api-key-row:last-child{border-bottom:none;}
+    .api-key-mono{font-family:var(--font-mono);font-size:0.8rem;color:var(--accent-cyan);background:rgba(6,182,212,0.08);padding:6px 12px;border-radius:var(--radius-sm);border:1px solid rgba(6,182,212,0.15);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+    /* ── Usage bar ── */
+    .usage-bar-track{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:6px;}
+    .usage-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+
+    /* ── Billing card ── */
+    .billing-plan-card{background:linear-gradient(135deg,#0d1a3a 0%,#1a0f3a 100%);border:1px solid var(--border-glow);border-radius:var(--radius-xl);padding:28px;position:relative;overflow:hidden;}
+    .billing-plan-card::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(37,99,235,0.2) 0%,transparent 70%);}
+
+    /* ── Profile avatar large ── */
+    .avatar-lg{width:80px;height:80px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;box-shadow:0 0 30px rgba(37,99,235,0.4);}
+
+    /* ── Password strength ── */
+    #pw-strength-bars{display:flex;gap:4px;margin-top:8px;}
+    #pw-strength-bars div{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.08);transition:background .3s;}
+
+    /* ── Settings toggle ── */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border-subtle);}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-switch-sm{width:44px;height:24px;background:rgba(255,255,255,0.1);border-radius:12px;position:relative;cursor:pointer;transition:.3s;flex-shrink:0;}
+    .toggle-switch-sm.on{background:var(--accent-blue);}
+    .toggle-switch-sm::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.3s;}
+    .toggle-switch-sm.on::after{left:23px;}
+
+    /* ── Chart canvas ── */
+    .chart-area{height:160px;display:flex;align-items:flex-end;gap:6px;padding:0 4px;}
+    .chart-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+    .chart-col-bar{width:100%;border-radius:4px 4px 0 0;background:rgba(37,99,235,0.25);transition:background .3s;cursor:pointer;}
+    .chart-col-bar:hover{background:rgba(37,99,235,0.6);}
+    .chart-col-bar.highlight{background:var(--gradient-primary);}
+    .chart-col-label{font-size:0.68rem;color:var(--text-muted);font-family:var(--font-mono);}
+
+    /* ── Responsive ── */
+    @media(max-width:1024px){.stat-cards{grid-template-columns:repeat(2,1fr)!important;}}
+    @media(max-width:768px){
+      .dash-hamburger{display:flex!important;}
+      .stat-cards{grid-template-columns:1fr 1fr!important;}
+      .dash-row,.dash-row-3{grid-template-columns:1fr!important;}
+      .dashboard-content{padding:20px!important;}
+    }
+    @media(max-width:480px){.stat-cards{grid-template-columns:1fr!important;}}
+
+
+
+
+    @media(max-width:768px){
+
+  #sidebar{
+  position:fixed !important;
+  left:-280px !important;
+  top:0 !important;
+  height:100vh !important;
+  z-index:9999 !important;
+  transition:0.3s ease;
+}
+
+#sidebar.open{
+  left:0 !important;
+}
+
+  .dashboard-content{
+    margin-left:0 !important;
+    width:100% !important;
+  }
+
+  .header-actions{
+    gap:8px !important;
+  }
+
+  .notif-panel{
+    width:95vw !important;
+    right:10px !important;
+    left:auto !important;
+  }
+
+  .profile-grid,
+  .billing-grid,
+  .dash-row,
+  .dash-row-3{
+    grid-template-columns:1fr !important;
+  }
+}
+  </style>
+</head>
+<body>
+
+<!-- ── LOADING ── -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div>
+  <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+</div>
+
+<div class="dashboard">
+
+  <!-- ════════════════ SIDEBAR ════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Workspace</div>
+      <a class="sidebar-link active" data-section="overview" onclick="switchSection('overview',this)">
+        <span class="sidebar-link-icon">📊</span> Overview
+      </a>
+      <a class="sidebar-link" data-section="analytics" onclick="switchSection('analytics',this)">
+        <span class="sidebar-link-icon">📈</span> Analytics
+      </a>
+      <a class="sidebar-link" data-section="api-keys" onclick="switchSection('api-keys',this)">
+        <span class="sidebar-link-icon">🔑</span> API Keys
+        <span class="sidebar-badge">3</span>
+      </a>
+      <a class="sidebar-link" data-section="notifications" onclick="switchSection('notifications',this)">
+        <span class="sidebar-link-icon">🔔</span> Notifications
+        <span class="sidebar-badge">5</span>
+      </a>
+
+      <div class="sidebar-section-label">Account</div>
+      <a class="sidebar-link" data-section="profile" onclick="switchSection('profile',this)">
+        <span class="sidebar-link-icon">👤</span> Profile
+      </a>
+      <a class="sidebar-link" data-section="subscription" onclick="switchSection('subscription',this)">
+        <span class="sidebar-link-icon">💳</span> Subscription
+      </a>
+      <a class="sidebar-link" data-section="billing" onclick="switchSection('billing',this)">
+        <span class="sidebar-link-icon">🧾</span> Billing
+      </a>
+      <a class="sidebar-link" data-section="settings" onclick="switchSection('settings',this)">
+        <span class="sidebar-link-icon">⚙️</span> Settings
+      </a>
+
+      
+    </nav>
+
+    <div class="sidebar-user" id="sidebarUser">
+      <div class="user-avatar-sm" id="sidebarAvatar">U</div>
+      <div>
+        <div class="user-name" id="sidebarName">User</div>
+        <div class="user-role">Professional Plan</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ════════════════ MAIN ════════════════ -->
+  <div class="dashboard-main">
+
+    <!-- Top Header -->
+    <header class="dashboard-header">
+      <div class="dashboard-header-left">
+        <button class="dash-hamburger" id="dashHam" style="display:none">☰</button>
+        <h1 class="dashboard-title" id="dashTitle">Overview</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <!-- Search -->
+        <div style="position:relative;display:flex;align-items:center;">
+          <input type="text" class="form-input" placeholder="Search..." style="padding:9px 16px 9px 38px;font-size:0.82rem;border-radius:var(--radius-pill);width:220px;"/>
+          <span style="position:absolute;left:14px;color:var(--text-muted);font-size:0.85rem;">🔍</span>
+        </div>
+
+        <!-- Notifications -->
+        <div style="position:relative;">
+          <button class="notif-btn" id="notifBtn" onclick="toggleNotifPanel()" style="position:relative;width:40px;height:40px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:var(--transition);">
+            🔔
+            <span id="notifCount" style="position:absolute;top:-4px;right:-4px;width:18px;height:18px;background:var(--accent-blue);border-radius:50%;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-secondary);">5</span>
+          </button>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-header">
+              <span style="font-size:0.9rem;font-weight:700;">Notifications</span>
+              <button onclick="markAllRead()" style="font-size:0.75rem;color:var(--accent-cyan);cursor:pointer;background:none;border:none;">Mark all read</button>
+            </div>
+            <div class="notif-item"><div class="notif-dot"></div><div><div class="notif-text">Your API quota has reached <strong>80%</strong>. Consider upgrading.</div><div class="notif-time">5 min ago</div></div></div>
+            <div class="notif-item"><div class="notif-dot"></div><div><div class="notif-text">New feature released: <strong>Multi-modal AI workflows</strong></div><div class="notif-time">2 hours ago</div></div></div>
+            <div class="notif-item"><div class="notif-dot"></div><div><div class="notif-text">Invoice #INV-2026-06 generated for June</div><div class="notif-time">Yesterday</div></div></div>
+            <div class="notif-item"><div class="notif-dot read"></div><div><div class="notif-text">Password changed successfully</div><div class="notif-time">3 days ago</div></div></div>
+            <div class="notif-item"><div class="notif-dot read"></div><div><div class="notif-text">Welcome to Stackly AI Professional 🎉</div><div class="notif-time">Jun 1</div></div></div>
+            <div style="padding:12px 20px;border-top:1px solid var(--border-subtle);text-align:center;">
+              <button onclick="switchSection('notifications',document.querySelector('[data-section=notifications]'));toggleNotifPanel();" style="font-size:0.8rem;color:var(--accent-cyan);cursor:pointer;background:none;border:none;">View all notifications →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar -->
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('profile',null)">
+          <div class="user-avatar-sm" id="headerAvatar">U</div>
+          <span style="font-size:0.875rem;font-weight:600;" id="headerName">User</span>
+        </div>
+
+        <!-- Logout -->
+        <a href="login.html" class="btn btn-outline btn-sm" onclick="doLogout()" style="font-size:0.8rem;">↩ Logout</a>
+      </div>
+    </header>
+
+    <!-- ════════ DASHBOARD CONTENT ════════ -->
+    <div class="dashboard-content">
+
+      <!-- ── OVERVIEW ── -->
+      <div class="dash-section active" id="section-overview">
+        <!-- Welcome -->
+        <div class="dash-welcome" data-aos="fade-up">
+          <div class="glow-orb" style="width:300px;height:300px;background:rgba(37,99,235,0.1);top:-100px;right:-50px;"></div>
+          <div style="position:relative;z-index:1;">
+            <h2>Good morning, <span class="gradient-text" id="welcomeName">User</span> 👋</h2>
+            <p>Your Professional plan is active. You've used <strong style="color:var(--text-primary);">68%</strong> of your monthly token quota.</p>
+            <div class="dash-welcome-actions">
+              <button class="btn btn-primary btn-sm" onclick="switchSection('api-keys',null)">🔑 Manage API Keys</button>
+              <button class="btn btn-outline btn-sm" onclick="switchSection('analytics',null)">📊 View Analytics</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="stat-cards" data-aos="fade-up" data-aos-delay="50">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Tokens Used</span>
+              <span class="stat-card-icon">⚡</span>
+            </div>
+            <div class="stat-card-value gradient-text">3.4M</div>
+            <div class="stat-card-change up">↑ 12% this month</div>
+            <div class="usage-bar-track" style="margin-top:10px;"><div class="usage-bar-fill" style="width:68%;background:var(--gradient-primary);"></div></div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">3.4M / 5M</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">API Calls</span>
+              <span class="stat-card-icon">🔗</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-cyan);">28.4K</div>
+            <div class="stat-card-change up">↑ 8% this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Active Workflows</span>
+              <span class="stat-card-icon">⚙️</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-violet);">7</div>
+            <div class="stat-card-change up">2 running now</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Avg. Response Time</span>
+              <span class="stat-card-icon">⏱</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-green);">240ms</div>
+            <div class="stat-card-change up">↓ 15ms faster</div>
+          </div>
+        </div>
+
+        <!-- Row: Usage chart + Recent activity -->
+        <div class="dash-row" data-aos="fade-up" data-aos-delay="100">
+          <div class="dash-panel">
+            <div class="dash-panel-header">
+              <span class="dash-panel-title">Token Usage — Last 7 Days</span>
+              <span class="badge badge-blue">This Month</span>
+            </div>
+            <div class="chart-area" id="usageChart">
+              <!-- Rendered by JS -->
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.75rem;color:var(--text-muted);">
+              <span>Peak: <strong style="color:var(--text-primary);">680K</strong> tokens</span>
+              <span>Avg: <strong style="color:var(--text-primary);">480K</strong> / day</span>
+            </div>
+          </div>
+
+          <div class="dash-panel">
+            <div class="dash-panel-header">
+              <span class="dash-panel-title">Recent Activity</span>
+              <button class="btn btn-ghost btn-sm" style="font-size:0.78rem;padding:6px 12px;" onclick="switchSection('notifications',null)">View all</button>
+            </div>
+            <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text">Workflow <strong style="color:var(--text-primary);">"Lead Scoring"</strong> completed 142 runs</div><div class="activity-time">10 min ago</div></div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--accent-green);"></div><div><div class="activity-text">API key <strong style="color:var(--text-primary);">API_KEY_HIDDEN</strong> generated</div><div class="activity-time">2 hours ago</div></div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--accent-violet);"></div><div><div class="activity-text">Model fine-tune job <strong style="color:var(--text-primary);">ft-v2-gpt</strong> completed</div><div class="activity-time">Yesterday</div></div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--accent-gold);"></div><div><div class="activity-text">Invoice <strong style="color:var(--text-primary);">#INV-2026-06</strong> — $99.00 charged</div><div class="activity-time">Jun 1</div></div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--text-muted);"></div><div><div class="activity-text">Chatbot <strong style="color:var(--text-primary);">"Support Bot v3"</strong> deployed</div><div class="activity-time">May 28</div></div></div>
+          </div>
+        </div>
+
+        <!-- Row: Active projects + Token ring -->
+        <div class="dash-row-3" data-aos="fade-up" data-aos-delay="150">
+          <div class="dash-panel" style="grid-column:span 2;">
+            <div class="dash-panel-header">
+              <span class="dash-panel-title">Active AI Projects</span>
+              <button class="btn btn-primary btn-sm" style="font-size:0.78rem;padding:8px 16px;">+ New Project</button>
+            </div>
+            <div class="project-item">
+              <div class="project-icon-sm">🤖</div>
+              <div style="flex:1;"><div class="project-name">Customer Support Chatbot</div><div class="project-sub">GPT-4o · 1.2M tokens / month</div></div>
+              <span class="badge badge-green"><span class="status-dot active" style="font-size:0.8rem;">Active</span></span>
+              <button class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:6px 12px;">Manage</button>
+            </div>
+            <div class="project-item">
+              <div class="project-icon-sm" style="background:rgba(124,58,237,0.15);">⚙️</div>
+              <div style="flex:1;"><div class="project-name">Lead Scoring Workflow</div><div class="project-sub">Claude Sonnet · 680K tokens / month</div></div>
+              <span class="badge badge-green"><span class="status-dot active" style="font-size:0.8rem;">Active</span></span>
+              <button class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:6px 12px;">Manage</button>
+            </div>
+            <div class="project-item">
+              <div class="project-icon-sm" style="background:rgba(6,182,212,0.15);">📄</div>
+              <div style="flex:1;"><div class="project-name">Contract Analysis Pipeline</div><div class="project-sub">GPT-4o mini · 320K tokens / month</div></div>
+              <span class="badge badge-gold"><span class="status-dot pending" style="font-size:0.8rem;">Paused</span></span>
+              <button class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:6px 12px;">Manage</button>
+            </div>
+            <div class="project-item">
+              <div class="project-icon-sm" style="background:rgba(245,158,11,0.15);">🎓</div>
+              <div style="flex:1;"><div class="project-name">Fine-Tuned Sales Model ft-v2</div><div class="project-sub">Custom model · 1.1M tokens / month</div></div>
+              <span class="badge badge-green"><span class="status-dot active" style="font-size:0.8rem;">Active</span></span>
+              <button class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:6px 12px;">Manage</button>
+            </div>
+          </div>
+
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Token Quota</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:12px 0;">
+              <div class="usage-ring" style="--pct:68%; background:conic-gradient(var(--accent-blue) 0% 68%, rgba(255,255,255,0.06) 68%);width:120px;height:120px;">
+                <div style="position:relative;z-index:1;text-align:center;">
+                  <div class="usage-pct" style="font-size:1.1rem;">68%</div>
+                  <div style="font-size:0.65rem;color:var(--text-muted);">used</div>
+                </div>
+              </div>
+              <div style="width:100%;">
+                <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:6px;"><span style="color:var(--text-muted);">Used</span><span>3.4M</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:6px;"><span style="color:var(--text-muted);">Remaining</span><span style="color:var(--accent-green);">1.6M</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:0.78rem;"><span style="color:var(--text-muted);">Resets</span><span>Jul 1</span></div>
+              </div>
+              <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="switchSection('subscription',null)">Upgrade Plan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ANALYTICS ── -->
+      <div class="dash-section" id="section-analytics">
+        <div style="margin-bottom:28px;" data-aos="fade-up">
+          <h2 style="font-size:1.4rem;margin-bottom:6px;">Usage Analytics</h2>
+          <p>Detailed breakdown of your AI usage, latency, and cost across all projects.</p>
+        </div>
+
+        <div class="stat-cards" data-aos="fade-up">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Total Tokens (All Time)</span><span class="stat-card-icon">📊</span></div>
+            <div class="stat-card-value gradient-text">42.8M</div>
+            <div class="stat-card-change up">↑ 24% YoY</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Total API Calls</span><span class="stat-card-icon">🔗</span></div>
+            <div class="stat-card-value" style="color:var(--accent-cyan);">284K</div>
+            <div class="stat-card-change up">↑ 18% MoM</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Avg Latency</span><span class="stat-card-icon">⏱</span></div>
+            <div class="stat-card-value" style="color:var(--accent-green);">240ms</div>
+            <div class="stat-card-change up">p99: 820ms</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Estimated Cost</span><span class="stat-card-icon">💰</span></div>
+            <div class="stat-card-value" style="color:var(--accent-gold);">$99</div>
+            <div class="stat-card-change">Professional plan</div>
+          </div>
+        </div>
+
+        <div class="dash-row" data-aos="fade-up" data-aos-delay="80">
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Monthly Token Trend</span><span class="badge badge-blue">2026</span></div>
+            <div class="chart-area" id="monthlyChart"></div>
+            <div style="display:flex;gap:16px;margin-top:16px;font-size:0.78rem;color:var(--text-muted);">
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent-blue);display:inline-block;"></span>This year</span>
+            </div>
+          </div>
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Usage by Project</span></div>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><span>Support Chatbot</span><span style="color:var(--accent-cyan);">35%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:35%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-cyan));"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><span>Sales Model ft-v2</span><span style="color:var(--accent-violet);">32%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:32%;background:linear-gradient(90deg,var(--accent-violet),#a855f7);"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><span>Lead Scoring</span><span style="color:var(--accent-green);">20%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:20%;background:linear-gradient(90deg,#059669,var(--accent-green));"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><span>Contract Analysis</span><span style="color:var(--accent-gold);">13%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:13%;background:linear-gradient(90deg,#d97706,var(--accent-gold));"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-panel" data-aos="fade-up" data-aos-delay="120">
+          <div class="dash-panel-header"><span class="dash-panel-title">API Call Log</span>
+            <input type="text" class="form-input" placeholder="Filter by endpoint..." style="padding:7px 14px;font-size:0.8rem;width:220px;border-radius:var(--radius-pill);"/>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Timestamp</th><th>Endpoint</th><th>Tokens</th><th>Latency</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-16 14:32:01</td><td><code style="background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;font-size:0.78rem;">/v1/chat/completions</code></td><td>1,240</td><td>210ms</td><td><span class="status-dot active">200</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-16 14:30:44</td><td><code style="background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;font-size:0.78rem;">/v1/embeddings</code></td><td>420</td><td>88ms</td><td><span class="status-dot active">200</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-16 14:28:12</td><td><code style="background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;font-size:0.78rem;">/v1/chat/completions</code></td><td>3,820</td><td>680ms</td><td><span class="status-dot active">200</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-16 14:22:09</td><td><code style="background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;font-size:0.78rem;">/v1/fine-tunes</code></td><td>—</td><td>140ms</td><td><span class="status-dot pending">202</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-16 14:10:55</td><td><code style="background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;font-size:0.78rem;">/v1/chat/completions</code></td><td>890</td><td>195ms</td><td><span class="status-dot inactive" style="color:#f87171;">429</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── API KEYS ── -->
+      <div class="dash-section" id="section-api-keys">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;" data-aos="fade-up">
+          <div><h2 style="font-size:1.4rem;margin-bottom:4px;">API Keys</h2><p>Manage keys for accessing the Stackly AI API.</p></div>
+          <button class="btn btn-primary" onclick="generateKey()" style="gap:8px;">⚡ Generate New Key</button>
+        </div>
+
+        <div class="dash-panel" data-aos="fade-up" style="margin-bottom:24px;">
+          <div style="padding:14px 0;border-bottom:1px solid var(--border-subtle);margin-bottom:6px;">
+            <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-mono);padding-bottom:10px;">
+              <span>Key</span><span>Created</span><span>Last Used</span><span>Actions</span>
+            </div>
+          </div>
+          <div id="apiKeysList">
+            <div class="api-key-row">
+              <div class="api-key-mono">DEMO_KEY</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">Jun 1, 2026</span>
+              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">10 min ago</span>
+              <div style="display:flex;gap:6px;">
+                <button onclick="copyKey(this,'DEMO_KEY')" class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:0.75rem;">Copy</button>
+                <button onclick="revokeKey(this)" class="btn btn-sm" style="padding:6px 12px;font-size:0.75rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:var(--radius-pill);">Revoke</button>
+              </div>
+            </div>
+            <div class="api-key-row">
+              <div class="api-key-mono">DEMO_KEY</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">May 15, 2026</span>
+              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">2 hours ago</span>
+              <div style="display:flex;gap:6px;">
+                <button onclick="copyKey(this,'DEMO_KEY')" class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:0.75rem;">Copy</button>
+                <button onclick="revokeKey(this)" class="btn btn-sm" style="padding:6px 12px;font-size:0.75rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:var(--radius-pill);">Revoke</button>
+              </div>
+            </div>
+            <div class="api-key-row">
+              <div class="api-key-mono">DEMO_KEY</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">Apr 3, 2026</span>
+              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">3 days ago</span>
+              <div style="display:flex;gap:6px;">
+                <button onclick="copyKey(this,'DEMO_KEY')" class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:0.75rem;">Copy</button>
+                <button onclick="revokeKey(this)" class="btn btn-sm" style="padding:6px 12px;font-size:0.75rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:var(--radius-pill);">Revoke</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:20px;border-color:rgba(6,182,212,0.2);" data-aos="fade-up">
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:1.4rem;">💡</span>
+            <div>
+              <strong style="color:var(--text-primary);font-size:0.9rem;">Keep your keys secret</strong>
+              <p style="font-size:0.82rem;margin-top:4px;">Never expose API keys in client-side code or public repositories. Use environment variables and server-side calls only. Stackly AI is not responsible for unauthorized usage.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── NOTIFICATIONS ── -->
+      <div class="dash-section" id="section-notifications">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;" data-aos="fade-up">
+          <div><h2 style="font-size:1.4rem;margin-bottom:4px;">Notifications</h2><p>All alerts and updates from your workspace.</p></div>
+          <button class="btn btn-outline btn-sm" onclick="markAllRead()">Mark all read</button>
+        </div>
+        <div class="dash-panel" id="allNotifList" data-aos="fade-up">
+          <div class="notif-item" style="padding:16px 0;"><div class="notif-dot"></div><div><div class="notif-text">Your API quota has reached <strong style="color:var(--text-primary);">80%</strong>. Consider upgrading your plan.</div><div class="notif-time">5 min ago</div></div></div>
+          <div class="notif-item" style="padding:16px 0;"><div class="notif-dot"></div><div><div class="notif-text">New feature released: <strong style="color:var(--text-primary);">Multi-modal AI workflows</strong> now available on Professional plan.</div><div class="notif-time">2 hours ago</div></div></div>
+          <div class="notif-item" style="padding:16px 0;"><div class="notif-dot"></div><div><div class="notif-text">Invoice <strong style="color:var(--text-primary);">#INV-2026-06</strong> for $99.00 has been generated and paid.</div><div class="notif-time">Yesterday</div></div></div>
+          <div class="notif-item" style="padding:16px 0;"><div class="notif-dot read"></div><div><div class="notif-text">Password changed successfully from a new device (Chrome / MacOS).</div><div class="notif-time">3 days ago</div></div></div>
+          <div class="notif-item" style="padding:16px 0;"><div class="notif-dot read"></div><div><div class="notif-text">Workflow <strong style="color:var(--text-primary);">"Lead Scoring"</strong> encountered a rate limit. Auto-retry succeeded.</div><div class="notif-time">4 days ago</div></div></div>
+          <div class="notif-item" style="padding:16px 0;"><div class="notif-dot read"></div><div><div class="notif-text">Welcome to <strong style="color:var(--text-primary);">Stackly AI Professional</strong> 🎉 Your 14-day trial has started.</div><div class="notif-time">Jun 1</div></div></div>
+        </div>
+      </div>
+
+      <!-- ── PROFILE ── -->
+      <div class="dash-section" id="section-profile">
+        <div style="margin-bottom:28px;" data-aos="fade-up">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Profile</h2>
+          <p>Manage your personal information and account details.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:24px;" data-aos="fade-up">
+          <!-- Avatar card -->
+          <div class="dash-panel" style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
+            <div class="avatar-lg" id="bigAvatar">A</div>
+            <div>
+              <div style="font-size:1.1rem;font-weight:700;" id="profileDisplayName">User</div>
+              <div style="font-size:0.85rem;color:var(--text-muted);" id="profileDisplayEmail">user@example.com</div>
+              <span class="badge badge-blue" style="margin-top:8px;display:inline-block;">Professional</span>
+            </div>
+            <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;">📷 Change Photo</button>
+            <div style="width:100%;border-top:1px solid var(--border-subtle);padding-top:16px;text-align:left;">
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;font-family:var(--font-mono);">MEMBER SINCE</div>
+              <div style="font-size:0.875rem;">June 1, 2026</div>
+            </div>
+          </div>
+
+          <!-- Edit form -->
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Personal Information</span></div>
+            <form onsubmit="saveProfile(event)">
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="pFirstName" value=""/></div>
+                <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="pLastName" value=""/></div>
+              </div>
+              <div class="form-group"><label class="form-label">Work Email</label><input type="email" class="form-input" id="pEmail" value=""/></div>
+              <div class="form-group"><label class="form-label">Company</label><input type="text" class="form-input" id="pCompany" value="Acme Corp"/></div>
+              <div class="form-group"><label class="form-label">Job Title</label><input type="text" class="form-input" id="pJobTitle" value="Head of Product"/></div>
+              <div class="form-group"><label class="form-label">Phone (optional)</label><input type="tel" class="form-input" id="pPhone" placeholder="+1 (555) 000-0000"/></div>
+              <div class="form-group"><label class="form-label">Timezone</label>
+                <select class="form-input">
+                  <option selected>UTC-5 (America/New_York)</option>
+                  <option>UTC+0 (Europe/London)</option>
+                  <option>UTC+5:30 (Asia/Kolkata)</option>
+                  <option>UTC+8 (Asia/Singapore)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top:8px;">Save Changes</button>
+            </form>
+
+            <!-- Change Password -->
+            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border-subtle);">
+              <div class="dash-panel-header" style="margin-bottom:16px;"><span class="dash-panel-title">Change Password</span></div>
+              <form onsubmit="changePassword(event)">
+                <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" placeholder="••••••••" id="cpCurrent"/></div>
+                <div class="form-group"><label class="form-label">New Password</label>
+                  <input type="password" class="form-input" placeholder="Min 8 characters" id="cpNew" oninput="updatePwStrength(this.value)"/>
+                  <div id="pw-strength-bars"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div class="form-group"><label class="form-label">Confirm New Password</label><input type="password" class="form-input" placeholder="Repeat new password" id="cpConfirm"/></div>
+                <button type="submit" class="btn btn-outline" style="margin-top:8px;">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUBSCRIPTION ── -->
+      <div class="dash-section" id="section-subscription">
+        <div style="margin-bottom:28px;" data-aos="fade-up">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Subscription</h2>
+          <p>Manage your Stackly AI plan and usage limits.</p>
+        </div>
+
+        <!-- Current plan -->
+        <div class="billing-plan-card" style="margin-bottom:24px;" data-aos="fade-up">
+          <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div>
+              <div style="font-size:0.78rem;font-weight:600;color:var(--text-muted);font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Current Plan</div>
+              <div style="font-size:2rem;font-weight:800;font-family:var(--font-display);" class="gradient-text">Professional</div>
+              <div style="font-size:0.9rem;color:var(--text-secondary);margin-top:4px;">$99/month · Renews Jul 1, 2026</div>
+            </div>
+            <div style="text-align:right;">
+              <span class="badge badge-green" style="font-size:0.85rem;padding:6px 14px;"><span class="status-dot active">Active</span></span>
+              <div style="margin-top:12px;display:flex;gap:10px;justify-content:flex-end;">
+                <button class="btn btn-outline btn-sm" onclick="showToast('Contact sales to downgrade')">Downgrade</button>
+                <button class="btn btn-primary btn-sm" onclick="showToast('🚀 Redirecting to Enterprise checkout...')">Upgrade to Enterprise</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan comparison -->
+        <div style="overflow-x:auto;" data-aos="fade-up">
+          <table class="data-table" style="min-width:500px;">
+            <thead><tr><th>Feature</th><th>Your Plan (Pro)</th><th>Enterprise</th></tr></thead>
+            <tbody>
+              <tr><td>Monthly Tokens</td><td style="color:var(--accent-cyan);">5M</td><td style="color:var(--accent-green);">Unlimited</td></tr>
+              <tr><td>AI Chatbots</td><td style="color:var(--accent-cyan);">10</td><td style="color:var(--accent-green);">Unlimited</td></tr>
+              <tr><td>API Access</td><td style="color:var(--accent-green);">✓</td><td style="color:var(--accent-green);">✓</td></tr>
+              <tr><td>Custom Fine-Tuning</td><td style="color:var(--accent-green);">✓</td><td style="color:var(--accent-green);">✓</td></tr>
+              <tr><td>SSO / SAML</td><td style="color:#f87171;">✗</td><td style="color:var(--accent-green);">✓</td></tr>
+              <tr><td>Support SLA</td><td>4h priority</td><td style="color:var(--accent-green);">1h dedicated CSM</td></tr>
+              <tr><td>On-Prem Deployment</td><td style="color:#f87171;">✗</td><td style="color:var(--accent-green);">✓</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── BILLING ── -->
+      <div class="dash-section" id="section-billing">
+        <div style="margin-bottom:28px;" data-aos="fade-up">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Billing</h2>
+          <p>View invoices, payment methods, and billing history.</p>
+        </div>
+
+        <div class="dash-row" data-aos="fade-up">
+          <!-- Payment method -->
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Payment Method</span><button class="btn btn-outline btn-sm" style="font-size:0.78rem;padding:6px 14px;" onclick="showToast('Payment method update coming soon')">+ Add New</button></div>
+            <div style="display:flex;align-items:center;gap:16px;padding:16px;background:rgba(37,99,235,0.06);border:1px solid var(--border-glow);border-radius:var(--radius-md);">
+              <div style="width:48px;height:32px;background:linear-gradient(135deg,#1434cb,#1a56db);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:#fff;letter-spacing:1px;">VISA</div>
+              <div>
+                <div style="font-size:0.9rem;font-weight:600;">•••• •••• •••• 4242</div>
+                <div style="font-size:0.78rem;color:var(--text-muted);">Expires 08/2028</div>
+              </div>
+              <span class="badge badge-green" style="margin-left:auto;">Default</span>
+            </div>
+          </div>
+
+          <!-- Billing summary -->
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Next Invoice</span></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;justify-content:space-between;font-size:0.875rem;"><span style="color:var(--text-secondary);">Professional Plan (Monthly)</span><span>$99.00</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:0.875rem;"><span style="color:var(--text-secondary);">Tax (0%)</span><span>$0.00</span></div>
+              <div style="height:1px;background:var(--border-subtle);"></div>
+              <div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;"><span>Total due Jul 1, 2026</span><span class="gradient-text">$99.00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice history -->
+        <div class="dash-panel" data-aos="fade-up">
+          <div class="dash-panel-header"><span class="dash-panel-title">Invoice History</span></div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Invoice</th><th>Date</th><th>Plan</th><th>Amount</th><th>Status</th><th>PDF</th></tr></thead>
+              <tbody>
+                <tr><td style="color:var(--accent-cyan);">#INV-2026-06</td><td>Jun 1, 2026</td><td>Professional</td><td>$99.00</td><td><span class="status-dot active">Paid</span></td><td><button class="btn btn-ghost btn-sm" style="padding:4px 10px;font-size:0.75rem;" onclick="showToast('Downloading invoice...')">⬇ PDF</button></td></tr>
+                <tr><td style="color:var(--accent-cyan);">#INV-2026-05</td><td>May 1, 2026</td><td>Professional</td><td>$99.00</td><td><span class="status-dot active">Paid</span></td><td><button class="btn btn-ghost btn-sm" style="padding:4px 10px;font-size:0.75rem;" onclick="showToast('Downloading invoice...')">⬇ PDF</button></td></tr>
+                <tr><td style="color:var(--accent-cyan);">#INV-2026-04</td><td>Apr 1, 2026</td><td>Starter</td><td>$29.00</td><td><span class="status-dot active">Paid</span></td><td><button class="btn btn-ghost btn-sm" style="padding:4px 10px;font-size:0.75rem;" onclick="showToast('Downloading invoice...')">⬇ PDF</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div class="dash-section" id="section-settings">
+        <div style="margin-bottom:28px;" data-aos="fade-up">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Settings</h2>
+          <p>Control your account, notifications, and security preferences.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" data-aos="fade-up">
+          <div class="dash-panel">
+            <div class="dash-panel-header" style="margin-bottom:8px;"><span class="dash-panel-title">Notifications</span></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Usage alerts</div><div style="font-size:0.78rem;color:var(--text-muted);">Alert at 80% and 95% token usage</div></div><div class="toggle-switch-sm on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Email invoices</div><div style="font-size:0.78rem;color:var(--text-muted);">Monthly invoice PDF to your email</div></div><div class="toggle-switch-sm on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Product updates</div><div style="font-size:0.78rem;color:var(--text-muted);">New features, releases, changelog</div></div><div class="toggle-switch-sm on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Security alerts</div><div style="font-size:0.78rem;color:var(--text-muted);">New logins, key revocations</div></div><div class="toggle-switch-sm on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Marketing emails</div><div style="font-size:0.78rem;color:var(--text-muted);">Tips, tutorials, case studies</div></div><div class="toggle-switch-sm" onclick="this.classList.toggle('on')"></div></div>
+          </div>
+
+          <div class="dash-panel">
+            <div class="dash-panel-header" style="margin-bottom:8px;"><span class="dash-panel-title">Security</span></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Two-Factor Authentication</div><div style="font-size:0.78rem;color:var(--text-muted);">TOTP via authenticator app</div></div><div class="toggle-switch-sm" onclick="this.classList.toggle('on')"></div></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Remember device</div><div style="font-size:0.78rem;color:var(--text-muted);">Skip 2FA on trusted devices</div></div><div class="toggle-switch-sm on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">API key rotation alerts</div><div style="font-size:0.78rem;color:var(--text-muted);">Notify when keys are 90 days old</div></div><div class="toggle-switch-sm on" onclick="this.classList.toggle('on')"></div></div>
+
+            <div style="padding-top:16px;margin-top:8px;">
+              <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-bottom:10px;" onclick="showToast('All other sessions terminated.')">🔒 Sign Out All Other Sessions</button>
+              <button class="btn btn-sm" style="width:100%;justify-content:center;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:var(--radius-pill);" onclick="confirmDelete()">⚠ Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end dashboard-content -->
+  </div><!-- end dashboard-main -->
+</div><!-- end dashboard -->
+
+<script src="main.js"></script>
+<script>
+'use strict';
+
+/* ── AUTH CHECK ── */
+
+
+const storedUser = JSON.parse(
+  sessionStorage.getItem('stackly_user') ||
+  localStorage.getItem('stackly_user') ||
+  '{}'
+);
+
+const email = storedUser.email || 'user@example.com';
+
+const displayName = email
+  .split('@')[0]
+  .replace(/[._-]/g, ' ')
+  .replace(/\b\w/g, c => c.toUpperCase());
+
+const user = {
+  name: displayName,
+  email: email,
+  role: storedUser.role || 'user'
+};
+if (user.role !== 'admin') {
+  window.location.href = 'admin-dashboard.html';
+}
+
+function setUserInfo() {
+  const init = (user.name||'A').charAt(0).toUpperCase();
+  const firstName = (user.name||'User').split(' ')[0];
+  ['sidebarAvatar','headerAvatar','bigAvatar'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=init; });
+  ['sidebarName','headerName','welcomeName'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=(id==='sidebarName'?user.name:firstName); });
+  const pn=document.getElementById('profileDisplayName'); if(pn) pn.textContent=user.name||'User';
+  const pe=document.getElementById('profileDisplayEmail'); if(pe) pe.textContent=user.email||'user@example.com';
+  const pf=document.getElementById('pFirstName'); if(pf) pf.value=(user.name||'User').split(' ')[0];
+  const pl=document.getElementById('pLastName'); if(pl) pl.value=(user.name||'').split(' ').slice(1).join(' ');
+  const pem=document.getElementById('pEmail'); if(pem) pem.value=user.email||'user@example.com';
+}
+setUserInfo();
+
+/* ── SECTION NAVIGATION ── */
+function switchSection(name, el) {
+  document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  const sec = document.getElementById('section-' + name);
+  if (sec) sec.classList.add('active');
+  const link = el || document.querySelector(`[data-section="${name}"]`);
+  if (link) link.classList.add('active');
+  const titles = { overview:'Overview', analytics:'Analytics', 'api-keys':'API Keys', notifications:'Notifications', profile:'Profile', subscription:'Subscription', billing:'Billing', settings:'Settings' };
+  const t = document.getElementById('dashTitle'); if(t) t.textContent = titles[name]||name;
+  // Mobile close
+  if(window.innerWidth < 768) { document.getElementById('sidebar')?.classList.remove('open'); document.getElementById('sidebar-overlay')?.classList.remove('open'); }
+}
+
+/* ── HAMBURGER ── */
+const dh = document.getElementById('dashHam');
+const sb = document.getElementById('sidebar');
+const so = document.getElementById('sidebar-overlay');
+if(dh) dh.addEventListener('click', () => { sb?.classList.toggle('open'); so?.classList.toggle('open'); });
+if(so) so.addEventListener('click', () => { sb?.classList.remove('open'); so?.classList.remove('open'); });
+
+/* ── NOTIFICATION PANEL ── */
+function toggleNotifPanel() {
+  document.getElementById('notifPanel')?.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const btn = document.getElementById('notifBtn');
+  const panel = document.getElementById('notifPanel');
+  if (panel && !panel.contains(e.target) && !btn?.contains(e.target)) panel.classList.remove('open');
+});
+function markAllRead() {
+  document.querySelectorAll('.notif-dot').forEach(d => d.classList.add('read'));
+  const c = document.getElementById('notifCount'); if(c) c.style.display='none';
+  showToast('All notifications marked as read', 'success');
+}
+
+/* ── CHARTS ── */
+function buildChart(containerId, data, highlight) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const labels = data.map(d=>d.label);
+  const max = Math.max(...data.map(d=>d.val));
+  container.innerHTML = data.map((d,i) => `
+    <div class="chart-col">
+      <div class="chart-col-bar ${i===highlight?'highlight':''}" style="height:${Math.round((d.val/max)*140)}px;" title="${d.label}: ${d.val}K tokens"></div>
+      <div class="chart-col-label">${d.label}</div>
+    </div>
+  `).join('');
+}
+buildChart('usageChart', [
+  {label:'Mon',val:420},{label:'Tue',val:580},{label:'Wed',val:510},{label:'Thu',val:680},{label:'Fri',val:460},{label:'Sat',val:310},{label:'Sun',val:440}
+], 3);
+buildChart('monthlyChart', [
+  {label:'Jan',val:2100},{label:'Feb',val:2600},{label:'Mar',val:2800},{label:'Apr',val:3100},{label:'May',val:3400},{label:'Jun',val:3800}
+], 5);
+
+/* ── PROFILE SAVE ── */
+function saveProfile(e) {
+  e.preventDefault();
+  const first = document.getElementById('pFirstName')?.value || '';
+  const last = document.getElementById('pLastName')?.value || '';
+  const email = document.getElementById('pEmail')?.value || '';
+  const name = `${first} ${last}`.trim();
+  user.name = name; user.email = email;
+  sessionStorage.setItem('stackly_user', JSON.stringify(user));
+  setUserInfo();
+  showToast('✓ Profile updated successfully', 'success');
+}
+
+/* ── PASSWORD CHANGE ── */
+function changePassword(e) {
+  e.preventDefault();
+  const curr = document.getElementById('cpCurrent')?.value;
+  const nw = document.getElementById('cpNew')?.value;
+  const conf = document.getElementById('cpConfirm')?.value;
+  if (!curr) { showToast('Enter your current password'); return; }
+  if (!nw || nw.length < 8) { showToast('New password must be at least 8 characters'); return; }
+  if (nw !== conf) { showToast('Passwords do not match'); return; }
+  showToast('✓ Password updated successfully', 'success');
+  ['cpCurrent','cpNew','cpConfirm'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+/* ── PASSWORD STRENGTH ── */
+function updatePwStrength(v) {
+  const score = [v.length>=8,/[A-Z]/.test(v),/[0-9]/.test(v),/[^A-Za-z0-9]/.test(v)].filter(Boolean).length;
+  const colors = ['','#ef4444','#f59e0b','#06b6d4','#10b981'];
+  document.querySelectorAll('#pw-strength-bars div').forEach((b,i) => b.style.background = i<score ? colors[score] : 'rgba(255,255,255,0.08)');
+}
+
+/* ── API KEYS ── */
+function generateKey() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const rand = Array.from({length:32}, ()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+  const key = 'YOUR_STRIPE_KEY' + rand;
+  const list = document.getElementById('apiKeysList');
+  const row = document.createElement('div');
+  row.className = 'api-key-row';
+  row.style.animation = 'dropIn .3s ease';
+  row.innerHTML = `
+    <div class="api-key-mono">${key}</div>
+    <span style="font-size:.78rem;color:var(--text-muted);white-space:nowrap;">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
+    <span style="font-size:.78rem;color:var(--text-muted);white-space:nowrap;">Just now</span>
+    <div style="display:flex;gap:6px;">
+      <button onclick="copyKey(this,'${key}')" class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:.75rem;">Copy</button>
+      <button onclick="revokeKey(this)" class="btn btn-sm" style="padding:6px 12px;font-size:.75rem;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;border-radius:var(--radius-pill);">Revoke</button>
+    </div>`;
+  list?.prepend(row);
+  showToast('✓ New API key generated', 'success');
+}
+function copyKey(btn, key) {
+  navigator.clipboard?.writeText(key).catch(()=>{});
+  btn.textContent = '✓ Copied';
+  setTimeout(()=>btn.textContent='Copy', 2000);
+}
+function revokeKey(btn) {
+  if (!confirm('Revoke this API key? Any applications using it will stop working immediately.')) return;
+  btn.closest('.api-key-row')?.remove();
+  showToast('Key revoked', 'success');
+}
+
+/* ── DELETE ACCOUNT ── */
+function confirmDelete() {
+  if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    sessionStorage.clear(); localStorage.clear();
+    showToast('Account deletion request submitted. You will receive a confirmation email.');
+    setTimeout(()=>window.location.href='index.html', 2500);
+  }
+}
+
+/* ── LOGOUT ── */
+function doLogout() {
+  sessionStorage.removeItem('stackly_user');
+  localStorage.removeItem('stackly_user');
+}
+
+/* ── TOAST ── */
+function showToast(msg, type='info') {
+  const t = document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:24px;right:24px;z-index:9999;background:${type==='success'?'#065f46':'#1e3a5f'};border:1px solid ${type==='success'?'#10b981':'#2563eb'};color:#fff;padding:14px 20px;border-radius:12px;font-size:.875rem;font-family:var(--font-body);box-shadow:0 8px 30px rgba(0,0,0,.4);transform:translateY(20px);opacity:0;transition:all .3s ease;max-width:320px;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>{ t.style.transform='translateY(0)'; t.style.opacity='1'; });
+  setTimeout(()=>{ t.style.transform='translateY(20px)'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 3000);
+}
+window.showToast = showToast;
+</script>
+</body>
+</html>

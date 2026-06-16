@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Stackly AI</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="loading-screen" id="loading-screen"><div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div><div class="loading-bar-track"><div class="loading-bar-fill"></div></div></div>
+<div id="scroll-progress"></div>
+<button id="back-to-top" style="position:fixed;bottom:24px;right:24px;z-index:500;width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;pointer-events:none;transition:all 0.3s;box-shadow:0 0 20px rgba(37,99,235,0.4);">↑</button>
+
+<nav class="navbar" id="navbar"><div class="container"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a>
+  <ul class="nav-menu"><li><a href="index.html" class="nav-link">Home</a></li><li><a href="about.html" class="nav-link">About</a></li><li><a href="services.html" class="nav-link">Services</a></li><li><a href="solutions.html" class="nav-link">Solutions</a></li><li><a href="blog.html" class="nav-link">Blog</a></li><li><a href="pricing.html" class="nav-link">Pricing</a></li><li><a href="contact.html" class="nav-link active">Contact</a></li></ul>
+  <div class="nav-actions"><a href="login.html" class="btn btn-outline btn-sm">Login</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a><button class="hamburger"><span></span><span></span><span></span></button></div>
+</div></div></nav>
+<div class="mobile-nav" id="mobile-nav"><button class="mobile-nav-close">✕</button><div class="mobile-nav-logo"><a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a></div><a href="index.html" class="nav-link">🏠 Home</a><a href="about.html" class="nav-link">🏢 About</a><a href="services.html" class="nav-link">⚙️ Services</a><a href="solutions.html" class="nav-link">💡 Solutions</a><a href="blog.html" class="nav-link">📝 Blog</a><a href="pricing.html" class="nav-link">💰 Pricing</a><a href="contact.html" class="nav-link">📬 Contact</a><div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid var(--border-subtle);"><a href="login.html" class="btn btn-outline" style="justify-content:center;">Login</a><a href="register.html" class="btn btn-primary" style="justify-content:center;">Get Started Free</a></div></div>
+
+<section class="page-hero">
+  <div class="glow-orb" style="width:600px;height:600px;background:rgba(16,185,129,0.05);top:-150px;left:50%;transform:translateX(-50%);"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Contact</span></div>
+    <span class="section-label" style="justify-content:center;">Let's Talk</span>
+    <h1>We'd Love to <span class="gradient-text">Hear From You</span></h1>
+    <p>Whether you're evaluating Stackly AI, need technical support, or want to partner with us — reach out and we'll respond within one business day.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:60px;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;" class="contact-layout">
+
+      <!-- FORM -->
+      <div data-aos="fade-right">
+        <h3 style="margin-bottom:8px;">Send Us a Message</h3>
+        <p style="margin-bottom:32px;">Fill out the form and our team will get back to you within 24 hours.</p>
+        <form id="contact-form">
+          <div class="grid-2" style="gap:16px;">
+            <div class="form-group"><label class="form-label">First Name *</label><input type="text" class="form-input" placeholder="Aryan" required/></div>
+            <div class="form-group"><label class="form-label">Last Name *</label><input type="text" class="form-input" placeholder="Mehta" required/></div>
+          </div>
+          <div class="form-group"><label class="form-label">Work Email *</label><input type="email" class="form-input" placeholder="aryan@company.com" required/></div>
+          <div class="form-group"><label class="form-label">Company</label><input type="text" class="form-input" placeholder="Acme Corp"/></div>
+          <div class="form-group"><label class="form-label">Topic</label>
+            <select class="form-input" style="cursor:pointer;">
+              <option value="">Select a topic...</option>
+              <option>Sales & Pricing</option>
+              <option>Technical Support</option>
+              <option>Partnership / Integration</option>
+              <option>Press & Media</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Message *</label><textarea class="form-input" rows="5" placeholder="Tell us what you're working on and how we can help..." required></textarea></div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">Send Message →</button>
+        </form>
+      </div>
+
+      <!-- INFO -->
+      <div data-aos="fade-left">
+        <h3 style="margin-bottom:24px;">Office Information</h3>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:40px;">
+          <div class="card" style="padding:20px;display:flex;gap:16px;align-items:flex-start;">
+            <span style="font-size:1.5rem;">🏢</span>
+            <div><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">Headquarters</strong><p style="font-size:0.875rem;">550 Howard Street, Suite 400<br>San Francisco, CA 94105, USA</p></div>
+          </div>
+          <div class="card" style="padding:20px;display:flex;gap:16px;align-items:flex-start;">
+            <span style="font-size:1.5rem;">🌍</span>
+            <div><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">EMEA Office</strong><p style="font-size:0.875rem;">30 St Mary Axe, London<br>EC3A 8BF, United Kingdom</p></div>
+          </div>
+          <div class="card" style="padding:20px;display:flex;gap:16px;align-items:flex-start;">
+            <span style="font-size:1.5rem;">🌏</span>
+            <div><strong style="color:var(--text-primary);display:block;margin-bottom:4px;">APAC Office</strong><p style="font-size:0.875rem;">Marina Bay Financial Centre<br>Singapore 018982</p></div>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom:24px;">Support Channels</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px;">
+          <div class="card" style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div><strong style="color:var(--text-primary);font-size:0.9rem;">Sales</strong><p style="font-size:0.8rem;margin:0;">sales@stacklyai.com</p></div>
+            <span class="badge badge-green">Response &lt; 2h</span>
+          </div>
+          <div class="card" style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div><strong style="color:var(--text-primary);font-size:0.9rem;">Technical Support</strong><p style="font-size:0.8rem;margin:0;">support@stacklyai.com</p></div>
+            <span class="badge badge-blue">24/7</span>
+          </div>
+          <div class="card" style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div><strong style="color:var(--text-primary);font-size:0.9rem;">Press & Media</strong><p style="font-size:0.8rem;margin:0;">press@stacklyai.com</p></div>
+            <span class="badge badge-cyan">Response &lt; 24h</span>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom:20px;">Follow Us</h3>
+        <div style="display:flex;gap:12px;margin-bottom:40px;">
+          <a class="social-btn" href="#" style="font-size:1.2rem;" title="X / Twitter">𝕏</a>
+          <a class="social-btn" href="#" style="font-size:1.2rem;" title="LinkedIn">in</a>
+          <a class="social-btn" href="#" style="font-size:1.2rem;" title="GitHub">⌥</a>
+          <a class="social-btn" href="#" style="font-size:1.2rem;" title="YouTube">▶</a>
+        </div>
+
+        <!-- FAQ Preview -->
+        <div class="card" style="border-color:var(--border-glow);">
+          <h4 style="margin-bottom:16px;">🙋 Quick Answers</h4>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <details style="cursor:pointer;"><summary style="font-size:0.875rem;font-weight:600;color:var(--text-primary);">Do you offer a free trial?</summary><p style="font-size:0.85rem;padding:8px 0 0;padding-left:16px;">Yes — 14 days, full Professional plan access, no credit card needed.</p></details>
+            <details style="cursor:pointer;"><summary style="font-size:0.875rem;font-weight:600;color:var(--text-primary);">What's your typical onboarding time?</summary><p style="font-size:0.85rem;padding:8px 0 0;padding-left:16px;">Most customers are live within 5 business days. Enterprise deployments may take 2–4 weeks.</p></details>
+            <details style="cursor:pointer;"><summary style="font-size:0.875rem;font-weight:600;color:var(--text-primary);">Do you offer custom enterprise pricing?</summary><p style="font-size:0.85rem;padding:8px 0 0;padding-left:16px;">Yes — contact our sales team for volume pricing, custom SLAs, and dedicated infrastructure.</p></details>
+          </div>
+          <a href="faq.html" class="btn btn-outline btn-sm" style="margin-top:16px;">View All FAQs →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    
+  </div>
+</section>
+
+<footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><div class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></div><p>Enterprise AI platform for teams.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">⌥</a><a class="social-btn" href="#">▶</a></div></div><div class="footer-col"><h5>Product</h5><ul class="footer-links"><li><a href="services.html" class="footer-link">Services</a></li><li><a href="solutions.html" class="footer-link">Solutions</a></li><li><a href="pricing.html" class="footer-link">Pricing</a></li></ul></div><div class="footer-col"><h5>Company</h5><ul class="footer-links"><li><a href="about.html" class="footer-link">About</a></li><li><a href="blog.html" class="footer-link">Blog</a></li><li><a href="contact.html" class="footer-link">Contact</a></li></ul></div><div class="footer-col"><h5>Legal</h5><ul class="footer-links"><li><a href="privacy.html" class="footer-link">Privacy</a></li><li><a href="terms.html" class="footer-link">Terms</a></li><li><a href="faq.html" class="footer-link">FAQ</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 Stackly AI, Inc. All rights reserved.</p><div class="footer-bottom-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></div></footer>
+<script src="main.js"></script>
+<style>@media(max-width:768px){.contact-layout{grid-template-columns:1fr!important;}}</style>
+</body>
+</html>

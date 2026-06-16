@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — Stackly AI</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="loading-screen" id="loading-screen"><div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div><div class="loading-bar-track"><div class="loading-bar-fill"></div></div></div>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;">
+  <div class="glow-orb" style="width:600px;height:600px;background:rgba(124,58,237,0.08);top:-200px;right:-100px;"></div>
+  <div class="glow-orb" style="width:500px;height:500px;background:rgba(37,99,235,0.07);bottom:-150px;left:-100px;"></div>
+  <div class="hero-grid" style="position:fixed;inset:0;opacity:0.3;"></div>
+
+  <div style="width:100%;max-width:520px;position:relative;z-index:2;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-muted);margin-bottom:32px;">← Back to Home</a>
+      <a href="index.html" class="nav-logo" style="justify-content:center;margin-bottom:8px;"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a>
+      <p style="color:var(--text-muted);font-size:0.875rem;">Create your free account — no credit card needed</p>
+    </div>
+
+    <!-- Trust badges -->
+    <div style="display:flex;gap:16px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;">
+      <span style="font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><span style="color:var(--accent-green);">✓</span> 14-day free trial</span>
+      <span style="font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><span style="color:var(--accent-green);">✓</span> No credit card</span>
+      <span style="font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:4px;"><span style="color:var(--accent-green);">✓</span> Cancel anytime</span>
+    </div>
+
+    <div class="card" style="padding:40px;">
+      <form id="register-form">
+        <div class="grid-2" style="gap:16px;">
+          <div class="form-group"><label class="form-label">First Name *</label><input type="text" class="form-input" placeholder="Aryan" required/></div>
+          <div class="form-group"><label class="form-label">Last Name *</label><input type="text" class="form-input" placeholder="Mehta" required/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Work Email *</label><input type="email" class="form-input" placeholder="aryan@company.com" required/></div>
+        <div class="form-group"><label class="form-label">Company (optional)</label><input type="text" class="form-input" placeholder="Acme Corp"/></div>
+        <div class="form-group">
+          <label class="form-label">Password *</label>
+          <div style="position:relative;">
+            <input type="password" class="form-input" placeholder="Min 8 characters" id="reg-password" required minlength="8"/>
+            <button type="button" onclick="const i=document.getElementById('reg-password');i.type=i.type==='password'?'text':'password';" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;">👁</button>
+          </div>
+          <div style="display:flex;gap:4px;margin-top:8px;" id="password-strength">
+            <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.08);"></div>
+            <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.08);"></div>
+            <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.08);"></div>
+            <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.08);"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password *</label>
+          <input type="password" class="form-input" placeholder="Repeat password" id="confirm-password" required/>
+        </div>
+        <div style="margin-bottom:24px;">
+          <label class="checkbox-label" style="align-items:flex-start;gap:12px;">
+            <input type="checkbox" required style="margin-top:3px;"/>
+            <span>I agree to the <a href="terms.html" style="color:var(--accent-cyan);">Terms of Service</a> and <a href="privacy.html" style="color:var(--accent-cyan);">Privacy Policy</a>. I understand that my data will be processed as described therein.</span>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:16px;">Create Free Account →</button>
+      </form>
+
+      <div style="display:flex;align-items:center;gap:16px;margin:24px 0;">
+        <div style="flex:1;height:1px;background:var(--border-subtle);"></div>
+        <span style="font-size:0.8rem;color:var(--text-muted);">or</span>
+        <div style="flex:1;height:1px;background:var(--border-subtle);"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+
+  <a href="404.html" class="btn btn-outline btn-sm" style="justify-content:center;text-decoration:none;">
+    Google
+  </a>
+
+  <a href="404.html" class="btn btn-outline btn-sm" style="justify-content:center;text-decoration:none;">
+    LinkedIn
+  </a>
+
+</div>
+      <p style="text-align:center;font-size:0.875rem;color:var(--text-muted);">Already have an account? <a href="login.html" style="color:var(--accent-cyan);font-weight:600;">Sign in</a></p>
+    </div>
+  </div>
+</div>
+<script src="main.js"></script>
+<script>
+  const pwd = document.getElementById('reg-password');
+  const bars = document.querySelectorAll('#password-strength div');
+  if(pwd) pwd.addEventListener('input', () => {
+    const v = pwd.value;
+    const score = [v.length >= 8, /[A-Z]/.test(v), /[0-9]/.test(v), /[^A-Za-z0-9]/.test(v)].filter(Boolean).length;
+    const colors = ['','#ef4444','#f59e0b','#06b6d4','#10b981'];
+    bars.forEach((b,i) => b.style.background = i < score ? colors[score] : 'rgba(255,255,255,0.08)');
+  });
+</script>
+</body>
+</html>

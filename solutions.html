@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Solutions — Stackly AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="loading-screen" id="loading-screen"><div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div><div class="loading-bar-track"><div class="loading-bar-fill"></div></div></div>
+<div id="scroll-progress"></div>
+<button id="back-to-top" style="position:fixed;bottom:24px;right:24px;z-index:500;width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;pointer-events:none;transition:all 0.3s;box-shadow:0 0 20px rgba(37,99,235,0.4);">↑</button>
+
+<nav class="navbar" id="navbar"><div class="container"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a>
+  <ul class="nav-menu"><li><a href="index.html" class="nav-link">Home</a></li><li><a href="about.html" class="nav-link">About</a></li><li><a href="services.html" class="nav-link">Services</a></li><li><a href="solutions.html" class="nav-link active">Solutions</a></li><li><a href="blog.html" class="nav-link">Blog</a></li><li><a href="pricing.html" class="nav-link">Pricing</a></li><li><a href="contact.html" class="nav-link">Contact</a></li></ul>
+  <div class="nav-actions"><a href="login.html" class="btn btn-outline btn-sm">Login</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a><button class="hamburger"><span></span><span></span><span></span></button></div>
+</div></div></nav>
+<div class="mobile-nav" id="mobile-nav"><button class="mobile-nav-close">✕</button><div class="mobile-nav-logo"><a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a></div><a href="index.html" class="nav-link">🏠 Home</a><a href="about.html" class="nav-link">🏢 About</a><a href="services.html" class="nav-link">⚙️ Services</a><a href="solutions.html" class="nav-link">💡 Solutions</a><a href="blog.html" class="nav-link">📝 Blog</a><a href="pricing.html" class="nav-link">💰 Pricing</a><a href="contact.html" class="nav-link">📬 Contact</a><div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid var(--border-subtle);"><a href="login.html" class="btn btn-outline" style="justify-content:center;">Login</a><a href="register.html" class="btn btn-primary" style="justify-content:center;">Get Started Free</a></div></div>
+
+<section class="page-hero">
+  <div class="glow-orb" style="width:500px;height:500px;background:rgba(16,185,129,0.06);top:-100px;left:50%;transform:translateX(-50%);"></div>
+  <div class="hero-grid" style="position:absolute;inset:0;opacity:0.4;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Solutions</span></div>
+    <span class="section-label" style="justify-content:center;">Industry Solutions</span>
+    <h1>AI Tailored to <span class="gradient-text">Your Industry</span></h1>
+    <p>Stackly AI delivers industry-specific solutions that go beyond generic AI — with pre-built models, integrations, and workflows built for your vertical.</p>
+  </div>
+</section>
+
+<!-- SOLUTIONS GRID -->
+<section class="section">
+  <div class="container">
+    <div class="solutions-grid">
+      <!-- Healthcare -->
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="solution-img grad-teal"><span>🏥</span></div>
+        <div class="solution-body">
+          <div class="badge badge-cyan" style="margin-bottom:12px;">Healthcare</div>
+          <h3>Clinical AI & Medical Intelligence</h3>
+          <p>HIPAA-compliant AI for patient triage, clinical note summarization, drug interaction detection, and radiology assistance.</p>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;"><span class="tag">HIPAA</span><span class="tag">HL7 FHIR</span><span class="tag">EHR Integration</span></div>
+        </div>
+      </div>
+      <!-- Finance -->
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="solution-img grad-blue"><span>💳</span></div>
+        <div class="solution-body">
+          <div class="badge badge-blue" style="margin-bottom:12px;">Finance</div>
+          <h3>Fintech & Banking AI Platform</h3>
+          <p>Real-time fraud detection, credit risk modeling, automated compliance reporting, and intelligent wealth management.</p>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;"><span class="tag">SOX</span><span class="tag">PCI-DSS</span><span class="tag">Basel III</span></div>
+        </div>
+      </div>
+      <!-- Education -->
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="solution-img grad-violet"><span>🎓</span></div>
+        <div class="solution-body">
+          <div class="badge badge-violet" style="margin-bottom:12px;">Education</div>
+          <h3>Adaptive Learning & EdTech AI</h3>
+          <p>Personalized learning paths, automated essay grading, intelligent tutoring systems, and student performance analytics.</p>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;"><span class="tag">LMS APIs</span><span class="tag">FERPA</span><span class="tag">SCORM</span></div>
+        </div>
+      </div>
+      <!-- Retail -->
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="solution-img grad-orange"><span>🛒</span></div>
+        <div class="solution-body">
+          <div class="badge badge-gold" style="margin-bottom:12px;">Retail</div>
+          <h3>Retail & E-Commerce Intelligence</h3>
+          <p>Product recommendation engines, demand forecasting, dynamic pricing, visual search, and AI-powered customer service.</p>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;"><span class="tag">Shopify</span><span class="tag">Magento</span><span class="tag">WooCommerce</span></div>
+        </div>
+      </div>
+      <!-- Manufacturing -->
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="solution-img grad-green"><span>🏭</span></div>
+        <div class="solution-body">
+          <div class="badge badge-green" style="margin-bottom:12px;">Manufacturing</div>
+          <h3>Industrial AI & Predictive Maintenance</h3>
+          <p>Computer vision quality control, predictive equipment failure, supply chain optimization, and digital twin analytics.</p>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;"><span class="tag">OPC-UA</span><span class="tag">MQTT</span><span class="tag">IIoT</span></div>
+        </div>
+      </div>
+      <!-- Marketing -->
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="solution-img grad-pink"><span>📣</span></div>
+        <div class="solution-body">
+          <div class="badge badge-violet" style="margin-bottom:12px;">Marketing</div>
+          <h3>Marketing AI & Growth Intelligence</h3>
+          <p>Hyper-personalized campaigns, predictive CLV modeling, AI copywriting at scale, and attribution analytics.</p>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;"><span class="tag">HubSpot</span><span class="tag">Salesforce</span><span class="tag">Google Ads</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section class="section" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">Case Studies</span>
+      <h2 class="section-title">Real Results, <span class="gradient-text">Real Companies</span></h2>
+    </div>
+    <div class="grid-3" style="margin-top:60px;gap:24px;">
+      <div class="card" data-aos="fade-up" data-aos-delay="0">
+        <div class="badge badge-cyan" style="margin-bottom:16px;">Healthcare</div>
+        <h3 style="margin-bottom:10px;">MedCore Health System</h3>
+        <p style="font-size:0.875rem;margin-bottom:20px;">Deployed Stackly AI for clinical note summarization across 12 hospitals. Physicians now spend 40% less time on documentation.</p>
+        <div style="display:flex;gap:24px;padding-top:16px;border-top:1px solid var(--border-subtle);">
+          <div><div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);" class="gradient-text">40%</div><div style="font-size:0.75rem;color:var(--text-muted);">Time saved</div></div>
+          <div><div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:var(--accent-green);">$2.4M</div><div style="font-size:0.75rem;color:var(--text-muted);">Annual savings</div></div>
+        </div>
+      </div>
+      <div class="card" data-aos="fade-up" data-aos-delay="100">
+        <div class="badge badge-blue" style="margin-bottom:16px;">Finance</div>
+        <h3 style="margin-bottom:10px;">NovaBanca Digital</h3>
+        <p style="font-size:0.875rem;margin-bottom:20px;">Implemented Stackly fraud detection across 8M daily transactions. False positive rate dropped from 12% to 0.3%.</p>
+        <div style="display:flex;gap:24px;padding-top:16px;border-top:1px solid var(--border-subtle);">
+          <div><div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);" class="gradient-text">96%</div><div style="font-size:0.75rem;color:var(--text-muted);">Fraud caught</div></div>
+          <div><div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:var(--accent-green);">$8M</div><div style="font-size:0.75rem;color:var(--text-muted);">Fraud prevented</div></div>
+        </div>
+      </div>
+      <div class="card" data-aos="fade-up" data-aos-delay="200">
+        <div class="badge badge-gold" style="margin-bottom:16px;">Retail</div>
+        <h3 style="margin-bottom:10px;">ShopStream Commerce</h3>
+        <p style="font-size:0.875rem;margin-bottom:20px;">AI-powered recommendations and dynamic pricing increased average order value by 34% and reduced cart abandonment by 28%.</p>
+        <div style="display:flex;gap:24px;padding-top:16px;border-top:1px solid var(--border-subtle);">
+          <div><div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);" class="gradient-text">34%</div><div style="font-size:0.75rem;color:var(--text-muted);">AOV increase</div></div>
+          <div><div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:var(--accent-green);">$1.2M</div><div style="font-size:0.75rem;color:var(--text-muted);">Added revenue</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES STATS -->
+<section class="section">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">By the Numbers</span>
+      <h2 class="section-title">Proven <span class="gradient-text">Across Industries</span></h2>
+    </div>
+    <div class="stats-grid" style="margin-top:60px;">
+      <div class="stat-item"><div class="stat-number" data-count="500" data-suffix="+">0</div><div class="stat-label">Enterprise Deployments</div></div>
+      <div class="stat-item"><div class="stat-number" data-count="6" data-suffix=" Industries">0</div><div class="stat-label">Verticals Covered</div></div>
+      <div class="stat-item"><div class="stat-number" data-count="87" data-suffix="%">0</div><div class="stat-label">Avg. Cost Reduction</div></div>
+      <div class="stat-item"><div class="stat-number" data-count="10" data-suffix="x">0</div><div class="stat-label">ROI Delivered</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter"><div class="glow-orb" style="width:500px;height:500px;background:rgba(124,58,237,0.08);top:-100px;left:50%;transform:translateX(-50%);"></div><div class="container"><div class="newsletter-inner" data-aos="fade-up"><span class="section-label" style="justify-content:center;">Find Your Solution</span><h2 style="margin-bottom:12px;">Not Sure Which <span class="gradient-text">Solution Fits?</span></h2><p style="color:var(--text-secondary);margin-bottom:32px;">Book a 30-minute discovery call and we'll map your use case to the right Stackly AI configuration.</p><div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="contact.html" class="btn btn-primary btn-lg">📅 Book Discovery Call</a><a href="register.html" class="btn btn-outline btn-lg">Start Free Trial</a></div></div></div></section>
+
+<footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><div class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></div><p>Enterprise AI platform for teams.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">⌥</a><a class="social-btn" href="#">▶</a></div></div><div class="footer-col"><h5>Product</h5><ul class="footer-links"><li><a href="services.html" class="footer-link">AI Services</a></li><li><a href="solutions.html" class="footer-link">Solutions</a></li><li><a href="pricing.html" class="footer-link">Pricing</a></li></ul></div><div class="footer-col"><h5>Company</h5><ul class="footer-links"><li><a href="about.html" class="footer-link">About</a></li><li><a href="blog.html" class="footer-link">Blog</a></li><li><a href="contact.html" class="footer-link">Contact</a></li></ul></div><div class="footer-col"><h5>Legal</h5><ul class="footer-links"><li><a href="privacy.html" class="footer-link">Privacy</a></li><li><a href="terms.html" class="footer-link">Terms</a></li><li><a href="faq.html" class="footer-link">FAQ</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 Stackly AI, Inc. All rights reserved.</p><div class="footer-bottom-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></div></footer>
+<script src="main.js"></script>
+</body>
+</html>

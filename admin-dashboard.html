@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Stackly AI Admin Dashboard — Platform Management"/>
+  <title>Admin Dashboard — Stackly AI</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Notification panel ── */
+    .notif-panel{
+  position:absolute;
+  top:52px;
+  right:0;
+  width:380px;
+  min-width:380px;
+  max-width:380px;
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-lg);
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  z-index:9999;
+  display:none;
+}
+    .notif-panel.open{display:block;animation:dropIn .2s ease;}
+    @keyframes dropIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+    .notif-header{padding:16px 20px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;}
+   .notif-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:14px 20px;
+  border-bottom:1px solid var(--border-subtle);
+  cursor:pointer;
+  transition:var(--transition);
+  width:100%;
+}
+
+.notif-item:hover{
+  background:rgba(255,255,255,0.03);
+}
+
+.notif-item:last-child{
+  border-bottom:none;
+}
+
+.notif-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--accent-blue);
+  margin-top:6px;
+  flex-shrink:0;
+}
+
+.notif-dot.read{
+  background:var(--text-muted);
+}
+
+.notif-text{
+  font-size:0.82rem;
+  color:var(--text-secondary);
+  line-height:1.5;
+  white-space:normal;
+  word-break:normal;
+  overflow-wrap:break-word;
+}
+
+.notif-time{
+  font-size:0.72rem;
+  color:var(--text-muted);
+  font-family:var(--font-mono);
+  margin-top:3px;
+}
+
+    /* ── Section tabs ── */
+    .dash-section{display:none;}
+    .dash-section.active{display:block;}
+
+    /* ── Usage bar ── */
+    .usage-bar-track{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:6px;}
+    .usage-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+
+    /* ── Chart canvas ── */
+    .chart-area{height:160px;display:flex;align-items:flex-end;gap:6px;padding:0 4px;}
+    .chart-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+    .chart-col-bar{width:100%;border-radius:4px 4px 0 0;background:rgba(37,99,235,0.25);transition:background .3s;cursor:pointer;}
+    .chart-col-bar:hover{background:rgba(37,99,235,0.6);}
+    .chart-col-bar.highlight{background:var(--gradient-primary);}
+    .chart-col-label{font-size:0.68rem;color:var(--text-muted);font-family:var(--font-mono);}
+
+    /* ── Profile avatar large ── */
+    .avatar-lg{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;box-shadow:0 0 30px rgba(124,58,237,0.4);}
+
+    /* ── Settings toggle ── */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border-subtle);}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-switch-sm{width:44px;height:24px;background:rgba(255,255,255,0.1);border-radius:12px;position:relative;cursor:pointer;transition:.3s;flex-shrink:0;}
+    .toggle-switch-sm.on{background:var(--accent-blue);}
+    .toggle-switch-sm::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.3s;}
+    .toggle-switch-sm.on::after{left:23px;}
+
+    /* ── Password strength ── */
+    #pw-strength-bars{display:flex;gap:4px;margin-top:8px;}
+    #pw-strength-bars div{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.08);transition:background .3s;}
+
+    /* ── User Table ── */
+    .user-table-wrap{overflow-x:auto;}
+    .user-table{width:100%;border-collapse:collapse;min-width:700px;}
+    .user-table th{padding:12px 16px;text-align:left;font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border-subtle);font-family:var(--font-mono);}
+    .user-table td{padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.875rem;vertical-align:middle;}
+    .user-table tr:last-child td{border-bottom:none;}
+    .user-table tr:hover td{background:rgba(255,255,255,0.02);}
+
+    /* ── Admin sidebar accent (violet) ── */
+    .sidebar-link.active{background:linear-gradient(90deg,rgba(124,58,237,0.15),rgba(37,99,235,0.08));border-left:3px solid #7c3aed;padding-left:calc(var(--sidebar-link-px, 16px) - 3px);}
+    .sidebar-link:hover:not(.active){background:rgba(255,255,255,0.04);}
+
+    /* ── Revenue card accent ── */
+    .rev-card{background:linear-gradient(135deg,#0d1a3a 0%,#1a0f3a 100%);border:1px solid var(--border-glow);border-radius:var(--radius-xl);padding:28px;position:relative;overflow:hidden;}
+    .rev-card::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(124,58,237,0.2) 0%,transparent 70%);}
+
+    /* ── Responsive ── */
+    @media(max-width:1024px){.stat-cards{grid-template-columns:repeat(2,1fr)!important;}}
+    @media(max-width:768px){
+      .dash-hamburger{display:flex!important;}
+      .stat-cards{grid-template-columns:1fr 1fr!important;}
+      .dash-row,.dash-row-3{grid-template-columns:1fr!important;}
+      .dashboard-content{padding:20px!important;}
+      .admin-filters{flex-direction:column!important;gap:10px!important;}
+      .admin-filters input,.admin-filters select{width:100%!important;}
+    }
+    @media(max-width:480px){.stat-cards{grid-template-columns:1fr!important;}}
+
+    /* ── Sidebar admin badge ── */
+    .admin-badge{display:inline-block;font-size:0.62rem;font-weight:700;background:linear-gradient(90deg,#7c3aed,#2563eb);color:#fff;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle;margin-left:6px;}
+
+    /* ── Search filter bar ── */
+    .admin-filters{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+    .admin-filters input,.admin-filters select{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:9px 14px;color:var(--text-primary);font-size:0.82rem;font-family:var(--font-body);outline:none;transition:var(--transition);}
+    .admin-filters input:focus,.admin-filters select:focus{border-color:rgba(124,58,237,0.5);box-shadow:0 0 0 3px rgba(124,58,237,0.1);}
+    .admin-filters input::placeholder{color:var(--text-muted);}
+    .admin-filters select option{background:var(--bg-secondary);}
+
+    /* ── Action buttons in table ── */
+    .tbl-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:var(--radius-sm);font-size:0.72rem;font-weight:600;border:1px solid;cursor:pointer;transition:var(--transition);font-family:var(--font-body);}
+    .tbl-btn-view{background:rgba(37,99,235,0.1);border-color:rgba(37,99,235,0.3);color:var(--accent-blue);}
+    .tbl-btn-view:hover{background:rgba(37,99,235,0.2);}
+    .tbl-btn-edit{background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.3);color:var(--accent-cyan);}
+    .tbl-btn-edit:hover{background:rgba(6,182,212,0.2);}
+    .tbl-btn-del{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);color:#f87171;}
+    .tbl-btn-del:hover{background:rgba(239,68,68,0.2);}
+
+    /* ── Notification card ── */
+    .notif-card{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--border-subtle);transition:var(--transition);cursor:pointer;}
+    .notif-card:last-child{border-bottom:none;}
+    .notif-card:hover{background:rgba(255,255,255,0.02);}
+    .notif-card.unread{background:rgba(37,99,235,0.04);}
+    .notif-card-icon{width:40px;height:40px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+    .notif-card-title{font-size:0.875rem;font-weight:600;color:var(--text-primary);margin-bottom:3px;}
+    .notif-card-desc{font-size:0.8rem;color:var(--text-secondary);line-height:1.5;}
+    .notif-card-time{font-size:0.72rem;color:var(--text-muted);font-family:var(--font-mono);white-space:nowrap;margin-top:4px;}
+
+    /* ── Activity log ── */
+    .act-log-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+    .act-log-item:last-child{border-bottom:none;}
+    .act-log-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+    .act-log-meta{font-size:0.78rem;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);}
+  
+    @media(max-width:768px){
+
+  .user-table{
+    min-width:900px !important;
+  }
+
+  .user-table-wrap{
+    overflow-x:auto !important;
+  }
+
+  .admin-filters{
+    flex-direction:column !important;
+  }
+
+  .admin-filters input,
+  .admin-filters select{
+    width:100% !important;
+  }
+
+  .notif-panel{
+    width:95vw !important;
+    min-width:auto !important;
+    right:10px !important;
+  }
+}
+  
+  
+  
+  
+  
+  
+  
+  </style>
+</head>
+<body>
+
+<!-- ── LOADING ── -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div>
+  <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+</div>
+
+<div class="dashboard">
+
+  <!-- ════════════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <a href="index.html" style="display:flex;align-items:center;gap:0;text-decoration:none;">
+        <div class="logo-icon">⚡</div>
+        <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
+      </a>
+    </div>
+
+    <!-- Nav -->
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Administration</div>
+
+      <a class="sidebar-link active" data-section="overview" onclick="switchSection('overview',this)">
+        <span class="sidebar-link-icon">📊</span> Overview
+      </a>
+      <a class="sidebar-link" data-section="users" onclick="switchSection('users',this)">
+        <span class="sidebar-link-icon">👥</span> Users
+        <span class="sidebar-badge" id="usersBadge">2,340</span>
+      </a>
+      <a class="sidebar-link" data-section="revenue" onclick="switchSection('revenue',this)">
+        <span class="sidebar-link-icon">💰</span> Revenue
+      </a>
+      <a class="sidebar-link" data-section="analytics" onclick="switchSection('analytics',this)">
+        <span class="sidebar-link-icon">📈</span> Analytics
+      </a>
+      <a class="sidebar-link" data-section="notifications" onclick="switchSection('notifications',this)">
+        <span class="sidebar-link-icon">🔔</span> Notifications
+        <span class="sidebar-badge" id="notifSidebarBadge">8</span>
+      </a>
+
+      <div class="sidebar-section-label">Account</div>
+      <a class="sidebar-link" data-section="profile" onclick="switchSection('profile',this)">
+        <span class="sidebar-link-icon">👤</span> Profile
+      </a>
+      <a class="sidebar-link" data-section="settings" onclick="switchSection('settings',this)">
+        <span class="sidebar-link-icon">⚙️</span> Settings
+      </a>
+    </nav>
+
+    <!-- Sidebar user info -->
+    <div class="sidebar-user" id="sidebarUser">
+      <div class="user-avatar-sm" id="sidebarAvatar" style="background:linear-gradient(135deg,#7c3aed,#2563eb);">A</div>
+      <div style="min-width:0;">
+        <div class="user-name" id="sidebarName">Admin</div>
+        <div class="user-role" style="display:flex;align-items:center;gap:4px;">
+          <span style="color:#7c3aed;font-size:0.65rem;">⬡</span> Super Admin
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ════════════════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════════════ -->
+  <div class="dashboard-main">
+
+    <!-- ─── TOP HEADER ─── -->
+    <header class="dashboard-header">
+      <div class="dashboard-header-left">
+        <button class="dash-hamburger" id="dashHam" style="display:none;">☰</button>
+        <h1 class="dashboard-title" id="dashTitle">Overview</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+
+        <!-- Search -->
+        <div style="position:relative;display:flex;align-items:center;">
+          <input type="text" class="form-input" placeholder="Search users, logs..." style="padding:9px 16px 9px 38px;font-size:0.82rem;border-radius:var(--radius-pill);width:220px;"/>
+          <span style="position:absolute;left:14px;color:var(--text-muted);font-size:0.85rem;">🔍</span>
+        </div>
+
+        <!-- Notifications bell -->
+        <div style="position:relative;">
+          <button class="notif-btn" id="notifBtn" onclick="toggleNotifPanel()" style="position:relative;width:40px;height:40px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:var(--transition);">
+            🔔
+            <span id="notifCount" style="position:absolute;top:-4px;right:-4px;width:18px;height:18px;background:#7c3aed;border-radius:50%;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-secondary);">8</span>
+          </button>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-header">
+              <span style="font-size:0.9rem;font-weight:700;">Admin Notifications</span>
+              <button onclick="markAllRead()" style="font-size:0.75rem;color:var(--accent-cyan);cursor:pointer;background:none;border:none;">Mark all read</button>
+            </div>
+            <div class="notif-item"><div class="notif-dot"></div><div><div class="notif-text">New user <strong>Priya Nair</strong> registered — Professional plan</div><div class="notif-time">2 min ago</div></div></div>
+            <div class="notif-item"><div class="notif-dot"></div><div><div class="notif-text">Revenue milestone: <strong>$50,000</strong> MRR reached 🎉</div><div class="notif-time">1 hour ago</div></div></div>
+            <div class="notif-item"><div class="notif-dot"></div><div><div class="notif-text"><strong>12 users</strong> upgraded from Starter → Professional today</div><div class="notif-time">3 hours ago</div></div></div>
+            <div class="notif-item"><div class="notif-dot"></div><div><div class="notif-text">API error rate spike: <strong>0.8%</strong> on /v1/chat endpoint</div><div class="notif-time">5 hours ago</div></div></div>
+            <div class="notif-item"><div class="notif-dot read"></div><div><div class="notif-text">Monthly platform report generated for May 2026</div><div class="notif-time">Yesterday</div></div></div>
+            <div class="notif-item"><div class="notif-dot read"></div><div><div class="notif-text">Security audit completed — 0 critical findings</div><div class="notif-time">2 days ago</div></div></div>
+            <div style="padding:12px 20px;border-top:1px solid var(--border-subtle);text-align:center;">
+              <button onclick="switchSection('notifications',document.querySelector('[data-section=notifications]'));toggleNotifPanel();" style="font-size:0.8rem;color:var(--accent-cyan);cursor:pointer;background:none;border:none;">View all notifications →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin avatar -->
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('profile',null)">
+          <div class="user-avatar-sm" id="headerAvatar" style="background:linear-gradient(135deg,#7c3aed,#2563eb);">A</div>
+          <span style="font-size:0.875rem;font-weight:600;" id="headerName">Admin</span>
+        </div>
+
+        <!-- Logout -->
+        <a href="login.html" class="btn btn-outline btn-sm" onclick="doLogout()" style="font-size:0.8rem;">↩ Logout</a>
+      </div>
+    </header>
+
+    <!-- ════════════════════════════════════════
+         DASHBOARD CONTENT
+    ════════════════════════════════════════ -->
+    <div class="dashboard-content">
+
+      <!-- ═══════════════════════════════
+           SECTION: OVERVIEW
+      ═══════════════════════════════ -->
+      <div class="dash-section active" id="section-overview">
+
+        <!-- Welcome Banner -->
+        <div class="dash-welcome" data-aos="fade-up">
+          <div class="glow-orb" style="width:300px;height:300px;background:rgba(124,58,237,0.1);top:-100px;right:-50px;"></div>
+          <div style="position:relative;z-index:1;">
+            <h2>Welcome back, <span class="gradient-text" id="welcomeName">Admin</span> 🛡️</h2>
+            <p>Platform is running normally. <strong style="color:var(--accent-green);">99.97% uptime</strong> this month. <strong style="color:var(--text-primary);">2,340</strong> total registered users.</p>
+            <div class="dash-welcome-actions">
+              <button class="btn btn-primary btn-sm" onclick="switchSection('users',document.querySelector('[data-section=users]'))">👥 Manage Users</button>
+              <button class="btn btn-outline btn-sm" onclick="switchSection('analytics',document.querySelector('[data-section=analytics]'))">📈 View Analytics</button>
+              <button class="btn btn-outline btn-sm" onclick="switchSection('revenue',document.querySelector('[data-section=revenue]'))">💰 Revenue Report</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stat-cards" data-aos="fade-up" data-aos-delay="50">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Total Users</span>
+              <span class="stat-card-icon">👥</span>
+            </div>
+            <div class="stat-card-value gradient-text" id="sc-total-users">2,340</div>
+            <div class="stat-card-change up">↑ 186 new this month</div>
+            <div class="usage-bar-track" style="margin-top:10px;"><div class="usage-bar-fill" style="width:74%;background:var(--gradient-primary);"></div></div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">Target: 3,200 by EOY</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Active Users (30d)</span>
+              <span class="stat-card-icon">🟢</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-green);">1,892</div>
+            <div class="stat-card-change up">↑ 81% DAU rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">MRR</span>
+              <span class="stat-card-icon">💰</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-gold);">$52,400</div>
+            <div class="stat-card-change up">↑ 14.3% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">API Requests / Day</span>
+              <span class="stat-card-icon">⚡</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-cyan);">4.2M</div>
+            <div class="stat-card-change up">↑ 22% this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">New Signups (30d)</span>
+              <span class="stat-card-icon">🆕</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-violet);">186</div>
+            <div class="stat-card-change up">↑ 31% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Churn Rate</span>
+              <span class="stat-card-icon">📉</span>
+            </div>
+            <div class="stat-card-value" style="color:var(--accent-green);">1.8%</div>
+            <div class="stat-card-change up">↓ 0.4% improvement</div>
+          </div>
+        </div>
+
+        <!-- Row: Signup Chart + Recent Signups -->
+        <div class="dash-row" data-aos="fade-up" data-aos-delay="100">
+          <div class="dash-panel">
+            <div class="dash-panel-header">
+              <span class="dash-panel-title">User Signups — Last 7 Days</span>
+              <span class="badge badge-violet">This Week</span>
+            </div>
+            <div class="chart-area" id="signupChart"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.75rem;color:var(--text-muted);">
+              <span>Peak: <strong style="color:var(--text-primary);">34</strong> signups/day</span>
+              <span>Avg: <strong style="color:var(--text-primary);">26.6</strong>/day</span>
+            </div>
+          </div>
+
+          <!-- Recent Signups -->
+          <div class="dash-panel">
+            <div class="dash-panel-header">
+              <span class="dash-panel-title">Recent Signups</span>
+              <button onclick="switchSection('users',document.querySelector('[data-section=users]'))" style="font-size:0.78rem;color:var(--accent-cyan);background:none;border:none;cursor:pointer;">View all →</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="user-avatar-sm" style="background:linear-gradient(135deg,#7c3aed,#2563eb);flex-shrink:0;">P</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.875rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Priya Nair</div><div style="font-size:0.75rem;color:var(--text-muted);">priya.nair@techcorp.in</div></div>
+                <span class="badge badge-violet" style="flex-shrink:0;">Pro</span>
+                <span style="font-size:0.72rem;color:var(--text-muted);white-space:nowrap;">2m ago</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="user-avatar-sm" style="background:linear-gradient(135deg,#059669,#10b981);flex-shrink:0;">M</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.875rem;font-weight:600;">Marcus Chen</div><div style="font-size:0.75rem;color:var(--text-muted);">m.chen@novacorp.com</div></div>
+                <span class="badge badge-blue">Starter</span>
+                <span style="font-size:0.72rem;color:var(--text-muted);white-space:nowrap;">18m ago</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="user-avatar-sm" style="background:linear-gradient(135deg,#d97706,#f59e0b);flex-shrink:0;">S</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.875rem;font-weight:600;">Sofia Reyes</div><div style="font-size:0.75rem;color:var(--text-muted);">sofia@uxstudio.co</div></div>
+                <span class="badge badge-violet">Pro</span>
+                <span style="font-size:0.72rem;color:var(--text-muted);white-space:nowrap;">1h ago</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="user-avatar-sm" style="background:linear-gradient(135deg,#dc2626,#f87171);flex-shrink:0;">J</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.875rem;font-weight:600;">James Okafor</div><div style="font-size:0.75rem;color:var(--text-muted);">james.o@datalab.ng</div></div>
+                <span class="badge badge-green">Ent.</span>
+                <span style="font-size:0.72rem;color:var(--text-muted);white-space:nowrap;">2h ago</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="user-avatar-sm" style="background:linear-gradient(135deg,#0891b2,#06b6d4);flex-shrink:0;">A</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:0.875rem;font-weight:600;">Anika Shah</div><div style="font-size:0.75rem;color:var(--text-muted);">anika@medtech.io</div></div>
+                <span class="badge badge-violet">Pro</span>
+                <span style="font-size:0.72rem;color:var(--text-muted);white-space:nowrap;">3h ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan Distribution + Activity Log -->
+        <div class="dash-row" data-aos="fade-up" data-aos-delay="140">
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Plan Distribution</span></div>
+            <div style="display:flex;flex-direction:column;gap:18px;margin-top:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.85rem;"><span>Enterprise</span><span style="color:var(--accent-green);">127 users (5.4%)</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:54%;background:linear-gradient(90deg,#059669,var(--accent-green));"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.85rem;"><span>Professional</span><span style="color:var(--accent-violet);">843 users (36%)</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:72%;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.85rem;"><span>Starter</span><span style="color:var(--accent-blue);">1,370 users (58.5%)</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:58%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-cyan));"></div></div>
+              </div>
+            </div>
+            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;">Revenue Breakdown</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
+                <div style="padding:12px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-md);"><div style="font-size:1rem;font-weight:700;color:var(--accent-green);">$24,100</div><div style="font-size:0.7rem;color:var(--text-muted);">Enterprise</div></div>
+                <div style="padding:12px;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:var(--radius-md);"><div style="font-size:1rem;font-weight:700;color:#a855f7;">$22,400</div><div style="font-size:0.7rem;color:var(--text-muted);">Professional</div></div>
+                <div style="padding:12px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:var(--radius-md);"><div style="font-size:1rem;font-weight:700;color:var(--accent-blue);">$5,900</div><div style="font-size:0.7rem;color:var(--text-muted);">Starter</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Log -->
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Activity Log</span><span class="badge badge-blue">Live</span></div>
+            <div id="activityLog">
+              <div class="act-log-item"><div class="act-log-dot" style="background:#10b981;box-shadow:0 0 6px rgba(16,185,129,0.6);"></div><div><div style="font-size:0.85rem;color:var(--text-primary);">User <strong>priya.nair@techcorp.in</strong> registered</div><div class="act-log-meta">2026-06-16 · 14:58:01</div></div></div>
+              <div class="act-log-item"><div class="act-log-dot" style="background:#7c3aed;box-shadow:0 0 6px rgba(124,58,237,0.6);"></div><div><div style="font-size:0.85rem;color:var(--text-primary);">User <strong>marcus.chen@nova.com</strong> upgraded to Pro</div><div class="act-log-meta">2026-06-16 · 14:40:22</div></div></div>
+              <div class="act-log-item"><div class="act-log-dot" style="background:#f59e0b;"></div><div><div style="font-size:0.85rem;color:var(--text-primary);">Payment received — <strong>$99</strong> from sofia@ux.co</div><div class="act-log-meta">2026-06-16 · 14:02:11</div></div></div>
+              <div class="act-log-item"><div class="act-log-dot" style="background:#2563eb;"></div><div><div style="font-size:0.85rem;color:var(--text-primary);">API threshold alert — <strong>james.o@data.ng</strong> 90% usage</div><div class="act-log-meta">2026-06-16 · 13:44:05</div></div></div>
+              <div class="act-log-item"><div class="act-log-dot" style="background:#10b981;box-shadow:0 0 6px rgba(16,185,129,0.6);"></div><div><div style="font-size:0.85rem;color:var(--text-primary);">Enterprise plan purchased — <strong>$299/mo</strong> by anika@med.io</div><div class="act-log-meta">2026-06-16 · 11:30:58</div></div></div>
+              <div class="act-log-item"><div class="act-log-dot" style="background:#ef4444;"></div><div><div style="font-size:0.85rem;color:var(--text-primary);">Failed login attempt — <strong>unknown@hacker.ru</strong></div><div class="act-log-meta">2026-06-16 · 10:12:33</div></div></div>
+              <div class="act-log-item"><div class="act-log-dot" style="background:#06b6d4;"></div><div><div style="font-size:0.85rem;color:var(--text-primary);">New API key generated — <strong>rahul.k@fintech.in</strong></div><div class="act-log-meta">2026-06-16 · 09:55:14</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           SECTION: USERS
+      ═══════════════════════════════ -->
+      <div class="dash-section" id="section-users">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;" data-aos="fade-up">
+          <div><h2 style="font-size:1.4rem;margin-bottom:4px;">User Management</h2><p>Manage all registered users, plans, and account statuses.</p></div>
+          <button class="btn btn-primary" onclick="showToast('User invite sent!','success');" style="gap:8px;">➕ Invite User</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="admin-filters" data-aos="fade-up">
+          <input type="text" id="userSearch" placeholder="🔍  Search by name or email..." style="flex:1;min-width:180px;" oninput="filterUsers()"/>
+          <select id="planFilter" onchange="filterUsers()">
+            <option value="">All Plans</option>
+            <option value="Starter">Starter</option>
+            <option value="Professional">Professional</option>
+            <option value="Enterprise">Enterprise</option>
+          </select>
+          <select id="statusFilter" onchange="filterUsers()">
+            <option value="">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Suspended">Suspended</option>
+          </select>
+        </div>
+
+        <div class="dash-panel" data-aos="fade-up">
+          <div class="user-table-wrap">
+            <table class="user-table" id="userTable">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Plan</th>
+                  <th>Status</th>
+                  <th>Join Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:12px;">
+            <div style="font-size:0.8rem;color:var(--text-muted);" id="userPaginationInfo">Showing 1–10 of 2,340 users</div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-outline btn-sm" onclick="prevPage()">← Prev</button>
+              <button class="btn btn-primary btn-sm" style="padding:6px 14px;font-size:0.8rem;" id="pageIndicator">1</button>
+              <button class="btn btn-outline btn-sm" onclick="nextPage()">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           SECTION: REVENUE
+      ═══════════════════════════════ -->
+      <div class="dash-section" id="section-revenue">
+        <div data-aos="fade-up" style="margin-bottom:28px;">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Revenue Dashboard</h2>
+          <p>Monthly recurring revenue, subscription breakdown, and financial trends.</p>
+        </div>
+
+        <!-- Revenue Stat Cards -->
+        <div class="stat-cards" data-aos="fade-up">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">MRR</span><span class="stat-card-icon">💰</span></div>
+            <div class="stat-card-value" style="color:var(--accent-gold);">$52,400</div>
+            <div class="stat-card-change up">↑ 14.3% vs May</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">ARR (Projected)</span><span class="stat-card-icon">📅</span></div>
+            <div class="stat-card-value gradient-text">$628,800</div>
+            <div class="stat-card-change up">↑ On track</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Avg. Revenue / User</span><span class="stat-card-icon">👤</span></div>
+            <div class="stat-card-value" style="color:var(--accent-cyan);">$22.40</div>
+            <div class="stat-card-change up">↑ $2.10 vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">New MRR (30d)</span><span class="stat-card-icon">🆕</span></div>
+            <div class="stat-card-value" style="color:var(--accent-green);">$7,340</div>
+            <div class="stat-card-change up">↑ New subscriptions</div>
+          </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="dash-row" data-aos="fade-up" data-aos-delay="80">
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Monthly Revenue — 2026</span><span class="badge badge-gold">YTD</span></div>
+            <div class="chart-area" id="revenueChart"></div>
+            <div style="display:flex;gap:16px;margin-top:16px;font-size:0.78rem;color:var(--text-muted);">
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#f59e0b;display:inline-block;"></span>MRR ($K)</span>
+              <span style="margin-left:auto;">Total YTD: <strong style="color:var(--text-primary);">$276,000</strong></span>
+            </div>
+          </div>
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">Subscription Breakdown</span></div>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px;">
+              <div class="rev-card" style="padding:20px;">
+                <div style="position:relative;z-index:1;">
+                  <div style="font-size:0.75rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Enterprise</div>
+                  <div style="font-size:1.6rem;font-weight:800;color:#fff;">$24,100 <span style="font-size:0.85rem;font-weight:400;color:rgba(255,255,255,0.5);">/ mo</span></div>
+                  <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);margin-top:4px;">127 accounts · avg $190/mo</div>
+                </div>
+              </div>
+              <div style="padding:16px;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:var(--radius-md);">
+                <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Professional</div>
+                <div style="font-size:1.3rem;font-weight:800;color:#a855f7;">$22,400 <span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">/ mo</span></div>
+                <div style="font-size:0.78rem;color:var(--text-muted);margin-top:3px;">843 accounts · $99/mo avg</div>
+              </div>
+              <div style="padding:16px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:var(--radius-md);">
+                <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Starter</div>
+                <div style="font-size:1.3rem;font-weight:800;color:var(--accent-blue);">$5,900 <span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">/ mo</span></div>
+                <div style="font-size:0.78rem;color:var(--text-muted);margin-top:3px;">1,370 accounts · $29/mo avg</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="dash-panel" data-aos="fade-up">
+          <div class="dash-panel-header"><span class="dash-panel-title">Recent Transactions</span><span class="badge badge-green">Last 7 Days</span></div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Date</th><th>User</th><th>Plan</th><th>Amount</th><th>Type</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-16</td><td>priya.nair@techcorp.in</td><td>Professional</td><td style="color:var(--accent-green);font-weight:600;">+$99</td><td>New subscription</td><td><span class="status-dot active">Paid</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-16</td><td>james.okafor@datalab.ng</td><td>Enterprise</td><td style="color:var(--accent-green);font-weight:600;">+$299</td><td>New subscription</td><td><span class="status-dot active">Paid</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-15</td><td>sofia.reyes@uxstudio.co</td><td>Starter → Pro</td><td style="color:var(--accent-green);font-weight:600;">+$70</td><td>Upgrade</td><td><span class="status-dot active">Paid</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-14</td><td>anika.shah@medtech.io</td><td>Enterprise</td><td style="color:var(--accent-green);font-weight:600;">+$299</td><td>Renewal</td><td><span class="status-dot active">Paid</span></td></tr>
+                <tr><td style="font-family:var(--font-mono);font-size:0.78rem;">2026-06-13</td><td>marcus.chen@nova.com</td><td>Starter</td><td style="color:#f87171;font-weight:600;">-$29</td><td>Refund</td><td><span class="status-dot inactive" style="color:#f87171;">Refunded</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           SECTION: ANALYTICS
+      ═══════════════════════════════ -->
+      <div class="dash-section" id="section-analytics">
+        <div data-aos="fade-up" style="margin-bottom:28px;">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Platform Analytics</h2>
+          <p>User growth, API usage trends, and platform performance metrics.</p>
+        </div>
+
+        <div class="stat-cards" data-aos="fade-up">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Total API Calls</span><span class="stat-card-icon">⚡</span></div>
+            <div class="stat-card-value gradient-text">124M</div>
+            <div class="stat-card-change up">↑ 22% this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Avg. Response Time</span><span class="stat-card-icon">⏱</span></div>
+            <div class="stat-card-value" style="color:var(--accent-green);">218ms</div>
+            <div class="stat-card-change up">↓ 32ms faster than last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Error Rate</span><span class="stat-card-icon">🛡️</span></div>
+            <div class="stat-card-value" style="color:var(--accent-green);">0.03%</div>
+            <div class="stat-card-change up">↓ Improved</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Uptime (30d)</span><span class="stat-card-icon">🟢</span></div>
+            <div class="stat-card-value" style="color:var(--accent-green);">99.97%</div>
+            <div class="stat-card-change up">Above SLA target</div>
+          </div>
+        </div>
+
+        <div class="dash-row" data-aos="fade-up" data-aos-delay="80">
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">User Growth — 2026</span><span class="badge badge-blue">Monthly</span></div>
+            <div class="chart-area" id="growthChart"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.75rem;color:var(--text-muted);">
+              <span>Jan baseline: <strong style="color:var(--text-primary);">1,420</strong></span>
+              <span>Jun total: <strong style="color:var(--text-primary);">2,340</strong></span>
+            </div>
+          </div>
+          <div class="dash-panel">
+            <div class="dash-panel-header"><span class="dash-panel-title">API Usage by Endpoint</span></div>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><code style="font-size:0.78rem;">/v1/chat/completions</code><span style="color:var(--accent-blue);">64%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:64%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-cyan));"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><code style="font-size:0.78rem;">/v1/embeddings</code><span style="color:var(--accent-violet);">18%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:18%;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><code style="font-size:0.78rem;">/v1/fine-tunes</code><span style="color:var(--accent-green);">10%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:10%;background:linear-gradient(90deg,#059669,var(--accent-green));"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><code style="font-size:0.78rem;">/v1/images/generate</code><span style="color:var(--accent-gold);">5%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:5%;background:linear-gradient(90deg,#d97706,#f59e0b);"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:0.82rem;"><code style="font-size:0.78rem;">Other</code><span style="color:var(--text-muted);">3%</span></div>
+                <div class="usage-bar-track"><div class="usage-bar-fill" style="width:3%;background:rgba(255,255,255,0.2);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Activity Chart -->
+        <div class="dash-panel" data-aos="fade-up">
+          <div class="dash-panel-header"><span class="dash-panel-title">Daily API Requests — Last 7 Days</span><span class="badge badge-cyan">Millions</span></div>
+          <div class="chart-area" id="apiChart"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.75rem;color:var(--text-muted);">
+            <span>Peak: <strong style="color:var(--text-primary);">5.8M</strong> requests on Thursday</span>
+            <span>Avg: <strong style="color:var(--text-primary);">4.2M</strong> / day</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           SECTION: NOTIFICATIONS
+      ═══════════════════════════════ -->
+      <div class="dash-section" id="section-notifications">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;" data-aos="fade-up">
+          <div><h2 style="font-size:1.4rem;margin-bottom:4px;">Admin Notification Center</h2><p>Platform events, user actions, and system alerts.</p></div>
+          <button class="btn btn-outline btn-sm" onclick="markAllRead();document.querySelectorAll('.notif-card').forEach(c=>c.classList.remove('unread'));">Mark All Read</button>
+        </div>
+
+        <!-- Filter tabs -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;" data-aos="fade-up">
+          <button class="cat-btn active" onclick="filterNotifs('all',this)">All (8)</button>
+          <button class="cat-btn" onclick="filterNotifs('signup',this)">Signups</button>
+          <button class="cat-btn" onclick="filterNotifs('payment',this)">Payments</button>
+          <button class="cat-btn" onclick="filterNotifs('alert',this)">Alerts</button>
+          <button class="cat-btn" onclick="filterNotifs('system',this)">System</button>
+        </div>
+
+        <div class="dash-panel" data-aos="fade-up">
+          <div id="notifList">
+            <div class="notif-card unread" data-type="signup"><div class="notif-card-icon" style="background:rgba(16,185,129,0.15);">👤</div><div style="flex:1;min-width:0;"><div class="notif-card-title">New User Registered</div><div class="notif-card-desc">Priya Nair (priya.nair@techcorp.in) signed up for a Professional plan.</div><div class="notif-card-time">2026-06-16 · 14:58</div></div><button class="tbl-btn tbl-btn-view" onclick="showToast('Viewing user profile')">View</button></div>
+            <div class="notif-card unread" data-type="payment"><div class="notif-card-icon" style="background:rgba(245,158,11,0.15);">💰</div><div style="flex:1;min-width:0;"><div class="notif-card-title">Revenue Milestone Reached</div><div class="notif-card-desc">Monthly recurring revenue crossed <strong>$50,000</strong> for the first time. 🎉</div><div class="notif-card-time">2026-06-16 · 13:00</div></div><button class="tbl-btn tbl-btn-view" onclick="switchSection('revenue',document.querySelector('[data-section=revenue]'))">View</button></div>
+            <div class="notif-card unread" data-type="signup"><div class="notif-card-icon" style="background:rgba(124,58,237,0.15);">⬆️</div><div style="flex:1;min-width:0;"><div class="notif-card-title">12 Plan Upgrades Today</div><div class="notif-card-desc">12 users upgraded from Starter → Professional. New MRR added: $840.</div><div class="notif-card-time">2026-06-16 · 12:30</div></div><button class="tbl-btn tbl-btn-view" onclick="switchSection('revenue',document.querySelector('[data-section=revenue]'))">View</button></div>
+            <div class="notif-card unread" data-type="alert"><div class="notif-card-icon" style="background:rgba(239,68,68,0.15);">⚠️</div><div style="flex:1;min-width:0;"><div class="notif-card-title">API Error Rate Spike</div><div class="notif-card-desc">Error rate on /v1/chat endpoint spiked to 0.8% for 12 minutes. Resolved automatically.</div><div class="notif-card-time">2026-06-16 · 11:00</div></div><button class="tbl-btn tbl-btn-view" onclick="switchSection('analytics',document.querySelector('[data-section=analytics]'))">View</button></div>
+            <div class="notif-card" data-type="payment"><div class="notif-card-icon" style="background:rgba(16,185,129,0.15);">💳</div><div style="flex:1;min-width:0;"><div class="notif-card-title">Enterprise Payment Received</div><div class="notif-card-desc">anika.shah@medtech.io paid $299 — Enterprise plan renewal for July.</div><div class="notif-card-time">2026-06-15 · 16:40</div></div><button class="tbl-btn tbl-btn-view" onclick="showToast('Transaction details loaded')">View</button></div>
+            <div class="notif-card" data-type="alert"><div class="notif-card-icon" style="background:rgba(239,68,68,0.15);">🚫</div><div style="flex:1;min-width:0;"><div class="notif-card-title">Failed Login Attempt Blocked</div><div class="notif-card-desc">5 consecutive failed login attempts from 185.220.101.x were blocked by rate limiter.</div><div class="notif-card-time">2026-06-15 · 10:12</div></div><button class="tbl-btn tbl-btn-del" onclick="showToast('IP banned successfully','success')">Ban IP</button></div>
+            <div class="notif-card" data-type="system"><div class="notif-card-icon" style="background:rgba(37,99,235,0.15);">📊</div><div style="flex:1;min-width:0;"><div class="notif-card-title">Monthly Report Generated</div><div class="notif-card-desc">May 2026 platform analytics report is ready. 2,154 users, $45,900 MRR.</div><div class="notif-card-time">2026-06-01 · 09:00</div></div><button class="tbl-btn tbl-btn-view" onclick="showToast('Report downloaded')">Download</button></div>
+            <div class="notif-card" data-type="system"><div class="notif-card-icon" style="background:rgba(16,185,129,0.15);">✅</div><div style="flex:1;min-width:0;"><div class="notif-card-title">Security Audit Completed</div><div class="notif-card-desc">Quarterly security audit passed with 0 critical findings. SOC 2 compliance maintained.</div><div class="notif-card-time">2026-05-30 · 14:00</div></div><button class="tbl-btn tbl-btn-view" onclick="showToast('Audit report opened')">View</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           SECTION: PROFILE
+      ═══════════════════════════════ -->
+      <div class="dash-section" id="section-profile">
+        <div data-aos="fade-up" style="margin-bottom:28px;">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Admin Profile</h2>
+          <p>Manage your account information and credentials.</p>
+        </div>
+
+        <div class="dash-row" data-aos="fade-up">
+          <!-- Profile card -->
+          <div class="dash-panel" style="flex:1;">
+            <div style="display:flex;align-items:center;gap:20px;padding-bottom:24px;border-bottom:1px solid var(--border-subtle);margin-bottom:24px;">
+              <div class="avatar-lg" id="profileAvatar">A</div>
+              <div>
+                <div style="font-size:1.2rem;font-weight:700;margin-bottom:4px;" id="profileDisplayName">Admin</div>
+                <div style="font-size:0.875rem;color:var(--text-muted);" id="profileDisplayEmail">admin@stacklyai.com</div>
+                <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+                  <span class="badge" style="background:rgba(124,58,237,0.15);color:#a855f7;border:1px solid rgba(124,58,237,0.3);">🛡️ Super Admin</span>
+                  <span class="badge badge-green">✅ Verified</span>
+                </div>
+              </div>
+            </div>
+
+            <form onsubmit="saveProfile(event)">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="profile-grid">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-input" id="pFirstName" placeholder="First name" required/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-input" id="pLastName" placeholder="Last name" required/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" id="pEmail" placeholder="admin@stacklyai.com" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Role</label>
+                <input type="text" class="form-input" value="Super Administrator" disabled style="opacity:0.5;cursor:not-allowed;"/>
+              </div>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+
+          <!-- Change Password -->
+          <div class="dash-panel" style="flex:1;">
+            <div class="dash-panel-header" style="margin-bottom:24px;"><span class="dash-panel-title">Change Password</span></div>
+            <form onsubmit="changePassword(event)">
+              <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-input" id="cpCurrent" placeholder="••••••••" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-input" id="cpNew" placeholder="Min 8 characters" required oninput="updatePwStrength(this.value)"/>
+                <div id="pw-strength-bars"><div></div><div></div><div></div><div></div></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-input" id="cpConfirm" placeholder="Repeat new password" required/>
+              </div>
+              <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+
+            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border-subtle);">
+              <div class="dash-panel-header" style="margin-bottom:16px;"><span class="dash-panel-title">Active Sessions</span></div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-md);">
+                  <div style="font-size:0.82rem;"><div style="font-weight:600;margin-bottom:2px;">Chrome · macOS · San Francisco</div><div style="color:var(--text-muted);">Current session · Just now</div></div>
+                  <span class="badge badge-green">Current</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:var(--radius-md);">
+                  <div style="font-size:0.82rem;"><div style="font-weight:600;margin-bottom:2px;">Safari · iPhone · Mumbai</div><div style="color:var(--text-muted);">3 hours ago</div></div>
+                  <button class="tbl-btn tbl-btn-del" onclick="showToast('Session revoked')">Revoke</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
+              <a href="login.html" class="btn btn-outline btn-sm" onclick="doLogout()" style="gap:8px;color:#f87171;border-color:rgba(239,68,68,0.3);">↩ Logout from All Devices</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════
+           SECTION: SETTINGS
+      ═══════════════════════════════ -->
+      <div class="dash-section" id="section-settings">
+        <div data-aos="fade-up" style="margin-bottom:28px;">
+          <h2 style="font-size:1.4rem;margin-bottom:4px;">Platform Settings</h2>
+          <p>Configure global platform behaviour, notifications, and system options.</p>
+        </div>
+
+        <div class="dash-row" data-aos="fade-up">
+          <!-- General Settings -->
+          <div class="dash-panel" style="flex:1;">
+            <div class="dash-panel-header" style="margin-bottom:24px;"><span class="dash-panel-title">General Configuration</span></div>
+            <div class="form-group">
+              <label class="form-label">Platform / Site Name</label>
+              <input type="text" class="form-input" value="Stackly AI" id="siteName"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Platform Email (From Address)</label>
+              <input type="email" class="form-input" value="noreply@stacklyai.com" id="siteEmail"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Support Email</label>
+              <input type="email" class="form-input" value="support@stacklyai.com"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default User Plan</label>
+              <select class="form-input">
+                <option>Starter (Free Trial)</option>
+                <option>Professional</option>
+                <option>Enterprise</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Free Trial Duration (days)</label>
+              <input type="number" class="form-input" value="14"/>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">Save Configuration</button>
+          </div>
+
+          <!-- Toggles -->
+          <div class="dash-panel" style="flex:1;">
+            <div class="dash-panel-header" style="margin-bottom:20px;"><span class="dash-panel-title">Feature Toggles</span></div>
+            <div class="toggle-row">
+              <div><div style="font-size:0.9rem;font-weight:600;">Maintenance Mode</div><div style="font-size:0.78rem;color:var(--text-muted);">Put the platform in maintenance — blocks all user logins</div></div>
+              <div class="toggle-switch-sm" id="tog-maintenance" onclick="toggleSetting(this,'maintenance')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:0.9rem;font-weight:600;">Email Notifications</div><div style="font-size:0.78rem;color:var(--text-muted);">Send system emails (signup confirmations, receipts)</div></div>
+              <div class="toggle-switch-sm on" id="tog-email" onclick="toggleSetting(this,'email')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:0.9rem;font-weight:600;">New User Registrations</div><div style="font-size:0.78rem;color:var(--text-muted);">Allow new accounts to be created on the platform</div></div>
+              <div class="toggle-switch-sm on" id="tog-signups" onclick="toggleSetting(this,'signups')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:0.9rem;font-weight:600;">AI Usage Analytics</div><div style="font-size:0.78rem;color:var(--text-muted);">Collect anonymized usage telemetry for platform improvement</div></div>
+              <div class="toggle-switch-sm on" id="tog-analytics" onclick="toggleSetting(this,'analytics')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:0.9rem;font-weight:600;">API Rate Limiting</div><div style="font-size:0.78rem;color:var(--text-muted);">Enforce per-user API rate limits (recommended)</div></div>
+              <div class="toggle-switch-sm on" id="tog-ratelimit" onclick="toggleSetting(this,'ratelimit')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:0.9rem;font-weight:600;">Beta Features</div><div style="font-size:0.78rem;color:var(--text-muted);">Enable beta feature flags for all users</div></div>
+              <div class="toggle-switch-sm" id="tog-beta" onclick="toggleSetting(this,'beta')"></div>
+            </div>
+
+            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
+              <div class="dash-panel-header" style="margin-bottom:16px;"><span class="dash-panel-title">Danger Zone</span></div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <button class="btn btn-outline btn-sm" onclick="showToast('Cache cleared successfully','success')" style="justify-content:flex-start;gap:8px;color:var(--text-secondary);">🗑️ Clear Platform Cache</button>
+                <button class="btn btn-outline btn-sm" onclick="showToast('Database backup initiated','success')" style="justify-content:flex-start;gap:8px;color:var(--text-secondary);">💾 Backup Database</button>
+                <button class="btn btn-outline btn-sm" onclick="if(confirm('Force-logout ALL users? This will invalidate all sessions.'))showToast('All sessions invalidated','success')" style="justify-content:flex-start;gap:8px;color:#f87171;border-color:rgba(239,68,68,0.3);">⚠️ Force Logout All Users</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /dashboard-content -->
+  </div><!-- /dashboard-main -->
+</div><!-- /dashboard -->
+
+<!-- ════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script src="main.js"></script>
+<script>
+'use strict';
+
+/* ══════════════════════════════════════
+   USER INFO — Dynamic from localStorage
+══════════════════════════════════════ */
+let user = {};
+try {
+  user = JSON.parse(localStorage.getItem('stackly_user') || '{}');
+} catch(e) { user = {}; }
+
+/* Generate display name from email */
+function displayNameFromEmail(email) {
+  if (!email) return 'Admin';
+  const local = email.split('@')[0];
+  return local
+    .replace(/[_.\-]/g, ' ')
+    .replace(/\d+/g, '')
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .filter(Boolean)
+    .join(' ') || 'Admin';
+}
+
+function getFirstName(displayName) {
+  return displayName.split(' ')[0] || 'Admin';
+}
+
+function getInitial(displayName) {
+  return (displayName.charAt(0) || 'A').toUpperCase();
+}
+
+function setUserInfo() {
+  const displayName = user.name || displayNameFromEmail(user.email);
+  const firstName   = getFirstName(displayName);
+  const initial     = getInitial(displayName);
+
+  /* Sidebar */
+  const sn = document.getElementById('sidebarName');
+  const sa = document.getElementById('sidebarAvatar');
+  if (sn) sn.textContent = displayName;
+  if (sa) sa.textContent = initial;
+
+  /* Header */
+  const hn = document.getElementById('headerName');
+  const ha = document.getElementById('headerAvatar');
+  if (hn) hn.textContent = firstName;
+  if (ha) ha.textContent = initial;
+
+  /* Welcome */
+  const wn = document.getElementById('welcomeName');
+  if (wn) wn.textContent = firstName;
+
+  /* Profile section */
+  const pdn = document.getElementById('profileDisplayName');
+  const pde = document.getElementById('profileDisplayEmail');
+  const pa  = document.getElementById('profileAvatar');
+  if (pdn) pdn.textContent = displayName;
+  if (pde) pde.textContent = user.email || 'admin@stacklyai.com';
+  if (pa)  pa.textContent  = initial;
+
+  /* Profile form */
+  const parts = displayName.split(' ');
+  const pfn = document.getElementById('pFirstName');
+  const pln = document.getElementById('pLastName');
+  const pem = document.getElementById('pEmail');
+  if (pfn) pfn.value = parts[0] || '';
+  if (pln) pln.value = parts.slice(1).join(' ') || '';
+  if (pem) pem.value = user.email || 'admin@stacklyai.com';
+}
+setUserInfo();
+
+/* ══════════════════════════════════════
+   SECTION NAVIGATION (Single-page)
+══════════════════════════════════════ */
+function switchSection(name, el) {
+  document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+
+  const sec = document.getElementById('section-' + name);
+  if (sec) sec.classList.add('active');
+
+  const link = el || document.querySelector(`[data-section="${name}"]`);
+  if (link) link.classList.add('active');
+
+  const titles = {
+    overview:      'Overview',
+    users:         'User Management',
+    revenue:       'Revenue Dashboard',
+    analytics:     'Platform Analytics',
+    notifications: 'Notifications',
+    profile:       'Admin Profile',
+    settings:      'Platform Settings'
+  };
+  const t = document.getElementById('dashTitle');
+  if (t) t.textContent = titles[name] || name;
+
+  /* Mobile: close sidebar */
+  if (window.innerWidth < 768) {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-overlay')?.classList.remove('open');
+  }
+}
+
+/* ══════════════════════════════════════
+   HAMBURGER
+══════════════════════════════════════ */
+const dh = document.getElementById('dashHam');
+const sb = document.getElementById('sidebar');
+const so = document.getElementById('sidebar-overlay');
+if (dh) dh.addEventListener('click', () => { sb?.classList.toggle('open'); so?.classList.toggle('open'); });
+if (so) so.addEventListener('click', () => { sb?.classList.remove('open'); so?.classList.remove('open'); });
+/* Show hamburger on mobile */
+if (window.innerWidth <= 768 && dh) dh.style.display = 'flex';
+window.addEventListener('resize', () => {
+  if (!dh) return;
+  dh.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+});
+
+/* ══════════════════════════════════════
+   NOTIFICATION PANEL
+══════════════════════════════════════ */
+function toggleNotifPanel() {
+  document.getElementById('notifPanel')?.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const btn   = document.getElementById('notifBtn');
+  const panel = document.getElementById('notifPanel');
+  if (panel && !panel.contains(e.target) && !btn?.contains(e.target)) panel.classList.remove('open');
+});
+function markAllRead() {
+  document.querySelectorAll('.notif-dot').forEach(d => d.classList.add('read'));
+  const c = document.getElementById('notifCount');
+  const s = document.getElementById('notifSidebarBadge');
+  if (c) c.style.display = 'none';
+  if (s) s.style.display = 'none';
+  showToast('All notifications marked as read', 'success');
+}
+
+/* ══════════════════════════════════════
+   NOTIFICATION FILTER
+══════════════════════════════════════ */
+function filterNotifs(type, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.notif-card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
+  });
+}
+
+/* ══════════════════════════════════════
+   USER TABLE DATA + RENDER
+══════════════════════════════════════ */
+const ALL_USERS = [
+  { name:'Priya Nair',      email:'priya.nair@techcorp.in',    plan:'Professional', status:'Active',    joined:'Jun 16, 2026', avatar:'P', grad:'135deg,#7c3aed,#2563eb' },
+  { name:'Marcus Chen',     email:'marcus.chen@nova.com',      plan:'Starter',      status:'Active',    joined:'Jun 16, 2026', avatar:'M', grad:'135deg,#059669,#10b981' },
+  { name:'Sofia Reyes',     email:'sofia.reyes@uxstudio.co',   plan:'Professional', status:'Active',    joined:'Jun 16, 2026', avatar:'S', grad:'135deg,#d97706,#f59e0b' },
+  { name:'James Okafor',    email:'james.okafor@datalab.ng',   plan:'Enterprise',   status:'Active',    joined:'Jun 16, 2026', avatar:'J', grad:'135deg,#dc2626,#f87171' },
+  { name:'Anika Shah',      email:'anika.shah@medtech.io',     plan:'Enterprise',   status:'Active',    joined:'Jun 15, 2026', avatar:'A', grad:'135deg,#0891b2,#06b6d4' },
+  { name:'Rahul Kumar',     email:'rahul.k@fintech.in',        plan:'Professional', status:'Active',    joined:'Jun 14, 2026', avatar:'R', grad:'135deg,#7c3aed,#a855f7' },
+  { name:'Lisa Turner',     email:'lisa.t@designco.com',       plan:'Starter',      status:'Active',    joined:'Jun 13, 2026', avatar:'L', grad:'135deg,#be185d,#f472b6' },
+  { name:'Derek Walsh',     email:'derek.w@saasbiz.io',        plan:'Professional', status:'Inactive',  joined:'Jun 10, 2026', avatar:'D', grad:'135deg,#374151,#6b7280' },
+  { name:'Yuki Tanaka',     email:'yuki.t@techlab.jp',         plan:'Enterprise',   status:'Active',    joined:'Jun 8, 2026',  avatar:'Y', grad:'135deg,#0369a1,#38bdf8' },
+  { name:'Nina Petrov',     email:'nina.p@analytics.ru',       plan:'Starter',      status:'Suspended', joined:'Jun 5, 2026',  avatar:'N', grad:'135deg,#374151,#6b7280' },
+  { name:'Omar Hassan',     email:'o.hassan@cloudsys.ae',      plan:'Professional', status:'Active',    joined:'Jun 4, 2026',  avatar:'O', grad:'135deg,#065f46,#10b981' },
+  { name:'Clara Lee',       email:'clara.l@startup.sg',        plan:'Starter',      status:'Active',    joined:'Jun 2, 2026',  avatar:'C', grad:'135deg,#7c3aed,#c4b5fd' },
+  { name:'Vikram Das',      email:'vikram.d@razorpay.com',     plan:'Enterprise',   status:'Active',    joined:'May 28, 2026', avatar:'V', grad:'135deg,#b45309,#fbbf24' },
+  { name:'Emma Johnson',    email:'emma.j@retail.uk',          plan:'Professional', status:'Active',    joined:'May 24, 2026', avatar:'E', grad:'135deg,#be185d,#fb7185' },
+  { name:'Carlos Mendez',   email:'carlos.m@ecom.mx',          plan:'Starter',      status:'Inactive',  joined:'May 20, 2026', avatar:'C', grad:'135deg,#d97706,#fde68a' },
+];
+
+let currentPage = 1;
+const PAGE_SIZE = 10;
+let filteredUsers = [...ALL_USERS];
+
+function planBadge(plan) {
+  if (plan === 'Enterprise') return `<span class="badge badge-green">${plan}</span>`;
+  if (plan === 'Professional') return `<span class="badge badge-violet">${plan}</span>`;
+  return `<span class="badge badge-blue">${plan}</span>`;
+}
+function statusBadge(status) {
+  if (status === 'Active')    return `<span class="status-dot active">${status}</span>`;
+  if (status === 'Suspended') return `<span class="status-dot inactive" style="color:#f87171;">${status}</span>`;
+  return `<span class="status-dot pending">${status}</span>`;
+}
+
+function renderUsers() {
+  const tbody = document.getElementById('userTableBody');
+  const info  = document.getElementById('userPaginationInfo');
+  const pg    = document.getElementById('pageIndicator');
+  if (!tbody) return;
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const slice = filteredUsers.slice(start, start + PAGE_SIZE);
+  const total = filteredUsers.length;
+
+  tbody.innerHTML = slice.map((u, i) => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="user-avatar-sm" style="background:linear-gradient(${u.grad});flex-shrink:0;">${u.avatar}</div>
+          <span style="font-weight:600;">${u.name}</span>
+        </div>
+      </td>
+      <td style="color:var(--text-muted);font-size:0.82rem;">${u.email}</td>
+      <td>${planBadge(u.plan)}</td>
+      <td>${statusBadge(u.status)}</td>
+      <td style="color:var(--text-muted);font-size:0.82rem;font-family:var(--font-mono);">${u.joined}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="tbl-btn tbl-btn-view" onclick="showToast('Viewing ${u.name}')">👁 View</button>
+          <button class="tbl-btn tbl-btn-edit" onclick="showToast('Editing ${u.name}')">✏️ Edit</button>
+          <button class="tbl-btn tbl-btn-del" onclick="deleteUser(this,'${u.email}')">🗑️ Del</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  if (info) info.textContent = `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, total)} of ${total} users`;
+  if (pg) pg.textContent = currentPage;
+}
+
+function filterUsers() {
+  const q      = document.getElementById('userSearch')?.value.toLowerCase() || '';
+  const plan   = document.getElementById('planFilter')?.value || '';
+  const status = document.getElementById('statusFilter')?.value || '';
+  filteredUsers = ALL_USERS.filter(u =>
+    (u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)) &&
+    (!plan   || u.plan === plan) &&
+    (!status || u.status === status)
+  );
+  currentPage = 1;
+  renderUsers();
+}
+
+function nextPage() {
+  const maxPage = Math.ceil(filteredUsers.length / PAGE_SIZE);
+  if (currentPage < maxPage) { currentPage++; renderUsers(); }
+}
+function prevPage() {
+  if (currentPage > 1) { currentPage--; renderUsers(); }
+}
+function deleteUser(btn, email) {
+  if (!confirm(`Delete user ${email}? This cannot be undone.`)) return;
+  btn.closest('tr')?.remove();
+  showToast(`User ${email} deleted`, 'success');
+  filteredUsers = filteredUsers.filter(u => u.email !== email);
+  document.getElementById('userPaginationInfo').textContent =
+    `Showing results — ${filteredUsers.length} users remaining`;
+}
+
+/* Initial render */
+renderUsers();
+
+/* ══════════════════════════════════════
+   CHARTS
+══════════════════════════════════════ */
+function buildChart(id, data, highlightIdx, barColorFn) {
+  const container = document.getElementById(id);
+  if (!container) return;
+  const max = Math.max(...data.map(d => d.val));
+  container.innerHTML = data.map((d, i) => `
+    <div class="chart-col">
+      <div class="chart-col-bar${i === highlightIdx ? ' highlight' : ''}"
+           style="height:${Math.round((d.val / max) * 140)}px;${barColorFn ? barColorFn(i, d) : ''}"
+           title="${d.label}: ${d.display || d.val}">
+      </div>
+      <div class="chart-col-label">${d.label}</div>
+    </div>
+  `).join('');
+}
+
+/* Signup chart */
+buildChart('signupChart', [
+  {label:'Mon',val:18,display:'18 signups'},
+  {label:'Tue',val:24,display:'24 signups'},
+  {label:'Wed',val:29,display:'29 signups'},
+  {label:'Thu',val:34,display:'34 signups'},
+  {label:'Fri',val:22,display:'22 signups'},
+  {label:'Sat',val:31,display:'31 signups'},
+  {label:'Sun',val:28,display:'28 signups'},
+], 3, (i, d) => i === 3 ? 'background:linear-gradient(0deg,#7c3aed,#a855f7);' : '');
+
+/* Revenue chart */
+buildChart('revenueChart', [
+  {label:'Jan',val:38.2,display:'$38.2K'},
+  {label:'Feb',val:41.0,display:'$41.0K'},
+  {label:'Mar',val:44.5,display:'$44.5K'},
+  {label:'Apr',val:46.1,display:'$46.1K'},
+  {label:'May',val:45.9,display:'$45.9K'},
+  {label:'Jun',val:52.4,display:'$52.4K'},
+], 5, (i) => i === 5 ? 'background:linear-gradient(0deg,#b45309,#f59e0b);' :
+                        'background:rgba(245,158,11,0.25);');
+
+/* User growth chart */
+buildChart('growthChart', [
+  {label:'Jan',val:1420,display:'1,420 users'},
+  {label:'Feb',val:1580,display:'1,580 users'},
+  {label:'Mar',val:1740,display:'1,740 users'},
+  {label:'Apr',val:1920,display:'1,920 users'},
+  {label:'May',val:2154,display:'2,154 users'},
+  {label:'Jun',val:2340,display:'2,340 users'},
+], 5, (i) => i === 5 ? 'background:var(--gradient-primary);' : '');
+
+/* API requests chart */
+buildChart('apiChart', [
+  {label:'Mon',val:3.8,display:'3.8M requests'},
+  {label:'Tue',val:4.1,display:'4.1M requests'},
+  {label:'Wed',val:3.9,display:'3.9M requests'},
+  {label:'Thu',val:5.8,display:'5.8M requests'},
+  {label:'Fri',val:4.4,display:'4.4M requests'},
+  {label:'Sat',val:2.9,display:'2.9M requests'},
+  {label:'Sun',val:3.5,display:'3.5M requests'},
+], 3, (i) => i === 3 ? 'background:linear-gradient(0deg,#0891b2,#06b6d4);' :
+                        'background:rgba(6,182,212,0.2);');
+
+/* ══════════════════════════════════════
+   PROFILE SAVE
+══════════════════════════════════════ */
+function saveProfile(e) {
+  e.preventDefault();
+  const first = document.getElementById('pFirstName')?.value.trim() || '';
+  const last  = document.getElementById('pLastName')?.value.trim() || '';
+  const email = document.getElementById('pEmail')?.value.trim() || '';
+  const name  = [first, last].filter(Boolean).join(' ');
+  if (!name) { showToast('Please enter your name'); return; }
+  user.name  = name;
+  user.email = email;
+  user.role  = 'admin';
+  localStorage.setItem('stackly_user', JSON.stringify(user));
+  setUserInfo();
+  showToast('✓ Profile updated successfully', 'success');
+}
+
+/* ══════════════════════════════════════
+   PASSWORD CHANGE
+══════════════════════════════════════ */
+function changePassword(e) {
+  e.preventDefault();
+  const curr = document.getElementById('cpCurrent')?.value;
+  const nw   = document.getElementById('cpNew')?.value;
+  const conf = document.getElementById('cpConfirm')?.value;
+  if (!curr)            { showToast('Enter your current password'); return; }
+  if (!nw || nw.length < 8) { showToast('New password must be at least 8 characters'); return; }
+  if (nw !== conf)      { showToast('Passwords do not match'); return; }
+  showToast('✓ Password updated successfully', 'success');
+  ['cpCurrent','cpNew','cpConfirm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('#pw-strength-bars div').forEach(b => b.style.background = 'rgba(255,255,255,0.08)');
+}
+
+function updatePwStrength(v) {
+  const score = [v.length >= 8, /[A-Z]/.test(v), /[0-9]/.test(v), /[^A-Za-z0-9]/.test(v)].filter(Boolean).length;
+  const colors = ['', '#ef4444', '#f59e0b', '#06b6d4', '#10b981'];
+  document.querySelectorAll('#pw-strength-bars div').forEach((b, i) => {
+    b.style.background = i < score ? colors[score] : 'rgba(255,255,255,0.08)';
+  });
+}
+
+/* ══════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════ */
+function toggleSetting(el, name) {
+  el.classList.toggle('on');
+  const isOn = el.classList.contains('on');
+  showToast(`${name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g,' $1')} ${isOn ? 'enabled' : 'disabled'}`, 'success');
+}
+
+function saveSettings() {
+  showToast('✓ Platform settings saved', 'success');
+}
+
+/* ══════════════════════════════════════
+   LOGOUT
+══════════════════════════════════════ */
+function doLogout() {
+  localStorage.removeItem('stackly_user');
+  localStorage.removeItem('token');
+  window.location.href = 'login.html';
+}
+
+/* ══════════════════════════════════════
+   TOAST (standalone, no main.js conflict)
+══════════════════════════════════════ */
+function showToast(msg, type = 'info') {
+  const existing = document.querySelector('.admin-toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'admin-toast';
+  t.style.cssText = `
+    position:fixed;bottom:24px;right:24px;z-index:9999;
+    background:${type === 'success' ? '#065f46' : '#1e3a5f'};
+    border:1px solid ${type === 'success' ? '#10b981' : '#2563eb'};
+    color:#fff;padding:14px 20px;border-radius:12px;
+    font-size:0.875rem;font-family:var(--font-body);
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+    transform:translateY(20px);opacity:0;
+    transition:all 0.3s ease;max-width:320px;
+    pointer-events:none;
+  `;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => { t.style.transform = 'translateY(0)'; t.style.opacity = '1'; });
+  setTimeout(() => { t.style.transform = 'translateY(20px)'; t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3200);
+}
+window.showToast = showToast;
+
+/* ══════════════════════════════════════
+   AOS (reinit for dynamic content)
+══════════════════════════════════════ */
+window.addEventListener('load', () => {
+  const els = document.querySelectorAll('[data-aos]');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = parseInt(e.target.dataset.aosDelay || 0);
+        setTimeout(() => e.target.classList.add('aos-animate'), delay);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+});
+</script>
+
+<!-- Responsive profile grid fix -->
+<style>
+@media(max-width:640px){
+  .profile-grid{grid-template-columns:1fr!important;}
+  .dash-row{flex-direction:column!important;}
+  .dash-panel{width:100%!important;}
+}
+</style>
+
+</body>
+</html>

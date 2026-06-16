@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Stackly AI - Transforming Ideas into Intelligent Solutions. Enterprise AI platform for automation, insights, and intelligent workflows." />
+  <title>Stackly AI — Transforming Ideas into Intelligent Solutions</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo">
+    <div class="logo-icon">⚡</div>
+    <span>Stackly <span style="color:var(--accent-cyan)">AI</span></span>
+  </div>
+  <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+  <p style="font-size:0.8rem;color:var(--text-muted);font-family:var(--font-mono)">Initializing systems...</p>
+</div>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Back to Top -->
+<button id="back-to-top" style="position:fixed;bottom:24px;right:24px;z-index:500;width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;pointer-events:none;transition:all 0.3s;box-shadow:0 0 20px rgba(37,99,235,0.4);" title="Back to top">↑</button>
+
+<!-- ========= NAVBAR ========= -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">⚡</div>
+        <span class="logo-text">Stackly <span>AI</span></span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="solutions.html" class="nav-link">Solutions</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+        <button class="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-close">✕</button>
+  <div class="mobile-nav-logo">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-text">Stackly <span>AI</span></span>
+    </a>
+  </div>
+  <a href="index.html" class="nav-link">🏠 Home</a>
+  <a href="about.html" class="nav-link">🏢 About</a>
+  <a href="services.html" class="nav-link">⚙️ Services</a>
+  <a href="solutions.html" class="nav-link">💡 Solutions</a>
+  <a href="blog.html" class="nav-link">📝 Blog</a>
+  <a href="pricing.html" class="nav-link">💰 Pricing</a>
+  <a href="contact.html" class="nav-link">📬 Contact</a>
+  <div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid var(--border-subtle);">
+    <a href="login.html" class="btn btn-outline" style="justify-content:center;">Login</a>
+    <a href="register.html" class="btn btn-primary" style="justify-content:center;">Get Started Free</a>
+  </div>
+</div>
+
+<!-- ========= HERO ========= -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="particles" id="particles"></div>
+  <div class="glow-orb" style="width:600px;height:600px;background:rgba(37,99,235,0.08);top:-100px;right:-100px;"></div>
+  <div class="glow-orb" style="width:400px;height:400px;background:rgba(124,58,237,0.06);bottom:-50px;left:-50px;"></div>
+
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge" data-aos="fade-up">
+          <span class="hero-badge-dot"></span>
+          New · GPT-4o Powered Platform
+        </div>
+
+        <h1 data-aos="fade-up" data-aos-delay="100">
+          Build Smarter with<br>
+          <span class="gradient-text"><span class="typing-container"></span><span class="typing-cursor"></span></span>
+        </h1>
+
+        <p class="hero-desc" data-aos="fade-up" data-aos-delay="200">
+          Stackly AI empowers enterprises and startups with state-of-the-art artificial intelligence — from intelligent automation to predictive analytics, all in one unified platform.
+        </p>
+
+        <div class="hero-cta" data-aos="fade-up" data-aos-delay="300">
+          <a href="register.html" class="btn btn-primary btn-lg">
+            🚀 Start Free Trial
+          </a>
+          <a href="#demo" class="btn btn-outline btn-lg">
+            ▶ Watch Demo
+          </a>
+        </div>
+
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
+          <div>
+            <div class="hero-stat-num" data-count="50" data-suffix="K+">0</div>
+            <div class="hero-stat-label">Active Users</div>
+          </div>
+          <div>
+            <div class="hero-stat-num" data-count="99.9" data-suffix="%" >0</div>
+            <div class="hero-stat-label">Uptime SLA</div>
+          </div>
+          <div>
+            <div class="hero-stat-num" data-count="10" data-suffix="x">0</div>
+            <div class="hero-stat-label">Faster Results</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual -->
+      <div class="hero-visual" data-aos="zoom-in" data-aos-delay="200">
+        <div class="ai-brain-card">
+          <div class="hero-chip" style="top:-14px;right:-14px;">
+            <span>🧠</span> Neural Engine v3.2
+          </div>
+          <div class="hero-chip" style="bottom:10px;left:-20px;">
+            <span style="color:var(--accent-green)">●</span> 98.7% Accuracy
+          </div>
+
+          <div class="ai-brain-header">
+            <div class="ai-status-dot"></div>
+            <span class="ai-brain-title">Stackly AI Core Engine</span>
+            <div class="badge badge-green" style="margin-left:auto;">Live</div>
+          </div>
+
+          <div class="ai-nodes">
+            <div class="ai-node">
+              <div class="ai-node-icon">🤖</div>
+              <div class="ai-node-label">Chat AI</div>
+            </div>
+            <div class="ai-node">
+              <div class="ai-node-icon">📊</div>
+              <div class="ai-node-label">Analytics</div>
+            </div>
+            <div class="ai-node">
+              <div class="ai-node-icon">🔮</div>
+              <div class="ai-node-label">Predict</div>
+            </div>
+            <div class="ai-node">
+              <div class="ai-node-icon">👁️</div>
+              <div class="ai-node-label">Vision</div>
+            </div>
+            <div class="ai-node">
+              <div class="ai-node-icon">⚡</div>
+              <div class="ai-node-label">Automate</div>
+            </div>
+            <div class="ai-node">
+              <div class="ai-node-icon">🛡️</div>
+              <div class="ai-node-label">Secure</div>
+            </div>
+          </div>
+
+          <div class="ai-progress-bar">
+            <div class="ai-progress-label"><span>Model Training</span><span>94%</span></div>
+            <div class="ai-progress-track"><div class="ai-progress-fill" style="width:94%"></div></div>
+          </div>
+          <div class="ai-progress-bar">
+            <div class="ai-progress-label"><span>Data Processing</span><span>87%</span></div>
+            <div class="ai-progress-track"><div class="ai-progress-fill" style="width:87%;background:linear-gradient(90deg,#7c3aed,#06b6d4)"></div></div>
+          </div>
+          <div class="ai-progress-bar">
+            <div class="ai-progress-label"><span>Inference Speed</span><span>99%</span></div>
+            <div class="ai-progress-track"><div class="ai-progress-fill" style="width:99%;background:linear-gradient(90deg,#10b981,#06b6d4)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= TRUSTED BY ========= -->
+<section class="trusted">
+  <div class="container">
+    <p class="trusted-label">Trusted by teams at world-class companies</p>
+    <div class="trusted-logos">
+      <span class="trusted-logo">NVIDIA</span>
+      <span class="trusted-logo">Microsoft</span>
+      <span class="trusted-logo">Salesforce</span>
+      <span class="trusted-logo">Shopify</span>
+      <span class="trusted-logo">Stripe</span>
+      <span class="trusted-logo">Notion</span>
+      <span class="trusted-logo">Figma</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========= SERVICES ========= -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">What We Build</span>
+      <h2 class="section-title">AI Services That <span class="gradient-text">Drive Results</span></h2>
+      <p class="section-sub">From intelligent chatbots to computer vision — our platform covers the full spectrum of enterprise AI capabilities.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-icon">🤖</div>
+        <h3>AI Chatbots</h3>
+        <p>Deploy conversational AI agents that understand context, resolve queries, and drive customer satisfaction 24/7.</p>
+        <a href="services.html" class="service-arrow">Explore → </a>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-icon">✨</div>
+        <h3>Generative AI</h3>
+        <p>Create text, images, code, and media at scale with fine-tuned models built for your brand and domain.</p>
+        <a href="services.html" class="service-arrow">Explore → </a>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-icon">🧠</div>
+        <h3>Machine Learning</h3>
+        <p>Custom ML pipelines trained on your data for classification, regression, clustering, and anomaly detection.</p>
+        <a href="services.html" class="service-arrow">Explore → </a>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-icon">👁️</div>
+        <h3>Computer Vision</h3>
+        <p>Unlock visual intelligence — object detection, image classification, OCR, and real-time video analysis.</p>
+        <a href="services.html" class="service-arrow">Explore → </a>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-icon">📊</div>
+        <h3>Data Analytics</h3>
+        <p>Turn raw data into executive-ready insights with AI-powered dashboards, forecasting, and reporting.</p>
+        <a href="services.html" class="service-arrow">Explore → </a>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-icon">⚡</div>
+        <h3>AI Automation</h3>
+        <p>Eliminate manual workflows with intelligent automation that learns, adapts, and scales with your operations.</p>
+        <a href="services.html" class="service-arrow">Explore → </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= FEATURES ========= -->
+<section class="section" style="background:var(--bg-secondary)" id="features">
+  <div class="container">
+    <div data-aos="fade-up">
+      <span class="section-label">Platform Features</span>
+      <h2 class="section-title">Everything You Need,<br><span class="gradient-text">Nothing You Don't</span></h2>
+    </div>
+
+    <div class="features-layout">
+      <div class="feature-list">
+        <div class="feature-item" data-aos="fade-right" data-aos-delay="100">
+          <div class="feature-icon-sm">🧬</div>
+          <div class="feature-content">
+            <h4>Foundation Model Access</h4>
+            <p>Access GPT-4o, Claude, Gemini, and Llama via one unified API — no juggling between providers.</p>
+          </div>
+        </div>
+        <div class="feature-item" data-aos="fade-right" data-aos-delay="200">
+          <div class="feature-icon-sm">🔒</div>
+          <div class="feature-content">
+            <h4>Enterprise-Grade Security</h4>
+            <p>SOC 2 Type II certified, GDPR compliant, end-to-end encrypted. Your data stays yours.</p>
+          </div>
+        </div>
+        <div class="feature-item" data-aos="fade-right" data-aos-delay="300">
+          <div class="feature-icon-sm">🔄</div>
+          <div class="feature-content">
+            <h4>Real-Time Streaming</h4>
+            <p>Sub-100ms response times with streaming outputs. No buffering, no delays — just speed.</p>
+          </div>
+        </div>
+        <div class="feature-item" data-aos="fade-right" data-aos-delay="400">
+          <div class="feature-icon-sm">🧩</div>
+          <div class="feature-content">
+            <h4>No-Code Workflow Builder</h4>
+            <p>Build complex AI pipelines with drag-and-drop. No PhD required — just your ideas.</p>
+          </div>
+        </div>
+        <div class="feature-item" data-aos="fade-right" data-aos-delay="500">
+          <div class="feature-icon-sm">📡</div>
+          <div class="feature-content">
+            <h4>200+ Integrations</h4>
+            <p>Connect to Slack, Salesforce, HubSpot, Notion, GitHub, and hundreds more out of the box.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-visual" data-aos="fade-left" data-aos-delay="200">
+        <div class="feature-demo-card">
+          <div style="background:rgba(37,99,235,0.08);border-radius:12px;padding:24px;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--accent-green);animation:pulse 2s infinite;"></div>
+              <span style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-cyan);">AI Pipeline Active</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--text-secondary);">
+                <span style="color:var(--accent-green);">✓</span> Data ingested from 4 sources
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--text-secondary);">
+                <span style="color:var(--accent-green);">✓</span> Model inference complete (94ms)
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--text-secondary);">
+                <span style="color:var(--accent-blue);">◌</span> Generating insights...
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:16px;text-align:center;">
+              <div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:var(--accent-green);">98.7%</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">Accuracy</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.2);border-radius:10px;padding:16px;text-align:center;">
+              <div style="font-size:1.5rem;font-weight:700;font-family:var(--font-display);color:#60a5fa;">4.2M</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">Tokens/sec</div>
+            </div>
+          </div>
+
+          <div style="font-size:0.8rem;color:var(--text-muted);font-family:var(--font-mono);margin-bottom:8px;">Processing Queue</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;"><span>Document Analysis</span><span>100%</span></div>
+              <div class="ai-progress-track"><div class="ai-progress-fill" style="width:100%;background:var(--accent-green)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;"><span>Sentiment Model</span><span>72%</span></div>
+              <div class="ai-progress-track"><div class="ai-progress-fill" style="width:72%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;"><span>Response Generation</span><span>38%</span></div>
+              <div class="ai-progress-track"><div class="ai-progress-fill" style="width:38%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= HOW IT WORKS ========= -->
+<section class="section how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">Process</span>
+      <h2 class="section-title">From Idea to <span class="gradient-text">Intelligent Product</span></h2>
+      <p class="section-sub">Four steps to deploy production-ready AI — no machine learning expertise required.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="step-number">1</div>
+        <h4>Connect Your Data</h4>
+        <p>Plug in your databases, APIs, documents, or cloud storage. Our connectors handle 200+ sources instantly.</p>
+      </div>
+      <div class="step-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="step-number">2</div>
+        <h4>Select Your Model</h4>
+        <p>Choose from our curated model library or bring your own. Fine-tune on your domain data with one click.</p>
+      </div>
+      <div class="step-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="step-number">3</div>
+        <h4>Build Workflows</h4>
+        <p>Drag-and-drop your AI pipeline. Set triggers, conditions, and outputs without writing a single line of code.</p>
+      </div>
+      <div class="step-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="step-number">4</div>
+        <h4>Deploy & Monitor</h4>
+        <p>Launch to production with one click. Monitor performance, usage, and costs from a unified dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= SOLUTIONS SHOWCASE ========= -->
+<section class="section" style="background:var(--bg-secondary)" id="solutions">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">Industries</span>
+      <h2 class="section-title">AI for Every <span class="gradient-text">Industry Vertical</span></h2>
+      <p class="section-sub">We've deployed AI across six major industries, delivering measurable ROI in under 30 days.</p>
+    </div>
+
+    <div class="solutions-grid">
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="solution-img grad-blue"><span>🏥</span></div>
+        <div class="solution-body">
+          <div class="badge badge-blue" style="margin-bottom:12px;">Healthcare</div>
+          <h3>Clinical AI & Diagnostics</h3>
+          <p>Accelerate diagnosis, automate clinical documentation, and predict patient outcomes with precision.</p>
+          <a href="solutions.html" class="service-arrow" style="color:var(--accent-cyan);margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;">View Case Study →</a>
+        </div>
+      </div>
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="solution-img grad-violet"><span>💰</span></div>
+        <div class="solution-body">
+          <div class="badge badge-violet" style="margin-bottom:12px;">Finance</div>
+          <h3>Risk & Fraud Intelligence</h3>
+          <p>Detect fraud in milliseconds, automate compliance, and generate predictive financial models at scale.</p>
+          <a href="solutions.html" class="service-arrow" style="color:var(--accent-cyan);margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;">View Case Study →</a>
+        </div>
+      </div>
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="solution-img grad-teal"><span>🎓</span></div>
+        <div class="solution-body">
+          <div class="badge badge-cyan" style="margin-bottom:12px;">Education</div>
+          <h3>Adaptive Learning Systems</h3>
+          <p>Personalize learning paths, automate grading, and provide real-time tutoring with AI that adapts to every student.</p>
+          <a href="solutions.html" class="service-arrow" style="color:var(--accent-cyan);margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;">View Case Study →</a>
+        </div>
+      </div>
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="solution-img grad-green"><span>🛒</span></div>
+        <div class="solution-body">
+          <div class="badge badge-green" style="margin-bottom:12px;">Retail</div>
+          <h3>Smart Commerce Engine</h3>
+          <p>Power hyper-personalized recommendations, demand forecasting, and intelligent inventory management.</p>
+          <a href="solutions.html" class="service-arrow" style="color:var(--accent-cyan);margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;">View Case Study →</a>
+        </div>
+      </div>
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="solution-img grad-orange"><span>🏭</span></div>
+        <div class="solution-body">
+          <div class="badge badge-gold" style="margin-bottom:12px;">Manufacturing</div>
+          <h3>Predictive Maintenance</h3>
+          <p>Prevent downtime before it happens. AI monitors equipment health and predicts failures weeks in advance.</p>
+          <a href="solutions.html" class="service-arrow" style="color:var(--accent-cyan);margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;">View Case Study →</a>
+        </div>
+      </div>
+      <div class="solution-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="solution-img grad-pink"><span>📣</span></div>
+        <div class="solution-body">
+          <div class="badge badge-violet" style="margin-bottom:12px;">Marketing</div>
+          <h3>Intelligent Campaigns</h3>
+          <p>Generate content, optimize ad spend, and predict conversion rates with AI-powered marketing intelligence.</p>
+          <a href="solutions.html" class="service-arrow" style="color:var(--accent-cyan);margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;">View Case Study →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= STATISTICS ========= -->
+<section class="section stats-section">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">By the Numbers</span>
+      <h2 class="section-title">Results That <span class="gradient-text">Speak for Themselves</span></h2>
+    </div>
+
+    <div class="stats-grid" data-aos="zoom-in" data-aos-delay="100">
+      <div class="stat-item">
+        <div class="stat-number" data-count="50" data-suffix="K+">0</div>
+        <div class="stat-label">Active Users Worldwide</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-count="2.4" data-suffix="B">0</div>
+        <div class="stat-label">API Calls Processed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-count="99.9" data-suffix="%">0</div>
+        <div class="stat-label">Platform Uptime</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-count="340" data-suffix="%">0</div>
+        <div class="stat-label">Average ROI Increase</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= PRODUCT DEMO ========= -->
+<section class="section" id="demo" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">Live Demo</span>
+      <h2 class="section-title">See Stackly AI <span class="gradient-text">in Action</span></h2>
+      <p class="section-sub">Explore the interface and capabilities your team will use every day.</p>
+    </div>
+
+    <div class="demo-layout">
+      <div data-aos="fade-right">
+        <div class="demo-tabs">
+          <button class="demo-tab active" data-tab="chat">AI Chat</button>
+          <button class="demo-tab" data-tab="analytics">Analytics</button>
+          <button class="demo-tab" data-tab="automation">Automation</button>
+        </div>
+
+        <h3 style="margin-bottom:12px;">Conversational Intelligence</h3>
+        <p style="margin-bottom:24px;font-size:0.9rem;color:var(--text-secondary);">Ask anything. Get instant, context-aware responses grounded in your company's knowledge base. The AI understands follow-ups, nuance, and domain-specific terminology.</p>
+
+        <ul style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+          <li style="display:flex;align-items:center;gap:10px;font-size:0.9rem;color:var(--text-secondary);">
+            <span style="color:var(--accent-green)">✓</span> Multi-turn conversations with context memory
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:0.9rem;color:var(--text-secondary);">
+            <span style="color:var(--accent-green)">✓</span> Grounded in your internal documentation
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:0.9rem;color:var(--text-secondary);">
+            <span style="color:var(--accent-green)">✓</span> Supports 40+ languages natively
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:0.9rem;color:var(--text-secondary);">
+            <span style="color:var(--accent-green)">✓</span> Source citations for every response
+          </li>
+        </ul>
+
+        <a href="register.html" class="btn btn-primary">Try It Free →</a>
+      </div>
+
+      <div data-aos="fade-left" data-aos-delay="100">
+        <div class="demo-screen">
+          <div class="demo-topbar">
+            <div class="demo-dot" style="background:#ff5f57;"></div>
+            <div class="demo-dot" style="background:#febc2e;"></div>
+            <div class="demo-dot" style="background:#28c840;"></div>
+            <span style="font-size:0.78rem;color:var(--text-muted);font-family:var(--font-mono);margin-left:10px;">Stackly AI Chat — v3.2</span>
+          </div>
+          <div class="demo-body demo-pane" data-pane="chat">
+            <div class="chat-msg">
+              <div class="chat-avatar">S</div>
+              <div class="chat-bubble">Hello! I'm Stackly AI. How can I help you today? I have access to your company knowledge base and real-time data. 🚀</div>
+            </div>
+            <div class="chat-msg" style="flex-direction:row-reverse;">
+              <div class="chat-avatar" style="background:rgba(124,58,237,0.4);">U</div>
+              <div class="chat-bubble user">Analyze our Q3 sales performance and identify the top 3 growth opportunities for Q4.</div>
+            </div>
+            <div class="chat-msg">
+              <div class="chat-avatar">S</div>
+              <div class="chat-bubble">
+                <strong style="color:var(--text-primary);">Q3 Analysis Complete:</strong><br><br>
+                📈 <strong style="color:var(--accent-green);">+24% YoY growth</strong> — driven by enterprise segment<br>
+                🎯 Top 3 Q4 Opportunities:<br>
+                1. Expand APAC enterprise accounts (+$2.1M potential)<br>
+                2. Upsell automation tier to mid-market (+$890K)<br>
+                3. Launch referral program (+340 projected sign-ups)
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:16px;">
+              <input class="form-input" placeholder="Ask follow-up questions..." style="flex:1;font-size:0.85rem;" />
+              <button class="btn btn-primary btn-sm">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= TESTIMONIALS ========= -->
+<section class="section testimonials" id="testimonials">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">What Clients Say</span>
+      <h2 class="section-title">Loved by <span class="gradient-text">10,000+ Teams</span></h2>
+    </div>
+
+    <div class="testimonial-slider" data-aos="fade-up" data-aos-delay="100">
+      <div class="testimonial-track">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">Stackly AI reduced our customer support workload by 60% in the first month. The chatbot understands context like a senior support agent. Absolutely game-changing for our team.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SR</div>
+            <div>
+              <div class="author-name">Sarah Rodriguez</div>
+              <div class="author-role">VP Customer Success, TechNova Inc.</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">We deployed a fraud detection model in 3 weeks — something that used to take 6 months. The ROI was immediate. Stackly AI is now central to our entire fintech operation.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MC</div>
+            <div>
+              <div class="author-name">Marcus Chen</div>
+              <div class="author-role">CTO, PayShield Financial</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">The no-code workflow builder is remarkable. Our operations team built a complete AI pipeline with zero engineering support. Stackly AI democratized AI for our whole company.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AL</div>
+            <div>
+              <div class="author-name">Aisha Lawson</div>
+              <div class="author-role">Head of Operations, ScaleRetail</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">Our AI-powered learning platform serves 200K students. Stackly AI handles personalization, grading automation, and content generation. The accuracy is extraordinary.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">JP</div>
+            <div>
+              <div class="author-name">James Park</div>
+              <div class="author-role">Co-Founder, EduFuture</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">Predictive maintenance on our factory floor went live in 2 weeks. We've prevented 11 major equipment failures since deployment, saving over $2M in unplanned downtime.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">NG</div>
+            <div>
+              <div class="author-name">Nina Gupta</div>
+              <div class="author-role">Plant Director, PrecisionMfg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-controls">
+      <button class="slider-btn slider-prev">←</button>
+      <div class="slider-dots">
+        <div class="slider-dot active"></div>
+        <div class="slider-dot"></div>
+        <div class="slider-dot"></div>
+      </div>
+      <button class="slider-btn slider-next">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========= PRICING PREVIEW ========= -->
+<section class="section" id="pricing" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">Simple Pricing</span>
+      <h2 class="section-title">Plans That <span class="gradient-text">Scale With You</span></h2>
+      <p class="section-sub">Start free, scale as you grow. No hidden fees, no surprise invoices.</p>
+    </div>
+
+    <div class="pricing-toggle" data-aos="fade-up" data-aos-delay="100">
+      <span class="pricing-toggle-label">Monthly</span>
+      <div class="toggle-switch" id="billing-toggle">
+        <div class="toggle-knob"></div>
+      </div>
+      <span class="pricing-toggle-label">Annual <span class="save-badge">Save 25%</span></span>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="pricing-plan">Starter</div>
+        <div class="pricing-price">$<span data-monthly="49" data-annual="37">49</span></div>
+        <div class="pricing-period">per month / per workspace</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="pricing-check">✓</span> 100K API tokens/month</li>
+          <li><span class="pricing-check">✓</span> 3 AI models access</li>
+          <li><span class="pricing-check">✓</span> Basic analytics dashboard</li>
+          <li><span class="pricing-check">✓</span> 5 workflow automations</li>
+          <li><span class="pricing-check">✓</span> Email support</li>
+          <li><span class="pricing-cross">✗</span> Custom model fine-tuning</li>
+          <li><span class="pricing-cross">✗</span> Priority support</li>
+        </ul>
+        <a href="register.html" class="btn btn-outline" style="width:100%;justify-content:center;">Get Started</a>
+      </div>
+
+      <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="200">
+        <div class="pricing-popular">⚡ Most Popular</div>
+        <div class="pricing-plan">Professional</div>
+        <div class="pricing-price">$<span data-monthly="149" data-annual="112">149</span></div>
+        <div class="pricing-period">per month / per workspace</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="pricing-check">✓</span> 5M API tokens/month</li>
+          <li><span class="pricing-check">✓</span> All AI models access</li>
+          <li><span class="pricing-check">✓</span> Advanced analytics + reports</li>
+          <li><span class="pricing-check">✓</span> Unlimited automations</li>
+          <li><span class="pricing-check">✓</span> Priority chat support</li>
+          <li><span class="pricing-check">✓</span> Custom model fine-tuning</li>
+          <li><span class="pricing-cross">✗</span> Dedicated account manager</li>
+        </ul>
+        <a href="register.html" class="btn btn-primary" style="width:100%;justify-content:center;">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="pricing-plan">Enterprise</div>
+        <div class="pricing-price">Custom</div>
+        <div class="pricing-period">tailored to your scale</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="pricing-check">✓</span> Unlimited API tokens</li>
+          <li><span class="pricing-check">✓</span> All models + private hosting</li>
+          <li><span class="pricing-check">✓</span> Custom integrations</li>
+          <li><span class="pricing-check">✓</span> SLA guarantees</li>
+          <li><span class="pricing-check">✓</span> 24/7 dedicated support</li>
+          <li><span class="pricing-check">✓</span> Custom model fine-tuning</li>
+          <li><span class="pricing-check">✓</span> Dedicated account manager</li>
+        </ul>
+        <a href="contact.html" class="btn btn-outline" style="width:100%;justify-content:center;">Contact Sales</a>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;" data-aos="fade-up">
+      <a href="pricing.html" class="btn btn-ghost">View Full Pricing Details →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========= BLOG ========= -->
+<section class="section" id="blog">
+  <div class="container">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:60px;flex-wrap:wrap;gap:20px;" data-aos="fade-up">
+      <div>
+        <span class="section-label">Latest Insights</span>
+        <h2 class="section-title">From the <span class="gradient-text">AI Frontier</span></h2>
+      </div>
+      <a href="blog.html" class="btn btn-outline">View All Posts →</a>
+    </div>
+
+    <div class="blog-grid">
+      <div class="blog-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="blog-img grad-blue"><span>🧠</span></div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="badge badge-blue">LLMs</span>
+            <span class="blog-date">Jun 12, 2026</span>
+          </div>
+          <h3>How Mixture-of-Experts Models Are Reshaping Enterprise AI</h3>
+          <p>MoE architectures are delivering GPT-4 level performance at a fraction of the compute cost. Here's what that means for your stack.</p>
+          <a href="blog.html" class="blog-read-more">Read Article →</a>
+        </div>
+      </div>
+      <div class="blog-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="blog-img grad-violet"><span>🔮</span></div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="badge badge-violet">Automation</span>
+            <span class="blog-date">Jun 8, 2026</span>
+          </div>
+          <h3>5 Agentic AI Workflows That Will Transform Your Business in 2026</h3>
+          <p>Autonomous AI agents are moving from research labs to production systems. We break down the five workflows delivering the biggest ROI right now.</p>
+          <a href="blog.html" class="blog-read-more">Read Article →</a>
+        </div>
+      </div>
+      <div class="blog-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="blog-img grad-teal"><span>🛡️</span></div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="badge badge-cyan">Security</span>
+            <span class="blog-date">Jun 3, 2026</span>
+          </div>
+          <h3>Building Secure AI Systems: The CISO's Complete Playbook</h3>
+          <p>From prompt injection to model exfiltration — a practical guide to securing every layer of your AI infrastructure.</p>
+          <a href="blog.html" class="blog-read-more">Read Article →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= FAQ ========= -->
+<section class="section" style="background:var(--bg-secondary)" id="faq">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+    </div>
+
+    <div class="faq-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="faq-item">
+        <div class="faq-question">How quickly can I deploy my first AI model? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Most users deploy their first production model within 48 hours of signing up. Our guided setup wizard walks you through data connection, model selection, and workflow configuration step by step. No machine learning experience required.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What data does Stackly AI have access to? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Stackly AI only accesses data you explicitly connect. Your data is encrypted at rest and in transit, never used to train shared models, and fully owned by you. We're SOC 2 Type II certified and GDPR compliant.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can I use my own LLM or fine-tuned model? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes. You can bring your own models from Hugging Face, Azure OpenAI, AWS Bedrock, or any custom API endpoint. Stackly AI also supports fine-tuning on Professional and Enterprise plans.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What happens when I exceed my token limit? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">You'll receive an email notification at 80% and 95% usage. After hitting your limit, you can either upgrade your plan, purchase a token top-up, or wait for the monthly reset. We never cut off service mid-conversation.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Is there a free trial available? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes — all plans come with a 14-day free trial, no credit card required. You get full access to Professional plan features so you can evaluate the platform with real workloads before committing.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Do you offer discounts for startups and nonprofits? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes. We offer 50% off on all plans for qualifying startups (under 3 years old, under $2M raised) and nonprofits. Contact our sales team with documentation and we'll apply the discount within 24 hours.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= NEWSLETTER ========= -->
+<section class="newsletter">
+  <div class="glow-orb" style="width:500px;height:500px;background:rgba(124,58,237,0.08);top:-100px;left:50%;transform:translateX(-50%);"></div>
+  <div class="container">
+    <div class="newsletter-inner" data-aos="fade-up">
+      <span class="section-label" style="justify-content:center;">Stay Informed</span>
+      <h2 style="margin-bottom:12px;">AI Insights, <span class="gradient-text">Weekly</span></h2>
+      <p style="color:var(--text-secondary);">Join 12,000+ AI practitioners who read our weekly newsletter on models, tools, and best practices.</p>
+      <form class="newsletter-form">
+        <input type="email" class="form-input" placeholder="your@company.com" required />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:12px;">No spam. Unsubscribe anytime. Privacy-first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========= FOOTER ========= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <div class="nav-logo">
+          <div class="logo-icon">⚡</div>
+          <span class="logo-text">Stackly <span>AI</span></span>
+        </div>
+        <p>Enterprise AI platform helping teams build, deploy, and scale intelligent solutions. From chatbots to predictive analytics — all in one place.</p>
+        <div class="footer-socials">
+          <a class="social-btn" href="#" title="Twitter">𝕏</a>
+          <a class="social-btn" href="#" title="LinkedIn">in</a>
+          <a class="social-btn" href="#" title="GitHub">⌥</a>
+          <a class="social-btn" href="#" title="YouTube">▶</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul class="footer-links">
+          <li><a href="services.html" class="footer-link">AI Services</a></li>
+          <li><a href="solutions.html" class="footer-link">Solutions</a></li>
+          <li><a href="pricing.html" class="footer-link">Pricing</a></li>
+          <li><a href="#" class="footer-link">Documentation</a></li>
+          <li><a href="#" class="footer-link">Changelog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul class="footer-links">
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="blog.html" class="footer-link">Blog</a></li>
+          <li><a href="#" class="footer-link">Careers</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+          <li><a href="#" class="footer-link">Press Kit</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul class="footer-links">
+          <li><a href="privacy.html" class="footer-link">Privacy Policy</a></li>
+          <li><a href="terms.html" class="footer-link">Terms of Service</a></li>
+          <li><a href="faq.html" class="footer-link">FAQ</a></li>
+          <li><a href="#" class="footer-link">Security</a></li>
+          <li><a href="#" class="footer-link">Compliance</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Stackly AI, Inc. All rights reserved. Built with ⚡ in San Francisco.</p>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

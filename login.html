@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Stackly AI</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="loading-screen" id="loading-screen"><div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div><div class="loading-bar-track"><div class="loading-bar-fill"></div></div></div>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;">
+  <div class="glow-orb" style="width:600px;height:600px;background:rgba(37,99,235,0.08);top:-200px;left:-100px;"></div>
+  <div class="glow-orb" style="width:500px;height:500px;background:rgba(124,58,237,0.07);bottom:-150px;right:-100px;"></div>
+  <div class="hero-grid" style="position:fixed;inset:0;opacity:0.3;"></div>
+
+  <div style="width:100%;max-width:480px;position:relative;z-index:2;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-muted);margin-bottom:32px;transition:var(--transition);" class="back-home">← Back to Home</a>
+      <a href="index.html" class="nav-logo" style="justify-content:center;margin-bottom:8px;"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a>
+      <p style="color:var(--text-muted);font-size:0.875rem;">Sign in to your workspace</p>
+    </div>
+
+    <div class="auth-card card" style="padding:40px;">
+      <!-- Role Selector -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:32px;background:rgba(255,255,255,0.03);border-radius:var(--radius-md);padding:4px;">
+        <button class="role-btn active" data-role="user" style="padding:10px;border-radius:var(--radius-sm);font-weight:600;font-size:0.875rem;transition:var(--transition);background:var(--gradient-primary);color:#fff;">👤 User</button>
+        <button class="role-btn" data-role="admin" style="padding:10px;border-radius:var(--radius-sm);font-weight:600;font-size:0.875rem;transition:var(--transition);background:transparent;color:var(--text-secondary);">🛡️ Admin</button>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="aryan@company.com" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="display:flex;justify-content:space-between;"><span>Password</span><a href="forgot-password.html" style="color:var(--accent-cyan);font-size:0.8rem;">Forgot password?</a></label>
+          <div style="position:relative;">
+            <input type="password" class="form-input" placeholder="••••••••" id="password-input" required/>
+            <button type="button" onclick="const i=document.getElementById('password-input');i.type=i.type==='password'?'text':'password';" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;">👁</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+          <label class="checkbox-label"><input type="checkbox"/> Remember me for 30 days</label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:16px;">Sign In →</button>
+      </form>
+
+      <div style="display:flex;align-items:center;gap:16px;margin:28px 0;">
+        <div style="flex:1;height:1px;background:var(--border-subtle);"></div>
+        <span style="font-size:0.8rem;color:var(--text-muted);">or continue with</span>
+        <div style="flex:1;height:1px;background:var(--border-subtle);"></div>
+      </div>
+
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">
+
+  <a href="404.html" class="btn btn-outline btn-sm" style="justify-content:center;gap:8px;text-decoration:none;">
+    <span style="font-size:1rem;"></span> Google
+  </a>
+
+  <a href="404.html" class="btn btn-outline btn-sm" style="justify-content:center;gap:8px;text-decoration:none;">
+    <span style="font-size:1rem;"></span> LinkedIn
+  </a>
+
+</div>
+
+
+
+      <p style="text-align:center;font-size:0.875rem;color:var(--text-muted);">Don't have an account? <a href="register.html" style="color:var(--accent-cyan);font-weight:600;">Sign up free</a></p>
+    </div>
+
+    <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:20px;">By signing in, you agree to our <a href="terms.html" style="color:var(--text-secondary);">Terms</a> and <a href="privacy.html" style="color:var(--text-secondary);">Privacy Policy</a>.</p>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<style>
+  .role-btn:not(.active){background:transparent!important;color:var(--text-secondary)!important;}
+  .role-btn.active{background:var(--gradient-primary)!important;color:#fff!important;box-shadow:0 0 20px rgba(37,99,235,0.4);}
+  .back-home:hover{color:var(--text-primary)!important;}
+</style>
+
+
+
+
+
+
+<script>
+document.getElementById('login-form').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const role =
+      document.querySelector('.role-btn.active')
+      .dataset.role;
+
+    const email =
+      document.querySelector('input[type="email"]').value;
+
+    localStorage.setItem('stackly_user', JSON.stringify({
+        name: email.split('@')[0],
+        email: email,
+        role: role
+    }));
+
+    window.location.href =
+      role === 'admin'
+      ? 'admin-dashboard.html'
+      : 'user-dashboard.html';
+});
+
+/* role switch */
+document.querySelectorAll('.role-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        document.querySelectorAll('.role-btn')
+        .forEach(b=>b.classList.remove('active'));
+
+        btn.classList.add('active');
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
