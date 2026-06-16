@@ -284,7 +284,7 @@
       <div style="display:flex;align-items:center;gap:16px;">
 
         <!-- Search -->
-        <div style="position:relative;display:flex;align-items:center;">
+        <div class="dashboard-search" style="position:relative;display:flex;align-items:center;">
           <input type="text" class="form-input" placeholder="Search users, logs..." style="padding:9px 16px 9px 38px;font-size:0.82rem;border-radius:var(--radius-pill);width:220px;"/>
           <span style="position:absolute;left:14px;color:var(--text-muted);font-size:0.85rem;">🔍</span>
         </div>
@@ -315,7 +315,7 @@
         <!-- Admin avatar -->
         <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('profile',null)">
           <div class="user-avatar-sm" id="headerAvatar" style="background:linear-gradient(135deg,#7c3aed,#2563eb);">A</div>
-          <span style="font-size:0.875rem;font-weight:600;" id="headerName">Admin</span>
+          <span class="admin-avatar" style="font-size:0.875rem;font-weight:600;" id="headerName" style="overflow-x:auto;">Admin</span>
         </div>
 
         <!-- Logout -->
@@ -474,7 +474,7 @@
                 <div class="usage-bar-track"><div class="usage-bar-fill" style="width:58%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-cyan));"></div></div>
               </div>
             </div>
-            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
+            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle); overflow-x:auto;">
               <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;">Revenue Breakdown</div>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
                 <div style="padding:12px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-md);"><div style="font-size:1rem;font-weight:700;color:var(--accent-green);">$24,100</div><div style="font-size:0.7rem;color:var(--text-muted);">Enterprise</div></div>
@@ -1359,7 +1359,7 @@ window.addEventListener('load', () => {
 @media(max-width:640px){
   .profile-grid{grid-template-columns:1fr!important;}
   .dash-row{flex-direction:column!important;}
-  .dash-panel{width:100%!important;}
+  .dash-panel{width:100%;}
 }
 </style>
 

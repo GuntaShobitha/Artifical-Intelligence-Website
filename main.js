@@ -300,25 +300,30 @@ document.querySelectorAll('.role-btn').forEach(btn => {
 });
 
 // ─── DASHBOARD SIDEBAR MOBILE ────────────────
-const dashHamburger = document.querySelector('.dash-hamburger');
-const sidebar = document.querySelector('.sidebar');
-const sidebarOverlay = document.querySelector('.sidebar-overlay');
+const dashHamburger = document.getElementById("dashHam");;
+const sidebar =  document.getElementById("sidebar");
+const sidebarOverlay = document.getElementById("sidebar-overlay");
 
 if (dashHamburger && sidebar) {
-  dashHamburger.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
-    if (sidebarOverlay) sidebarOverlay.classList.toggle('open');
-    document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+  dashHamburger.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    sidebarOverlay?.classList.toggle("open");
   });
 }
 
 if (sidebarOverlay) {
-  sidebarOverlay.addEventListener('click', () => {
-    sidebar?.classList.remove('open');
-    sidebarOverlay.classList.remove('open');
-    document.body.style.overflow = '';
+  sidebarOverlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("open");
   });
 }
+
+dashHamburger.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+   sidebarOverlay.classList.remove("open");
+    console.log(sidebar.className);
+});
+
 
 // ─── DASHBOARD SIDEBAR LINKS ─────────────────
 document.querySelectorAll('.sidebar-link').forEach(link => {
