@@ -1,3 +1,170 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — Stackly AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="loading-screen" id="loading-screen"><div class="loading-logo">
+  <div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div><div class="loading-bar-track"><div class="loading-bar-fill"></div></div></div>
+<div id="scroll-progress"></div>
+<button id="back-to-top" style="position:fixed;bottom:24px;right:24px;z-index:500;width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;pointer-events:none;transition:all 0.3s;box-shadow:0 0 20px rgba(37,99,235,0.4);">↑</button>
+
+<nav class="navbar" id="navbar"><div class="container"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="./images/logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
+  <ul class="nav-menu"><li><a href="index.html" class="nav-link">Home</a></li><li><a href="about.html" class="nav-link">About</a></li><li><a href="services.html" class="nav-link">Services</a></li><li><a href="solutions.html" class="nav-link">Solutions</a></li><li><a href="blog.html" class="nav-link">Blog</a></li><li><a href="pricing.html" class="nav-link active">Pricing</a></li><li><a href="contact.html" class="nav-link">Contact</a></li></ul>
+  <div class="nav-actions"><a href="login.html" class="btn btn-outline btn-sm">Login</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a><button class="hamburger"><span></span><span></span><span></span></button></div>
+</div></div></nav>
+<div class="mobile-nav" id="mobile-nav"><button class="mobile-nav-close">✕</button><div class="mobile-nav-logo"><a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a></div><a href="index.html" class="nav-link">🏠 Home</a><a href="about.html" class="nav-link">🏢 About</a><a href="services.html" class="nav-link">⚙️ Services</a><a href="solutions.html" class="nav-link">💡 Solutions</a><a href="blog.html" class="nav-link">📝 Blog</a><a href="pricing.html" class="nav-link">💰 Pricing</a><a href="contact.html" class="nav-link">📬 Contact</a><div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid var(--border-subtle);"><a href="login.html" class="btn btn-outline" style="justify-content:center;">Login</a><a href="register.html" class="btn btn-primary" style="justify-content:center;">Get Started Free</a></div></div>
+
+<section class="page-hero">
+  <div class="glow-orb" style="width:500px;height:500px;background:rgba(37,99,235,0.07);top:-100px;left:50%;transform:translateX(-50%);"></div>
+  <div class="hero-grid" style="position:absolute;inset:0;opacity:0.4;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Pricing</span></div>
+    <span class="section-label" style="justify-content:center;">Simple Pricing</span>
+    <h1>Plans That Scale <span class="gradient-text">With You</span></h1>
+    <p>Start free for 14 days. No credit card. Upgrade when you're ready — cancel anytime.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+  
+    <div class="pricing-toggle" data-aos="fade-up">
+      <span class="pricing-toggle-label">Monthly</span>
+      <div class="toggle-switch" id="pricing-toggle"><div class="toggle-knob"></div></div>
+      <span class="pricing-toggle-label">Annual <span class="save-badge">Save 20%</span></span>
+    </div>
+
+  
+    <div class="pricing-grid" data-aos="fade-up" data-aos-delay="100">
+      
+      <div class="pricing-card">
+        <div class="pricing-plan">Starter</div>
+        <div class="pricing-price"><span>$</span><span data-monthly="29" data-annual="23">29</span></div>
+        <div class="pricing-period">per month, per workspace</div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:20px;">For individuals and small teams just getting started with AI.</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="pricing-check">✓</span> 500K tokens / month</li>
+          <li><span class="pricing-check">✓</span> 1 AI Chatbot</li>
+          <li><span class="pricing-check">✓</span> 3 Automation workflows</li>
+          <li><span class="pricing-check">✓</span> Basic analytics</li>
+          <li><span class="pricing-check">✓</span> Email support</li>
+          <li><span class="pricing-cross">✗</span> Custom model fine-tuning</li>
+          <li><span class="pricing-cross">✗</span> API access</li>
+          <li><span class="pricing-cross">✗</span> SSO / SAML</li>
+        </ul>
+        <a href="register.html" class="btn btn-outline" style="width:100%;justify-content:center;">Start Free Trial</a>
+      </div>
+
+     
+      <div class="pricing-card featured">
+        <div class="pricing-popular">Most Popular</div>
+        <div class="pricing-plan">Professional</div>
+        <div class="pricing-price"><span>$</span><span data-monthly="99" data-annual="79">99</span></div>
+        <div class="pricing-period">per month, per workspace</div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:20px;">For growing teams that need more power and collaboration features.</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="pricing-check">✓</span> 5M tokens / month</li>
+          <li><span class="pricing-check">✓</span> 10 AI Chatbots</li>
+          <li><span class="pricing-check">✓</span> Unlimited workflows</li>
+          <li><span class="pricing-check">✓</span> Advanced analytics & forecasting</li>
+          <li><span class="pricing-check">✓</span> Full API access</li>
+          <li><span class="pricing-check">✓</span> Custom model fine-tuning</li>
+          <li><span class="pricing-check">✓</span> Priority support (4h SLA)</li>
+          <li><span class="pricing-cross">✗</span> SSO / SAML</li>
+        </ul>
+        <a href="register.html" class="btn btn-primary" style="width:100%;justify-content:center;">Start Free Trial</a>
+      </div>
+
+     
+      <div class="pricing-card">
+        <div class="pricing-plan">Enterprise</div>
+        <div class="pricing-price"><span style="font-size:1.5rem;font-weight:400;color:var(--text-muted);">Custom</span></div>
+        <div class="pricing-period">volume pricing available</div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:20px;">For large organizations with advanced security, compliance, and scale requirements.</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="pricing-check">✓</span> Unlimited tokens</li>
+          <li><span class="pricing-check">✓</span> Unlimited chatbots & workflows</li>
+          <li><span class="pricing-check">✓</span> Dedicated infrastructure</li>
+          <li><span class="pricing-check">✓</span> SSO / SAML / SCIM</li>
+          <li><span class="pricing-check">✓</span> Custom SLA (99.99% uptime)</li>
+          <li><span class="pricing-check">✓</span> Dedicated CSM</li>
+          <li><span class="pricing-check">✓</span> On-prem deployment option</li>
+          <li><span class="pricing-check">✓</span> Compliance reporting (SOC 2, HIPAA)</li>
+        </ul>
+        <a href="contact.html" class="btn btn-outline" style="width:100%;justify-content:center;">Contact Sales</a>
+      </div>
+    </div>
+
+   
+    <div data-aos="fade-up" style="margin-top:80px;">
+      <h3 style="text-align:center;margin-bottom:40px;">Full <span class="gradient-text">Feature Comparison</span></h3>
+      <div style="overflow-x:auto;">
+        <table class="data-table" style="width:100%;min-width:600px;">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th style="text-align:center;">Starter</th>
+              <th style="text-align:center;">Professional</th>
+              <th style="text-align:center;">Enterprise</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Monthly Tokens</strong></td><td style="text-align:center;color:var(--text-muted);">500K</td><td style="text-align:center;color:var(--text-muted);">5M</td><td style="text-align:center;color:var(--accent-green);">Unlimited</td></tr>
+            <tr><td><strong>AI Chatbots</strong></td><td style="text-align:center;color:var(--text-muted);">1</td><td style="text-align:center;color:var(--text-muted);">10</td><td style="text-align:center;color:var(--accent-green);">Unlimited</td></tr>
+            <tr><td><strong>Automation Workflows</strong></td><td style="text-align:center;color:var(--text-muted);">3</td><td style="text-align:center;color:var(--accent-green);">Unlimited</td><td style="text-align:center;color:var(--accent-green);">Unlimited</td></tr>
+            <tr><td><strong>API Access</strong></td><td style="text-align:center;color:var(--text-muted);">✗</td><td style="text-align:center;color:var(--accent-green);">✓</td><td style="text-align:center;color:var(--accent-green);">✓</td></tr>
+            <tr><td><strong>Custom Fine-Tuning</strong></td><td style="text-align:center;color:var(--text-muted);">✗</td><td style="text-align:center;color:var(--accent-green);">✓</td><td style="text-align:center;color:var(--accent-green);">✓</td></tr>
+            <tr><td><strong>SSO / SAML</strong></td><td style="text-align:center;color:var(--text-muted);">✗</td><td style="text-align:center;color:var(--text-muted);">✗</td><td style="text-align:center;color:var(--accent-green);">✓</td></tr>
+            <tr><td><strong>On-Prem Deployment</strong></td><td style="text-align:center;color:var(--text-muted);">✗</td><td style="text-align:center;color:var(--text-muted);">✗</td><td style="text-align:center;color:var(--accent-green);">✓</td></tr>
+            <tr><td><strong>Support SLA</strong></td><td style="text-align:center;color:var(--text-muted);">Email</td><td style="text-align:center;color:var(--text-muted);">4h priority</td><td style="text-align:center;color:var(--accent-green);">1h dedicated</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" style="background:var(--bg-secondary);" id="faq">
+  <div class="container">
+    <div class="text-center" data-aos="fade-up">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">Pricing <span class="gradient-text">Questions</span></h2>
+    </div>
+    <div class="faq-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="faq-item"><div class="faq-question">Is there a free trial? <div class="faq-icon">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Yes — all plans come with a 14-day free trial with full Professional plan access. No credit card required to start.</div></div></div>
+      <div class="faq-item"><div class="faq-question">What happens when I exceed my token limit? <div class="faq-icon">+</div></div><div class="faq-answer"><div class="faq-answer-inner">You'll get email alerts at 80% and 95% usage. After hitting the limit you can upgrade your plan, purchase a token top-up, or wait for the monthly reset. We never cut off active conversations.</div></div></div>
+      <div class="faq-item"><div class="faq-question">Can I change plans mid-billing cycle? <div class="faq-icon">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Absolutely. Upgrades are prorated and take effect immediately. Downgrades take effect at the next billing cycle. You won't lose any data when changing plans.</div></div></div>
+      <div class="faq-item"><div class="faq-question">Do you offer startup or nonprofit discounts? <div class="faq-icon">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Yes. We offer 50% off for qualifying startups (under 3 years old, under $2M raised) and nonprofits. Contact our sales team with documentation.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter"><div class="glow-orb" style="width:500px;height:500px;background:rgba(124,58,237,0.08);top:-100px;left:50%;transform:translateX(-50%);"></div><div class="container"><div class="newsletter-inner" data-aos="fade-up"><span class="section-label" style="justify-content:center;">No Risk</span><h2 style="margin-bottom:12px;">Start Free, <span class="gradient-text">Scale When Ready</span></h2><p style="color:var(--text-secondary);margin-bottom:32px;">14-day trial · No credit card · Cancel anytime · Keep your data</p><div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="register.html" class="btn btn-primary btn-lg">🚀 Start Free Trial</a><a href="contact.html" class="btn btn-outline btn-lg">Talk to Sales</a></div></div></div></section>
+
+<footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><div class="nav-logo"><img src="./images/logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></div><p>Enterprise AI platform for teams.</p><div class="footer-socials"><a class="social-btn" href="404.html">𝕏</a><a class="social-btn" href="404.html">in</a><a class="social-btn" href="404.html">⌥</a><a class="social-btn" href="404.html">▶</a></div></div><div class="footer-col"><h5>Product</h5><ul class="footer-links"><li><a href="services.html" class="footer-link">Services</a></li><li><a href="solutions.html" class="footer-link">Solutions</a></li><li><a href="pricing.html" class="footer-link">Pricing</a></li></ul></div><div class("gradient-text")><p>© 2026 Stackly AI, Inc. All rights reserved.</p><div class("gradient-text")}><a href("gradient-text")}>Privacy</a><a href("gradient-text")}>Terms</a></div></div></div></footer>
+<script>
+  const toggle = document.getElementById('pricing-toggle');
+  if(toggle){
+    toggle.addEventListener('click',()=>{
+      toggle.classList.toggle('on');
+      const isAnnual = toggle.classList.contains('on');
+      document.querySelectorAll('[data-monthly]').forEach(el=>{
+        el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+      });
+    });
+  }
+</script>
+</body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,16 +173,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="loading-screen" id="loading-screen"><div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div><div class="loading-bar-track"><div class="loading-bar-fill"></div></div></div>
+<div class="loading-screen" id="loading-screen"><div class="loading-logo">
+   <a href="index.html" class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
+</div><div class="loading-bar-track"><div class="loading-bar-fill"></div></div></div>
 <div id="scroll-progress"></div>
 <button id="back-to-top" style="position:fixed;bottom:24px;right:24px;z-index:500;width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;pointer-events:none;transition:all 0.3s;box-shadow:0 0 20px rgba(37,99,235,0.4);">↑</button>
 
 <nav class="navbar" id="navbar"><div class="container"><div class="nav-inner">
-  <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a>
+  <a href="index.html" class="nav-logo">
+     <a href="index.html" class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
+  </a>
   <ul class="nav-menu"><li><a href="index.html" class="nav-link">Home</a></li><li><a href="about.html" class="nav-link">About</a></li><li><a href="services.html" class="nav-link">Services</a></li><li><a href="solutions.html" class="nav-link">Solutions</a></li><li><a href="blog.html" class="nav-link">Blog</a></li><li><a href="pricing.html" class="nav-link active">Pricing</a></li><li><a href="contact.html" class="nav-link">Contact</a></li></ul>
   <div class="nav-actions"><a href="login.html" class="btn btn-outline btn-sm">Login</a><a href="register.html" class="btn btn-primary btn-sm">Get Started</a><button class="hamburger"><span></span><span></span><span></span></button></div>
 </div></div></nav>
-<div class="mobile-nav" id="mobile-nav"><button class="mobile-nav-close">✕</button><div class="mobile-nav-logo"><a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></a></div><a href="index.html" class="nav-link">🏠 Home</a><a href="about.html" class="nav-link">🏢 About</a><a href="services.html" class="nav-link">⚙️ Services</a><a href="solutions.html" class="nav-link">💡 Solutions</a><a href="blog.html" class="nav-link">📝 Blog</a><a href="pricing.html" class="nav-link">💰 Pricing</a><a href="contact.html" class="nav-link">📬 Contact</a><div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid var(--border-subtle);"><a href="login.html" class="btn btn-outline" style="justify-content:center;">Login</a><a href="register.html" class="btn btn-primary" style="justify-content:center;">Get Started Free</a></div></div>
+<div class="mobile-nav" id="mobile-nav"><button class="mobile-nav-close">✕</button><div class="mobile-nav-logo"><a href="index.html" class="nav-logo">
+   <a href="index.html" class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
+</a></div><a href="index.html" class="nav-link">🏠 Home</a><a href="about.html" class="nav-link">🏢 About</a><a href="services.html" class="nav-link">⚙️ Services</a><a href="solutions.html" class="nav-link">💡 Solutions</a><a href="blog.html" class="nav-link">📝 Blog</a><a href="pricing.html" class="nav-link">💰 Pricing</a><a href="contact.html" class="nav-link">📬 Contact</a><div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid var(--border-subtle);"><a href="login.html" class="btn btn-outline" style="justify-content:center;">Login</a><a href="register.html" class="btn btn-primary" style="justify-content:center;">Get Started Free</a></div></div>
 
 <section class="page-hero">
   <div class="glow-orb" style="width:500px;height:500px;background:rgba(37,99,235,0.07);top:-100px;left:50%;transform:translateX(-50%);"></div>
@@ -148,7 +321,14 @@
 
 <section class="newsletter"><div class="glow-orb" style="width:500px;height:500px;background:rgba(124,58,237,0.08);top:-100px;left:50%;transform:translateX(-50%);"></div><div class="container"><div class="newsletter-inner" data-aos="fade-up"><span class="section-label" style="justify-content:center;">No Risk</span><h2 style="margin-bottom:12px;">Start Free, <span class="gradient-text">Scale When Ready</span></h2><p style="color:var(--text-secondary);margin-bottom:32px;">14-day trial · No credit card · Cancel anytime · Keep your data</p><div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="register.html" class="btn btn-primary btn-lg">🚀 Start Free Trial</a><a href="contact.html" class="btn btn-outline btn-lg">Talk to Sales</a></div></div></div></section>
 
-<footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><div class="nav-logo"><div class="logo-icon">⚡</div><span class="logo-text">Stackly <span>AI</span></span></div><p>Enterprise AI platform for teams.</p><div class="footer-socials"><a class="social-btn" href="#">𝕏</a><a class="social-btn" href="#">in</a><a class="social-btn" href="#">⌥</a><a class="social-btn" href="#">▶</a></div></div><div class="footer-col"><h5>Product</h5><ul class="footer-links"><li><a href="services.html" class="footer-link">Services</a></li><li><a href="solutions.html" class="footer-link">Solutions</a></li><li><a href="pricing.html" class="footer-link">Pricing</a></li></ul></div><div class="footer-col"><h5>Company</h5><ul class="footer-links"><li><a href="about.html" class="footer-link">About</a></li><li><a href="blog.html" class="footer-link">Blog</a></li><li><a href="contact.html" class="footer-link">Contact</a></li></ul></div><div class="footer-col"><h5>Legal</h5><ul class="footer-links"><li><a href="privacy.html" class="footer-link">Privacy</a></li><li><a href="terms.html" class="footer-link">Terms</a></li><li><a href="faq.html" class="footer-link">FAQ</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 Stackly AI, Inc. All rights reserved.</p><div class="footer-bottom-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></div></footer>
+<footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><div class="nav-logo">
+  <a href="index.html" class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
+</div><p>Enterprise AI platform for teams.</p><div class="footer-socials">
+  <a class="social-btn" href="404.html">𝕏</a>
+  <a class="social-btn" href="404.html">in</a>
+  <a class="social-btn" href="404.html">⌥</a>
+  <a class="social-btn" href="404.html">▶</a>
+</div></div><div class="footer-col"><h5>Product</h5><ul class="footer-links"><li><a href="services.html" class="footer-link">Services</a></li><li><a href="solutions.html" class="footer-link">Solutions</a></li><li><a href="pricing.html" class="footer-link">Pricing</a></li></ul></div><div class="footer-col"><h5>Company</h5><ul class="footer-links"><li><a href="about.html" class="footer-link">About</a></li><li><a href="blog.html" class="footer-link">Blog</a></li><li><a href="contact.html" class="footer-link">Contact</a></li></ul></div><div class="footer-col"><h5>Legal</h5><ul class="footer-links"><li><a href="privacy.html" class="footer-link">Privacy</a></li><li><a href="terms.html" class="footer-link">Terms</a></li><li><a href="faq.html" class="footer-link">FAQ</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 Stackly AI, Inc. All rights reserved.</p><div class="footer-bottom-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></div></footer>
 <script src="main.js"></script>
 <script>
   const toggle = document.getElementById('pricing-toggle');

@@ -120,6 +120,7 @@
     .rev-card{background:linear-gradient(135deg,#0d1a3a 0%,#1a0f3a 100%);border:1px solid var(--border-glow);border-radius:var(--radius-xl);padding:28px;position:relative;overflow:hidden;}
     .rev-card::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(124,58,237,0.2) 0%,transparent 70%);}
 
+    
     /* ── Responsive ── */
     @media(max-width:1024px){.stat-cards{grid-template-columns:repeat(2,1fr)!important;}}
     @media(max-width:768px){
@@ -130,7 +131,7 @@
       .admin-filters{flex-direction:column!important;gap:10px!important;}
       .admin-filters input,.admin-filters select{width:100%!important;}
     }
-    @media(max-width:480px){.stat-cards{grid-template-columns:1fr!important;}}
+    @media(max-width:480px){.stat-cards{grid-template-columns:1fr!important;} .button-size-mobiles {font-size:12px;}}
 
     /* ── Sidebar admin badge ── */
     .admin-badge{display:inline-block;font-size:0.62rem;font-weight:700;background:linear-gradient(90deg,#7c3aed,#2563eb);color:#fff;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle;margin-left:6px;}
@@ -205,7 +206,10 @@
 
 <!-- ── LOADING ── -->
 <div class="loading-screen" id="loading-screen">
-  <div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div>
+  <div class="loading-logo">
+    
+    <a href="index.html" class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
+  </div>
   <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
 </div>
 
@@ -220,8 +224,7 @@
     <div class="sidebar-logo"
      onclick="switchSection('overview', document.querySelector('[data-section=overview]'))"
      style="cursor:pointer;">
-    <div class="logo-icon">⚡</div>
-    <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
+   <a href="index.html" class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
 </div>
 
     <!-- Nav -->
@@ -340,9 +343,9 @@
             <h2>Welcome back, <span class="gradient-text" id="welcomeName">Admin</span> 🛡️</h2>
             <p>Platform is running normally. <strong style="color:var(--accent-green);">99.97% uptime</strong> this month. <strong style="color:var(--text-primary);">2,340</strong> total registered users.</p>
             <div class="dash-welcome-actions">
-              <button class="btn btn-primary btn-sm" onclick="switchSection('users',document.querySelector('[data-section=users]'))">👥 Manage Users</button>
-              <button class="btn btn-outline btn-sm" onclick="switchSection('analytics',document.querySelector('[data-section=analytics]'))">📈 View Analytics</button>
-              <button class="btn btn-outline btn-sm" onclick="switchSection('revenue',document.querySelector('[data-section=revenue]'))">💰 Revenue Report</button>
+              <button class="btn btn-primary btn-sm button-size-mobiles" onclick="switchSection('users',document.querySelector('[data-section=users]'))">👥 Manage Users</button>
+              <button class="btn btn-outline btn-sm button-size-mobiles" onclick="switchSection('analytics',document.querySelector('[data-section=analytics]'))">📈 View Analytics</button>
+              <button class="btn btn-outline btn-sm button-size-mobiles" onclick="switchSection('revenue',document.querySelector('[data-section=revenue]'))">💰 Revenue Report</button>
             </div>
           </div>
         </div>

@@ -117,7 +117,7 @@
       .dash-row,.dash-row-3{grid-template-columns:1fr!important;}
       .dashboard-content{padding:20px!important;}
     }
-    @media(max-width:480px){.stat-cards{grid-template-columns:1fr!important;}}
+    @media(max-width:480px){.stat-cards{grid-template-columns:1fr!important;}  .button-size-mobiles {font-size:12px;}}
 
 
 
@@ -165,7 +165,9 @@
 
 <!-- ── LOADING ── -->
 <div class="loading-screen" id="loading-screen">
-  <div class="loading-logo"><div class="logo-icon">⚡</div><span>Stackly <span style="color:var(--accent-cyan)">AI</span></span></div>
+  <div class="loading-logo">
+   <a class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
+  </div>
   <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
 </div>
 
@@ -174,8 +176,7 @@
   <!-- ════════════════ SIDEBAR ════════════════ -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo" onclick="switchSection('overview', null)" style="cursor:pointer;">
-  <div class="logo-icon">⚡</div>
-  <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
+  <a href="index.html" class="nav-logo"><img src="./images//logo-dark.webp" alt="STACKLY Logo" class="nav-logo-img" /></a>
 </div>
 
     <nav class="sidebar-nav">
@@ -235,7 +236,7 @@
       </div>
       <div style="display:flex;align-items:center;gap:16px;">
         <!-- Search -->
-        <div style="position:relative;display:flex;align-items:center;">
+        <div  class="dashboard-search" style="position:relative;display:flex;align-items:center;">
           <input type="text" class="form-input" placeholder="Search..." style="padding:9px 16px 9px 38px;font-size:0.82rem;border-radius:var(--radius-pill);width:220px;"/>
           <span style="position:absolute;left:14px;color:var(--text-muted);font-size:0.85rem;">🔍</span>
         </div>
@@ -265,7 +266,7 @@
         <!-- Avatar -->
         <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('profile',null)">
           <div class="user-avatar-sm" id="headerAvatar">U</div>
-          <span style="font-size:0.875rem;font-weight:600;" id="headerName">User</span>
+          <span class="admin-avatar" style="font-size:0.875rem;font-weight:600;" id="headerName">User</span>
         </div>
 
         <!-- Logout -->
@@ -285,8 +286,8 @@
             <h2>Good morning, <span class="gradient-text" id="welcomeName">User</span> 👋</h2>
             <p>Your Professional plan is active. You've used <strong style="color:var(--text-primary);">68%</strong> of your monthly token quota.</p>
             <div class="dash-welcome-actions">
-              <button class="btn btn-primary btn-sm" onclick="switchSection('api-keys',null)">🔑 Manage API Keys</button>
-              <button class="btn btn-outline btn-sm" onclick="switchSection('analytics',null)">📊 View Analytics</button>
+              <button class="btn btn-primary btn-sm  button-size-mobiles" onclick="switchSection('api-keys',null)">🔑 Manage API Keys</button>
+              <button class="btn btn-outline btn-sm  button-size-mobiles" onclick="switchSection('analytics',null)">📊 View Analytics</button>
             </div>
           </div>
         </div>

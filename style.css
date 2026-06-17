@@ -2890,6 +2890,11 @@ html {
 } 
 
 
+.nav-logo-img {
+  height:40px;
+  background-size:cover;
+  width: 150px;
+}
 
 
 
