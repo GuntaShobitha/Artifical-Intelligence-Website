@@ -173,10 +173,10 @@
 
   <!-- ════════════════ SIDEBAR ════════════════ -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-icon">⚡</div>
-      <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
-    </div>
+    <div class="sidebar-logo" onclick="switchSection('overview', null)" style="cursor:pointer;">
+  <div class="logo-icon">⚡</div>
+  <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
+</div>
 
     <nav class="sidebar-nav">
       <div class="sidebar-section-label">Workspace</div>
@@ -439,7 +439,7 @@
             <div class="stat-card-value" style="color:var(--accent-gold);">$99</div>
             <div class="stat-card-change">Professional plan</div>
           </div>
-        </div>
+        </div>this 
 
         <div class="dash-row" data-aos="fade-up" data-aos-delay="80">
           <div class="dash-panel">
@@ -776,7 +776,7 @@ const user = {
   email: email,
   role: storedUser.role || 'user'
 };
-if (user.role !== 'admin') {
+if (user.role === 'admin') {
   window.location.href = 'admin-dashboard.html';
 }
 
@@ -937,6 +937,45 @@ function showToast(msg, type='info') {
   requestAnimationFrame(()=>{ t.style.transform='translateY(0)'; t.style.opacity='1'; });
   setTimeout(()=>{ t.style.transform='translateY(20px)'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 3000);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// PASTE THIS SINGLE LINE RIGHT HERE:
+window.switchSection = switchSection;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 window.showToast = showToast;
 </script>
 </body>

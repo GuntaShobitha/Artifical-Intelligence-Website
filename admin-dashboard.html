@@ -217,12 +217,12 @@
   <aside class="sidebar" id="sidebar">
 
     <!-- Logo -->
-    <div class="sidebar-logo">
-      <a href="index.html" style="display:flex;align-items:center;gap:0;text-decoration:none;">
-        <div class="logo-icon">⚡</div>
-        <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
-      </a>
-    </div>
+    <div class="sidebar-logo"
+     onclick="switchSection('overview', document.querySelector('[data-section=overview]'))"
+     style="cursor:pointer;">
+    <div class="logo-icon">⚡</div>
+    <span class="logo-text">Stackly <span style="color:var(--accent-cyan)">AI</span></span>
+</div>
 
     <!-- Nav -->
     <nav class="sidebar-nav">
