@@ -2741,6 +2741,10 @@ html {
   }
 }
 
+.dash-row{
+  flex-direction:column;
+}
+
 
 
 

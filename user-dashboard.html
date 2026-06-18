@@ -74,7 +74,19 @@
     .dash-section.active{display:block;}
 
     /* ── API key rows ── */
-    .api-key-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-subtle);}
+    .api-key-row{
+    display:grid;
+    grid-template-columns:minmax(140px,1fr) auto auto auto;
+    gap:12px;
+    align-items:center;
+}
+.api-key-mono{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    word-break:break-all;
+    overflow-wrap:anywhere;
+    white-space:normal;
+}
     .api-key-row:last-child{border-bottom:none;}
     .api-key-mono{font-family:var(--font-mono);font-size:0.8rem;color:var(--accent-cyan);background:rgba(6,182,212,0.08);padding:6px 12px;border-radius:var(--radius-sm);border:1px solid rgba(6,182,212,0.15);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
@@ -119,8 +131,79 @@
     }
     @media(max-width:480px){.stat-cards{grid-template-columns:1fr!important;}  .button-size-mobiles {font-size:12px;}}
 
+   .dash-panel{
+    overflow-x:auto;
+}
 
+.api-table{
+    width:100%;
+    min-width:700px;
+    border-collapse:collapse;
+}
 
+.api-table th{
+    text-align:left;
+    padding:14px 16px;
+    font-size:.75rem;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    border-bottom:1px solid var(--border-subtle);
+}
+
+.api-table td{
+    padding:16px;
+    border-bottom:1px solid var(--border-subtle);
+    white-space:nowrap;
+}
+
+.api-key-mono{
+    font-family:var(--font-mono);
+    min-width:220px;
+    display:inline-block;
+    color:var(--accent-cyan);
+}
+
+.project-table{
+    width:100%;
+    min-width:750px;
+    border-collapse:collapse;
+}
+
+.project-table th{
+    text-align:left;
+    padding:14px 16px;
+    font-size:.75rem;
+    font-weight:700;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    border-bottom:1px solid var(--border-subtle);
+}
+
+.project-table td{
+    padding:16px;
+    border-bottom:1px solid var(--border-subtle);
+    white-space:nowrap;
+}
+
+.project-table tbody tr{
+    transition:.3s;
+}
+
+.project-table tbody tr:hover{
+    background:rgba(255,255,255,.03);
+}
+
+@media(max-width:768px){
+    .project-table{
+        min-width:850px;
+    }
+}
+
+@media(max-width:768px){
+    .api-table{
+        min-width:850px;
+    }
+}
 
     @media(max-width:768px){
 
@@ -360,7 +443,7 @@
         </div>
 
         <!-- Row: Active projects + Token ring -->
-        <div class="dash-row-3" data-aos="fade-up" data-aos-delay="150">
+        <!-- <div class="dash-row-3" data-aos="fade-up" data-aos-delay="150">
           <div class="dash-panel" style="grid-column:span 2;">
             <div class="dash-panel-header">
               <span class="dash-panel-title">Active AI Projects</span>
@@ -409,7 +492,66 @@
               <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="switchSection('subscription',null)">Upgrade Plan</button>
             </div>
           </div>
-        </div>
+        </div> -->
+     
+<div class="dash-panel" style="grid-column:span 2;">
+    <div class="dash-panel-header">
+        <span class="dash-panel-title">Active AI Projects</span>
+        <button class="btn btn-primary btn-sm"
+            onclick="window.location.href='404.html'">
+            + New Project
+        </button>
+    </div>
+
+    <div style="overflow-x:auto;">
+        <table class="project-table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Model</th>
+                    <th>Usage</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>🤖 Customer Support Chatbot</td>
+                    <td>GPT-4o</td>
+                    <td>1.2M / month</td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td><button class="btn btn-outline btn-sm">Manage</button></td>
+                </tr>
+
+                <tr>
+                    <td>⚙️ Lead Scoring Workflow</td>
+                    <td>Claude Sonnet</td>
+                    <td>680K / month</td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td><button class="btn btn-outline btn-sm">Manage</button></td>
+                </tr>
+
+                <tr>
+                    <td>📄 Contract Analysis Pipeline</td>
+                    <td>GPT-4o Mini</td>
+                    <td>320K / month</td>
+                    <td><span class="badge badge-gold">Paused</span></td>
+                    <td><button class="btn btn-outline btn-sm">Manage</button></td>
+                </tr>
+
+                <tr>
+                    <td>🎓 Fine-Tuned Sales Model</td>
+                    <td>Custom Model</td>
+                    <td>1.1M / month</td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td><button class="btn btn-outline btn-sm">Manage</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
       </div>
 
       <!-- ── ANALYTICS ── -->
@@ -499,42 +641,43 @@
           <button class="btn btn-primary" onclick="generateKey()" style="gap:8px;">⚡ Generate New Key</button>
         </div>
 
-        <div class="dash-panel" data-aos="fade-up" style="margin-bottom:24px;">
-          <div style="padding:14px 0;border-bottom:1px solid var(--border-subtle);margin-bottom:6px;">
-            <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-mono);padding-bottom:10px;">
-              <span>Key</span><span>Created</span><span>Last Used</span><span>Actions</span>
-            </div>
-          </div>
-          <div id="apiKeysList">
-            <div class="api-key-row">
-              <div class="api-key-mono">DEMO_KEY</div>
-              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">Jun 1, 2026</span>
-              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">10 min ago</span>
-              <div style="display:flex;gap:6px;">
-                <button onclick="copyKey(this,'DEMO_KEY')" class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:0.75rem;">Copy</button>
-                <button onclick="revokeKey(this)" class="btn btn-sm" style="padding:6px 12px;font-size:0.75rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:var(--radius-pill);">Revoke</button>
-              </div>
-            </div>
-            <div class="api-key-row">
-              <div class="api-key-mono">DEMO_KEY</div>
-              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">May 15, 2026</span>
-              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">2 hours ago</span>
-              <div style="display:flex;gap:6px;">
-                <button onclick="copyKey(this,'DEMO_KEY')" class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:0.75rem;">Copy</button>
-                <button onclick="revokeKey(this)" class="btn btn-sm" style="padding:6px 12px;font-size:0.75rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:var(--radius-pill);">Revoke</button>
-              </div>
-            </div>
-            <div class="api-key-row">
-              <div class="api-key-mono">DEMO_KEY</div>
-              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">Apr 3, 2026</span>
-              <span style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;">3 days ago</span>
-              <div style="display:flex;gap:6px;">
-                <button onclick="copyKey(this,'DEMO_KEY')" class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:0.75rem;">Copy</button>
-                <button onclick="revokeKey(this)" class="btn btn-sm" style="padding:6px 12px;font-size:0.75rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:var(--radius-pill);">Revoke</button>
-              </div>
-            </div>
-          </div>
-        </div>
+       
+          
+
+        <div class="dash-panel" style="margin-bottom: 20px;">
+  <table class="api-table">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Created</th>
+        <th>Last Used</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td><span class="api-key-mono">DEMO_KEY_x8k29s7q1m4</span></td>
+        <td>Jun 1, 2026</td>
+        <td>10 min ago</td>
+        <td>
+          <button class="btn btn-outline btn-sm">Copy</button>
+          <button class="btn btn-sm">Revoke</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td><span class="api-key-mono">DEMO_KEY_p9r82n4t6x1</span></td>
+        <td>May 15, 2026</td>
+        <td>2 hours ago</td>
+        <td>
+          <button class="btn btn-outline btn-sm">Copy</button>
+          <button class="btn btn-sm">Revoke</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
         <div class="card" style="padding:20px;border-color:rgba(6,182,212,0.2);" data-aos="fade-up">
           <div style="display:flex;gap:14px;align-items:flex-start;">
@@ -569,8 +712,9 @@
           <h2 style="font-size:1.4rem;margin-bottom:4px;">Profile</h2>
           <p>Manage your personal information and account details.</p>
         </div>
+        <!-- style="display:grid;grid-template-columns:1fr 1.6fr;gap:24px;" -->
 
-        <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:24px;" data-aos="fade-up">
+        <div  class="dash-row" data-aos="fade-up">
           <!-- Avatar card -->
           <div class="dash-panel" style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
             <div class="avatar-lg" id="bigAvatar">A</div>
@@ -583,13 +727,10 @@
             <div style="width:100%;border-top:1px solid var(--border-subtle);padding-top:16px;text-align:left;">
               <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;font-family:var(--font-mono);">MEMBER SINCE</div>
               <div style="font-size:0.875rem;">June 1, 2026</div>
-            </div>
-          </div>
+              <div> 
+                 <div class="dash-panel-header"><span class="dash-panel-title">Personal Information</span></div>
+                <form onsubmit="saveProfile(event)">
 
-          <!-- Edit form -->
-          <div class="dash-panel">
-            <div class="dash-panel-header"><span class="dash-panel-title">Personal Information</span></div>
-            <form onsubmit="saveProfile(event)">
               <div class="grid-2" style="gap:16px;">
                 <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="pFirstName" value=""/></div>
                 <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="pLastName" value=""/></div>
@@ -608,9 +749,17 @@
               </div>
               <button type="submit" class="btn btn-primary" style="margin-top:8px;">Save Changes</button>
             </form>
+              </div>
 
+            </div>
+          </div>
+
+          <!-- Edit form -->
+          <div class="dash-panel">
+           
+            
             <!-- Change Password -->
-            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border-subtle);">
+            <div style="margin-top:10px;padding-top:10px;">
               <div class="dash-panel-header" style="margin-bottom:16px;"><span class="dash-panel-title">Change Password</span></div>
               <form onsubmit="changePassword(event)">
                 <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" placeholder="••••••••" id="cpCurrent"/></div>
@@ -724,7 +873,9 @@
           <p>Control your account, notifications, and security preferences.</p>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" data-aos="fade-up">
+        <!-- style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" -->
+
+        <div class="dash-row" data-aos="fade-up">
           <div class="dash-panel">
             <div class="dash-panel-header" style="margin-bottom:8px;"><span class="dash-panel-title">Notifications</span></div>
             <div class="toggle-row"><div><div style="font-size:0.875rem;font-weight:600;">Usage alerts</div><div style="font-size:0.78rem;color:var(--text-muted);">Alert at 80% and 95% token usage</div></div><div class="toggle-switch-sm on" onclick="this.classList.toggle('on')"></div></div>
