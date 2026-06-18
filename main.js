@@ -250,8 +250,7 @@ document.querySelectorAll('form').forEach(form => {
     btn.textContent = '✓ Sent!';
     btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
     setTimeout(() => {
-      btn.textContent = orig;
-      btn.style.background = '';
+      window.location.href = 'login.html';
     }, 3000);
   });
 });
