@@ -1011,6 +1011,7 @@ function saveProfile(e) {
   user.name = name; user.email = email;
   sessionStorage.setItem('stackly_user', JSON.stringify(user));
   setUserInfo();
+   console.log('yes clicked')
   showToast('✓ Profile updated successfully', 'success');
 }
 
@@ -1024,6 +1025,7 @@ function changePassword(e) {
   if (!nw || nw.length < 8) { showToast('New password must be at least 8 characters'); return; }
   if (nw !== conf) { showToast('Passwords do not match'); return; }
   showToast('✓ Password updated successfully', 'success');
+ 
   ['cpCurrent','cpNew','cpConfirm'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 

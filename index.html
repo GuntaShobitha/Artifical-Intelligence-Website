@@ -7,6 +7,36 @@
   <title>Stackly AI — Transforming Ideas into Intelligent Solutions</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+<style>
+  .sidebar-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.sidebar-overlay.active{
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-nav{
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100vh;
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+.mobile-nav.active{
+  right: 0;
+}
+</style>
 <body>
 
 <!-- Loading Screen -->
@@ -51,18 +81,9 @@
         </button>
       </div>
     </div>
-  </div>
-</nav>
+    <div class="mobile-nav" id="mobile-nav">
+     <button class="mobile-nav-close">✕</button>
 
-<!-- Mobile Nav -->
-<div class="mobile-nav" id="mobile-nav">
-  <button class="mobile-nav-close">✕</button>
-  <div class="mobile-nav-logo">
-    <a href="index.html" class="nav-logo">
-      <div class="logo-icon">⚡</div>
-      <span class="logo-text">Stackly <span>AI</span></span>
-    </a>
-  </div>
   <a href="index.html" class="nav-link">🏠 Home</a>
   <a href="about.html" class="nav-link">🏢 About</a>
   <a href="services.html" class="nav-link">⚙️ Services</a>
@@ -75,6 +96,11 @@
     <!-- <a href="register.html" class="btn btn-primary" style="justify-content:center;">Get Started Free</a> -->
   </div>
 </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+
 
 <!-- ========= HERO ========= -->
 <section class="hero" id="home">
@@ -545,7 +571,7 @@
         <a href="404.html" class="btn btn-primary">Try It Free →</a>
       </div>
 
-      <div data-aos="fade-left" data-aos-delay="100">
+      <div style="margin-top: 20px;" data-aos="fade-left" data-aos-delay="100">
         <div class="demo-screen">
           <div class="demo-topbar">
             <div class="demo-dot" style="background:#ff5f57;"></div>
@@ -912,6 +938,22 @@
   </div>
 </footer>
 
-<script src="main.js"></script>
+<script src="main.js">
+const mobileNav = document.getElementById("mobile-nav");
+const overlay = document.getElementById("sidebar-overlay-home");
+
+function openMobileMenu() {
+  mobileNav.classList.add("active");
+  overlay.classList.add("active");
+}
+
+function closeMobileMenu() {
+  mobileNav.classList.remove("active");
+  overlay.classList.remove("active");
+}
+
+overlay.addEventListener("click", closeMobileMenu);
+
+</script>
 </body>
 </html>

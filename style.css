@@ -452,7 +452,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   background: rgba(5,11,24,0.98);
   backdrop-filter: blur(30px);
   flex-direction: column;
-  padding: 100px 32px 40px;
+  padding: 80px 32px 40px;
   gap: 8px;
   overflow-y: auto;
 }
@@ -469,6 +469,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   position: absolute;
   top: 20px;
   right: 20px;
+  z-index: 1001;
   background: rgba(255,255,255,0.08);
   border: none;
   color: var(--text-primary);
@@ -482,11 +483,27 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   justify-content: center;
 }
 
-.mobile-nav-logo {
+
+
+/* 
+.mobile-nav-logo{
+  position:absolute;
+  top:20px;
+  left:20px;
+  right:80px;
+}
+
+.mobile-logo{
+  width:180px;
+  height:auto;
+  display:block;
+} */
+
+/* .mobile-nav-logo {
   position: absolute;
   top: 22px;
   left: 24px;
-}
+} */
 
 /* =============================================
    HERO SECTION

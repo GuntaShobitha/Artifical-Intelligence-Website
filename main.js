@@ -241,7 +241,7 @@ function createParticles(container) {
 createParticles(document.querySelector('.particles'));
 
 // ─── FORM SUBMISSIONS ─────────────────────────
-document.querySelectorAll('form').forEach(form => {
+// document.querySelectorAll('form').forEach(form => {
   form.addEventListener('submit', e => {
     e.preventDefault();
     const btn = form.querySelector('[type="submit"]');
@@ -249,11 +249,9 @@ document.querySelectorAll('form').forEach(form => {
     const orig = btn.textContent;
     btn.textContent = '✓ Sent!';
     btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
-    setTimeout(() => {
-      window.location.href = 'login.html';
-    }, 3000);
+   
   });
-});
+// });
 
 // ─── SMOOTH SCROLL ─────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -397,3 +395,4 @@ document.querySelectorAll('.newsletter-form').forEach(form => {
     form.querySelector('input')?.value && (form.querySelector('input').value = '');
   });
 });
+
