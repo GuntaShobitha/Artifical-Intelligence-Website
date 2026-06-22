@@ -280,9 +280,7 @@
       </a>
 
       <div class="sidebar-section-label">Account</div>
-      <a class="sidebar-link" data-section="profile" onclick="switchSection('profile',this)">
-        <span class="sidebar-link-icon">👤</span> Profile
-      </a>
+
       <a class="sidebar-link" data-section="subscription" onclick="switchSection('subscription',this)">
         <span class="sidebar-link-icon">💳</span> Subscription
       </a>
@@ -347,7 +345,8 @@
         </div>
 
         <!-- Avatar -->
-        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('profile',null)">
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('overview',null)">
+
           <div class="user-avatar-sm" id="headerAvatar">U</div>
           <span class="admin-avatar" style="font-size:0.875rem;font-weight:600;" id="headerName">User</span>
         </div>
@@ -707,15 +706,15 @@
       </div>
 
       <!-- ── PROFILE ── -->
-      <div class="dash-section" id="section-profile">
+      <!-- <div class="dash-section" id="section-profile">
         <div style="margin-bottom:28px;" data-aos="fade-up">
           <h2 style="font-size:1.4rem;margin-bottom:4px;">Profile</h2>
           <p>Manage your personal information and account details.</p>
         </div>
         <!-- style="display:grid;grid-template-columns:1fr 1.6fr;gap:24px;" -->
 
-        <div  class="dash-row" data-aos="fade-up">
-          <!-- Avatar card -->
+        <!-- <div  class="dash-row" data-aos="fade-up">
+          
           <div class="dash-panel" style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
             <div class="avatar-lg" id="bigAvatar">A</div>
             <div>
@@ -752,14 +751,14 @@
               </div>
 
             </div>
-          </div>
+          </div> -->
 
           <!-- Edit form -->
           <div class="dash-panel">
            
             
             <!-- Change Password -->
-            <div style="margin-top:10px;padding-top:10px;">
+            <!-- <div style="margin-top:10px;padding-top:10px;">
               <div class="dash-panel-header" style="margin-bottom:16px;"><span class="dash-panel-title">Change Password</span></div>
               <form onsubmit="changePassword(event)">
                 <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" placeholder="••••••••" id="cpCurrent"/></div>
@@ -773,7 +772,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>  -->
 
       <!-- ── SUBSCRIPTION ── -->
       <div class="dash-section" id="section-subscription">

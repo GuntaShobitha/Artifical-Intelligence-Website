@@ -250,9 +250,7 @@
       </a>
 
       <div class="sidebar-section-label">Account</div>
-      <a class="sidebar-link" data-section="profile" onclick="switchSection('profile',this)">
-        <span class="sidebar-link-icon">👤</span> Profile
-      </a>
+
       <a class="sidebar-link" data-section="settings" onclick="switchSection('settings',this)">
         <span class="sidebar-link-icon">⚙️</span> Settings
       </a>
@@ -316,7 +314,8 @@
         </div>
 
         <!-- Admin avatar -->
-        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('profile',null)">
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="switchSection('overview',null)">
+
           <div class="user-avatar-sm" id="headerAvatar" style="background:linear-gradient(135deg,#7c3aed,#2563eb);">A</div>
           <span class="admin-avatar" style="font-size:0.875rem;font-weight:600;" id="headerName" style="overflow-x:auto;">Admin</span>
         </div>
@@ -758,90 +757,7 @@
       <!-- ═══════════════════════════════
            SECTION: PROFILE
       ═══════════════════════════════ -->
-      <div class="dash-section" id="section-profile">
-        <div data-aos="fade-up" style="margin-bottom:28px;">
-          <h2 style="font-size:1.4rem;margin-bottom:4px;">Admin Profile</h2>
-          <p>Manage your account information and credentials.</p>
-        </div>
 
-        <div class="dash-row" data-aos="fade-up">
-          <!-- Profile card -->
-          <div class="dash-panel" style="flex:1;">
-            <div style="display:flex;align-items:center;gap:20px;padding-bottom:24px;border-bottom:1px solid var(--border-subtle);margin-bottom:24px;">
-              <div class="avatar-lg" id="profileAvatar">A</div>
-              <div>
-                <div style="font-size:1.2rem;font-weight:700;margin-bottom:4px;" id="profileDisplayName">Admin</div>
-                <div style="font-size:0.875rem;color:var(--text-muted);" id="profileDisplayEmail">admin@stacklyai.com</div>
-                <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
-                  <span class="badge" style="background:rgba(124,58,237,0.15);color:#a855f7;border:1px solid rgba(124,58,237,0.3);">🛡️ Super Admin</span>
-                  <span class="badge badge-green">✅ Verified</span>
-                </div>
-              </div>
-            </div>
-
-            <form onsubmit="saveProfile(event)">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="profile-grid">
-                <div class="form-group">
-                  <label class="form-label">First Name</label>
-                  <input type="text" class="form-input" id="pFirstName" placeholder="First name" required/>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Last Name</label>
-                  <input type="text" class="form-input" id="pLastName" placeholder="Last name" required/>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" id="pEmail" placeholder="admin@stacklyai.com" required/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Role</label>
-                <input type="text" class="form-input" value="Super Administrator" disabled style="opacity:0.5;cursor:not-allowed;"/>
-              </div>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </form>
-          </div>
-
-          <!-- Change Password -->
-          <div class="dash-panel" style="flex:1;">
-            <div class="dash-panel-header" style="margin-bottom:24px;"><span class="dash-panel-title">Change Password</span></div>
-            <form onsubmit="changePassword(event)">
-              <div class="form-group">
-                <label class="form-label">Current Password</label>
-                <input type="password" class="form-input" id="cpCurrent" placeholder="••••••••" required/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">New Password</label>
-                <input type="password" class="form-input" id="cpNew" placeholder="Min 8 characters" required oninput="updatePwStrength(this.value)"/>
-                <div id="pw-strength-bars"><div></div><div></div><div></div><div></div></div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Confirm New Password</label>
-                <input type="password" class="form-input" id="cpConfirm" placeholder="Repeat new password" required/>
-              </div>
-              <button type="submit" class="btn btn-primary">Update Password</button>
-            </form>
-
-            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border-subtle);">
-              <div class="dash-panel-header" style="margin-bottom:16px;"><span class="dash-panel-title">Active Sessions</span></div>
-              <div style="display:flex;flex-direction:column;gap:10px;">
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-md);">
-                  <div style="font-size:0.82rem;"><div style="font-weight:600;margin-bottom:2px;">Chrome · macOS · San Francisco</div><div style="color:var(--text-muted);">Current session · Just now</div></div>
-                  <span class="badge badge-green">Current</span>
-                </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:var(--radius-md);">
-                  <div style="font-size:0.82rem;"><div style="font-weight:600;margin-bottom:2px;">Safari · iPhone · Mumbai</div><div style="color:var(--text-muted);">3 hours ago</div></div>
-                  <button class="tbl-btn tbl-btn-del" onclick="showToast('Session revoked')">Revoke</button>
-                </div>
-              </div>
-            </div>
-
-            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
-              <a href="login.html" class="btn btn-outline btn-sm" onclick="doLogout()" style="gap:8px;color:#f87171;border-color:rgba(239,68,68,0.3);">↩ Logout from All Devices</a>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- ═══════════════════════════════
            SECTION: SETTINGS
@@ -984,22 +900,7 @@ function setUserInfo() {
   const wn = document.getElementById('welcomeName');
   if (wn) wn.textContent = firstName;
 
-  /* Profile section */
-  const pdn = document.getElementById('profileDisplayName');
-  const pde = document.getElementById('profileDisplayEmail');
-  const pa  = document.getElementById('profileAvatar');
-  if (pdn) pdn.textContent = displayName;
-  if (pde) pde.textContent = user.email || 'admin@stacklyai.com';
-  if (pa)  pa.textContent  = initial;
 
-  /* Profile form */
-  const parts = displayName.split(' ');
-  const pfn = document.getElementById('pFirstName');
-  const pln = document.getElementById('pLastName');
-  const pem = document.getElementById('pEmail');
-  if (pfn) pfn.value = parts[0] || '';
-  if (pln) pln.value = parts.slice(1).join(' ') || '';
-  if (pem) pem.value = user.email || 'admin@stacklyai.com';
 }
 setUserInfo();
 
@@ -1022,8 +923,8 @@ function switchSection(name, el) {
     revenue:       'Revenue Dashboard',
     analytics:     'Platform Analytics',
     notifications: 'Notifications',
-    profile:       'Admin Profile',
     settings:      'Platform Settings'
+
   };
   const t = document.getElementById('dashTitle');
   if (t) t.textContent = titles[name] || name;
@@ -1248,26 +1149,9 @@ buildChart('apiChart', [
                         'background:rgba(6,182,212,0.2);');
 
 /* ══════════════════════════════════════
-   PROFILE SAVE
-══════════════════════════════════════ */
-function saveProfile(e) {
-  e.preventDefault();
-  const first = document.getElementById('pFirstName')?.value.trim() || '';
-  const last  = document.getElementById('pLastName')?.value.trim() || '';
-  const email = document.getElementById('pEmail')?.value.trim() || '';
-  const name  = [first, last].filter(Boolean).join(' ');
-  if (!name) { showToast('Please enter your name'); return; }
-  user.name  = name;
-  user.email = email;
-  user.role  = 'admin';
-  localStorage.setItem('stackly_user', JSON.stringify(user));
-  setUserInfo();
-  showToast('✓ Profile updated successfully', 'success');
-}
-
-/* ══════════════════════════════════════
    PASSWORD CHANGE
 ══════════════════════════════════════ */
+
 function changePassword(e) {
   e.preventDefault();
   const curr = document.getElementById('cpCurrent')?.value;
